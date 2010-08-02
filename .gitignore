@@ -1,0 +1,8 @@
+www/config/config.local.php
+www/tmp/*
+www/templates/cache/*
+www/templates/compiled/*
+www/uploads/*
+*.marks
+*.log
+logs/*
