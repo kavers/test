@@ -144,23 +144,24 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
                </ul>
             </div>
 	        <ul id="main_menu">
-	           <li><a href="/">Главная</a></li>
-	           <li><a href="#">Видео</a></li>
-	           <li><a href="#">Музыка</a></li>
-	           <li><a href="#">Приколы</a></li>
-	           <li><a href="#">Обои</a></li>
-	           <li><a href="#" class="more_menu close">ещё</a>
+	           <li><a href="{cfg name='path.root.web'}">Главная</a></li>
+	           <li><a href="{cfg name='path.root.web'}/video/">Видео</a></li>
+	           <li><a href="{cfg name='path.root.web'}/music/">Музыка</a></li>
+	           <li><a href="{cfg name='path.root.web'}/jokes/">Приколы</a></li>
+	           <li><a href="{cfg name='path.root.web'}/photo/">Обои</a></li>
+	           <li><a href="" class="more_menu close">ещё</a>
 	              <ul class="all_menu">
-	                 <li><a href="#">Форум</a></li>
-	                 <li><a href="#">Новости</a></li>
-	                 <li><a href="#">События</a></li>
-            		 <li><a href="#">Игры</a></li>
-    	      	     <li><a href="#">Обои</a></li>
-   	    	    	 <li><a href="#">Софт</a></li>
-  	        	     <li><a href="#">Эротика</a></li>
-          	    	 <li><a href="#">Сонник</a></li>
-        		     <li><a href="#">Гороскоп</a></li>
+	                 <li><a href="http://ts.1in.kz">Форум</a></li>
+	                 <li><a href="{cfg name='path.root.web'}">Новости</a></li>
+	                 <li><a href="{cfg name='path.root.web'}">События</a></li>
+            		 <li><a href="{cfg name='path.root.web'}/games/">Игры</a></li>
+   	    	    	 <li><a href="{cfg name='path.root.web'}/soft/">Софт</a></li>
+  	        	     <li><a href="{cfg name='path.root.web'}/erotic/">Эротика</a></li>
+          	    	 <li><a href="{cfg name='path.root.web'}/dreams/">Сонник</a></li>
+        		     <li><a href="{cfg name='path.root.web'}/horo/">Гороскоп</a></li>
    			     </ul>
+    	       </li>
+ 	       </ul>
     	       </li>
  	       </ul>
 	     </div>
