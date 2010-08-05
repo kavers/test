@@ -21,8 +21,6 @@
 		<link rel="alternate" type="application/rss+xml" href="{$aHtmlRssAlternate.url}" title="{$aHtmlRssAlternate.title}">
 	{/if}
 
-	<script type="text/javascript" src="{cfg name='path.static.skin'}/js/ext//jquery-1.2.6.min.js"></script>
-	
 <script language="JavaScript" type="text/javascript">
 var DIR_WEB_ROOT='{cfg name="path.root.web"}';
 var DIR_STATIC_SKIN='{cfg name="path.static.skin"}';
@@ -64,9 +62,12 @@ var msgNoticeBox=new Roar({
 
 {literal}
 <script type="text/javascript">
-$(document).ready(function () {
-var randomnumber=Math.floor(Math.random()*99999999999);
-$('body').css({background:'#6E6E6E URL(http://adv.kaznetmedia.kz/www/delivery/avw.php?zoneid=50&cb='+randomnumber+'&n=a12ae2ab) no-repeat center 122px'});
+jQuery.noConflict();
+jQuery(document).ready(function($){
+    $(document).ready(function () {
+    var randomnumber=Math.floor(Math.random()*99999999999);
+    $('body').css({background:'#6E6E6E URL(http://adv.kaznetmedia.kz/www/delivery/avw.php?zoneid=50&cb='+randomnumber+'&n=a12ae2ab) no-repeat center 122px'});
+    });
 });
 </script>
 {/literal}
