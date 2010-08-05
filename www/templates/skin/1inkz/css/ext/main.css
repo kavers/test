@@ -357,6 +357,12 @@ ul.vidget_list li dl dd {float:left;width:30px;padding:10px 0px 0px 0px;}
 .cyan .gradient {background:URL('../../img/cyan_fon.gif') repeat-x top;}
 .green .gradient {background:URL('../../img/green_fon.gif') repeat-x top;}
 .dark_green .gradient {background:URL('../../img/dgreen_fon.gif') repeat-x top;}
+
+.pine_green .gradient {background:URL('../../img/pgreen_fon.gif') repeat-x top;}
+.asparagus_green .gradient {background:URL('../../img/agreen_fon.gif') repeat-x top;}
+.olive_green .gradient {background:URL('../../img/ogreen_fon.gif') repeat-x top;}
+.turquois .gradient {background:URL('../../img/turquois_fon.gif') repeat-x top;}
+
 .blue .gradient {background:URL('../../img/blue_fon.gif') repeat-x top;}
 .orange .gradient {background:URL('../../img/orange_fon.gif') repeat-x top;}
 .gray .gradient {background:URL('../../img/gray_fon.gif') repeat-x top;}
@@ -450,7 +456,14 @@ ul.vidget_list li dl dd {float:left;width:30px;padding:10px 0px 0px 0px;}
 .margenta {color:#87025B;}
 .cyan {color:#006CB3;}
 .green {color:#4F7318;}
-.dark_green {color:#00604F;}
+
+/*.dark_green {color:#00604F;}*/
+.pine_green {color:#027162;}
+.asparagus_green {color:#476040;}
+.olive_green {color:#4f7318;}
+.turquois {color:#1d5559;}
+.dark_green {color:#1a6532;}
+
 .blue {color:#004473;}
 .orange {color:#D85B0B;}
 .gray {color:#655947;}

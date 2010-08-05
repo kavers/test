@@ -132,6 +132,7 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
 	           </ul>
 	           <a href="" onclick="$('search').submit();return false;"><img src="{cfg name='path.static.skin'}/img/search_button.gif" width="34" height="33" alt="Искать" title="Искать"/></a>
 			</form>
+            
             <div id="tip_box" style="display:none;">
                <ul>
                  <li><a href="">крутые фразы</a><strong>654 000 результатов</strong></li>
@@ -143,6 +144,7 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
                  <li><a href="">крутые бобр</a><strong>3 474 000 результатов</strong></li>
                </ul>
             </div>
+            
 	        <ul id="main_menu">
 	           <li><a href="{cfg name='path.root.web'}">Главная</a></li>
 	           <li><a href="{cfg name='path.root.web'}/video/">Видео</a></li>
@@ -193,6 +195,7 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
          {/if}
      </div>
   </div>
+  {*
   <div id="point_block">
      <div class="title"><a href="http://to.1in.kz"><h1>Точка отрыва</h1></a></div>
      <div class="slider">
@@ -218,11 +221,12 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
         </ul>
      </div>
   </div>
+  *}
   {*
 <!---   Блогосфера    -->
   <ul id="blogosphere" class="blogosphere">
 <!-- Список видео -->
-     <li class="block3 green">
+     <li class="block3 dark_green">
         <div class="title"><a href="#111" class="link"><h1>Блогосфера</h1></a><a href="javascript:void(0)"><img class="line_sort" src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть" title="Свернуть"/></a></div>
          <ul class="gradient">
            <li class="first3"><a href="">Все</a></li>
@@ -287,13 +291,16 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
 <!-- Три колонки, это первая -->
   <ul id="column1" class="column left_colomn">
 <!--  Блок Популярные блогм -->
-     <li id="pop_blogs" class="block dark_green">
-        <div class="title"><a href="#111" class="link"><h1>Популярные блогеры</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
+     <li id="pop_blogs" class="block pine_green">
+        <div class="title"><a href="{router page='people'}" class="link"><h1>Популярные блогеры</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
         <div class="block_content">
         <ul class="gradient">
+           <li class="first3"><a href="{router page='people'}">Все</a></li>
+           {*
            <li class="first3"><a href="#">За день</a></li>
            <li><a href="#">За неделю</a></li>
            <li><a href="#">За месяц</a></li>
+           *}
         </ul>
         <div class="bayan" id="b3">
            <ul>
@@ -310,7 +317,8 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
      </li>
 <!--  Блок Популярные блоги -->
 <!--  Блок Эксперты блогосферы -->
-     <li id="blog_experts" class="block green">
+{*
+     <li id="blog_experts" class="block asparagus_green">
         <div class="title"><a href="#111" class="link"><h1>Эксперты блогосферы</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
         <div class="block_content">
         <ul class="gradient">
@@ -353,17 +361,21 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
         <div class="block_bottom"></div>
         </div>
      </li>
+     *}
 <!--  Блок Эксперты блогосферы -->
   </ul>
   <ul id="column2" class="column middle_colomn">
 <!--  Блок Что нового -->
-     <li id="whats_news" class="block green">
-        <div class="title"><a href="#111" class="link"><h1>Что нового в блогах</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
+     <li id="whats_news" class="block olive_green">
+        <div class="title"><a href="{router page='blog'}" class="link"><h1>Что нового в блогах</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
         <div class="block_content">
         <ul class="gradient">
+           <li class="first3"><a href="{router page='blog'}">Все</a></li>
+           {*
            <li class="first3"><a href="#">За день</a></li>
            <li><a href="#">За неделю</a></li>
            <li><a href="#">За месяц</a></li>
+           *}
         </ul>
         <div class="bayan" id="b12">
            <ul>
@@ -382,7 +394,8 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
      </li>
 <!--  Блок Что нового -->
 <!--  Блок Знаменитости -->
-     <li id="celebrity" class="block dark_green">
+{*
+     <li id="celebrity" class="block turquois">
         <div class="title"><a href="#111" class="link"><h1>Знаменитости</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
         <div class="block_content">
         <ul class="gradient">
@@ -439,6 +452,7 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
         <div class="block_bottom"></div>
         </div>
      </li>
+     *}
 <!--  Блок знаменитости -->
   </ul>
   <ul id="column3" class="column right_colomn">
@@ -449,7 +463,7 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
 	 </li>
 <!-- Баннер почтового сервиса-->
 <!--  Блок сообщества -->
-     <li id="community" class="block green">
+     <li id="community" class="block dark_green">
         <div class="title"><a href="#111" class="link"><h1>Сообщества</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
         <div class="block_content">
         <ul class="gradient">
@@ -519,8 +533,10 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
           <li class="dark_green"><input checked type="checkbox" value="" name="pop_blogs"/>Популярные блогеры</li>
           <li class="green"><input checked type="checkbox" value="" name="whats_news"/>Что нового в блогах</li>
           <li class="green"><input checked type="checkbox" value="" name="community"/>Сообщества</li>
+          {*
           <li class="green"><input checked type="checkbox" value="" name="blog_experts"/>Эксперты блогосферы</li>
           <li class="dark_green"><input checked type="checkbox" value="" name="celebrity"/>Знаменитости</li>
+          *}
         </ul>
      </div>
      <div class="comments">Одной из наших приоритетных целей является создание полезных пользователю интернет-проектов на рынке Казнета. Первый Казахстанский - портал, где каждый найдет для себя что-то интересное. Мы отбираем для вас лучшее видео, самые смешные приколы, оригинальные обои для рабочего стола, свежие программы, популярные книги, новую музыку и многое другое.  <a href="#">Узнать больше</a></div>
