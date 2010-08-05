@@ -21,6 +21,8 @@
 		<link rel="alternate" type="application/rss+xml" href="{$aHtmlRssAlternate.url}" title="{$aHtmlRssAlternate.title}">
 	{/if}
 
+	<script type="text/javascript" src="{cfg name='path.static.skin'}/js/ext//jquery-1.2.6.min.js"></script>
+	
 <script language="JavaScript" type="text/javascript">
 var DIR_WEB_ROOT='{cfg name="path.root.web"}';
 var DIR_STATIC_SKIN='{cfg name="path.static.skin"}';
@@ -57,6 +59,15 @@ var msgNoticeBox=new Roar({
 			className: 'roar-notice',
 			margin: {x: 30, y: 10}
 		});	
+</script>
+{/literal}
+
+{literal}
+<script type="text/javascript">
+$(document).ready(function () {
+var randomnumber=Math.floor(Math.random()*99999999999);
+$('body').css({background:'#6E6E6E URL(http://adv.kaznetmedia.kz/www/delivery/avw.php?zoneid=50&cb='+randomnumber+'&n=a12ae2ab) no-repeat center 122px'});
+});
 </script>
 {/literal}
 
@@ -432,8 +443,9 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
   <ul id="column3" class="column right_colomn">
 <!-- Баннер почтового сервиса-->
      <li id="mail_banner" class="block">
-        <a href="#"><img src="{cfg name='path.static.skin'}/img/mail_banner.jpg" width="302" height="252" alt="Почта" title="Почта" /></a>
-     </li>
+		<script type="text/javascript" src="{cfg name='path.static.skin'}/js/ibanleft.js"></script>	
+		<noscript><a href='http://adv.kaznetmedia.kz/www/delivery/ck.php?n=ad398848&amp;cb=<?php echo rand(); ?>' target='_blank'><img src='http://adv.kaznetmedia.kz/www/delivery/avw.php?zoneid=49&amp;charset=UTF-8&amp;cb=<?php echo rand(); ?>&amp;n=ad398848' border='0' alt='' /></a></noscript>	 
+	 </li>
 <!-- Баннер почтового сервиса-->
 <!--  Блок сообщества -->
      <li id="community" class="block green">

@@ -43,7 +43,7 @@ $config['block']['blogs']['row']  = 10;  // сколько записей выв
  * например, для директории первой вложенности www.site.ru/livestreet/ поставить значение равное 1 
  */
 $config['path']['root']['web']        = 'http://'.$_SERVER['HTTP_HOST'];     // полный WEB адрес сайта
-$config['path']['root']['server']     = dirname(dirname(__FILE__));           // полный путь до сайта в файловой системе
+$config['path']['root']['server']     = 'Z:\home\statblogs.1inkz.slwork.ru\www';           // полный путь до сайта в файловой системе
 /**
  * Для CLI режима использовать
  * $config['path']['root']['server']     = dirname(dirname(__FILE__));           // полный путь до сайта в файловой системе 
@@ -220,7 +220,7 @@ $config['db']['params']['port']   = '3306';
 $config['db']['params']['user']   = 'root';
 $config['db']['params']['pass']   = '';
 $config['db']['params']['type']   = 'mysql';
-$config['db']['params']['dbname'] = 'social';
+$config['db']['params']['dbname'] = 'blogsls';
 /**
  * Настройка таблиц базы данных
  */

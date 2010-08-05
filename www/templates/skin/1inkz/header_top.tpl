@@ -9,6 +9,28 @@
      {/if}
   </ul>
 *}  
+  <div id="head_banner">
+	 <div id="head_insidesm_banner">
+		<script type='text/javascript'>
+		<!--//<![CDATA[
+		var m3_u = (location.protocol=='https:'?'https://adv.kaznetmedia.kz/www/delivery/ajs.php':'http://adv.kaznetmedia.kz/www/delivery/ajs.php');
+		var m3_r = Math.floor(Math.random()*99999999999);
+		if (!document.MAX_used) document.MAX_used = ',';
+		document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+		document.write ("?zoneid=53&amp;target=_blank&amp;charset=UTF-8");
+		document.write ('&amp;cb=' + m3_r);
+		if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+		document.write ('&amp;charset=UTF-8');
+		document.write ("&amp;loc=" + escape(window.location));
+		if (document.referrer) document.write ("&amp;referer=" + escape(document.referrer));
+		if (document.context) document.write ("&context=" + escape(document.context));
+		if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+		document.write ("'><\/scr"+"ipt>");
+		//]]>-->
+		</script>
+		<noscript><a href='http://adv.kaznetmedia.kz/www/delivery/ck.php?n=a372d3e3&amp;cb=<?php echo rand(); ?>' target='_blank'><img src='http://adv.kaznetmedia.kz/www/delivery/avw.php?zoneid=53&amp;charset=UTF-8&amp;cb=<?php echo rand(); ?>&amp;n=a372d3e3' border='0' alt='' /></a></noscript>
+	 </div>
+  </div>
   <div id="headsm">
      <div id="head_insidesm">
 	     <div id="logo_sm"><a href="/"><img src="{cfg name='path.static.skin'}/img//logo_sm.gif" width="133" height="68" alt="Первый Казахстанский: Видео, Музыка, Форум, Обои, Гороскоп, Сонник и многое другое!" title="Первый Казахстанский: Видео, Музыка, Форум, Обои, Гороскоп, Сонник и многое другое!" /></a></div>
