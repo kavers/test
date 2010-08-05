@@ -196,6 +196,27 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
          {/if}
      </div>
   </div>
+	{if !$oUserCurrent}	
+	<div style="display: none;">
+	<div class="login-popup" id="login-form">
+		<div class="login-popup-top"><a href="#" class="close-block" onclick="return false;"></a></div>
+		<div class="content">
+			<form action="{router page='login'}" method="POST">
+				<h3>{$aLang.user_authorization}</h3>
+				{hook run='form_login_popup_begin'}
+				<div class="lite-note"><a href="{router page='registration'}">{$aLang.registration_submit}</a><label for="">{$aLang.user_login}</label></div>
+				<p><input type="text" class="input-text" name="login" tabindex="1" id="login-input"/></p>
+				<div class="lite-note"><a href="{router page='login'}reminder/" tabindex="-1">{$aLang.user_password_reminder}</a><label for="">{$aLang.user_password}</label></div>
+				<p><input type="password" name="password" class="input-text" tabindex="2" /></p>
+				{hook run='form_login_popup_end'}
+				<div class="lite-note"><button type="submit" onfocus="blur()"><span><em>{$aLang.user_login_submit}</em></span></button><label for="" class="input-checkbox"><input type="checkbox" name="remember" checked tabindex="3" >{$aLang.user_login_remember}</label></div>
+				<input type="hidden" name="submit_login">
+			</form>
+		</div>
+		<div class="login-popup-bottom"></div>
+	</div>
+	</div>
+	{/if}
   {*
   <div id="point_block">
      <div class="title"><a href="http://to.1in.kz"><h1>Точка отрыва</h1></a></div>

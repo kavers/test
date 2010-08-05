@@ -180,3 +180,5 @@ select { width: 99%; }
 .w100p { width: 99%; }
 .radio { position: relative; top: 2px; }
 .checkbox { position: relative; top: 2px; margin-left: 0; }
+
+.mask {z-index:200}
