@@ -145,23 +145,23 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
                  <li><a href="">крутые бобр</a><strong>3 474 000 результатов</strong></li>
                </ul>
             </div>
-            
-	        <ul id="main_menu">
-	           <li><a href="{cfg name='path.root.web'}">Главная</a></li>
-	           <li><a href="{cfg name='path.root.web'}/video/">Видео</a></li>
-	           <li><a href="{cfg name='path.root.web'}/music/">Музыка</a></li>
-	           <li><a href="{cfg name='path.root.web'}/jokes/">Приколы</a></li>
-	           <li><a href="{cfg name='path.root.web'}/photo/">Обои</a></li>
+	 
+            <ul id="main_menu">
+	           <li><a href="{cfg name='path.root.domain'}/video/">Видео</a></li>
+	           <li><a href="{cfg name='path.root.domain'}/music/">Музыка</a></li>
+	           <li><a href="{cfg name='path.root.domain'}/jokes/">Приколы</a></li>
+               <li><a href="{cfg name='path.root.domain'}/games/">Игры</a></li>
+	           <li><a href="{cfg name='path.root.domain'}/books/">Книги</a></li>
 	           <li><a href="" class="more_menu close">ещё</a>
 	              <ul class="all_menu">
-	                 <li><a href="http://ts.1in.kz">Форум</a></li>
-	                 <li><a href="{cfg name='path.root.web'}">Новости</a></li>
-	                 <li><a href="{cfg name='path.root.web'}">События</a></li>
-            		 <li><a href="{cfg name='path.root.web'}/games/">Игры</a></li>
-   	    	    	 <li><a href="{cfg name='path.root.web'}/soft/">Софт</a></li>
-  	        	     <li><a href="{cfg name='path.root.web'}/erotic/">Эротика</a></li>
-          	    	 <li><a href="{cfg name='path.root.web'}/dreams/">Сонник</a></li>
-        		     <li><a href="{cfg name='path.root.web'}/horo/">Гороскоп</a></li>
+                     <li><a href="{cfg name='path.root.domain'}/photo/">Обои</a></li>
+	                 <li><a href="{cfg name='path.root.domain'}/soft/">Программы</a></li>
+                     <li><a href="{cfg name='path.root.domain'}/erotic/">Эротика</a></li>
+                     <li><a href="{cfg name='path.root.domain'}/dreams/">Сонник</a></li>
+                     <li><a href="{cfg name='path.root.domain'}/horo/">Гороскоп</a></li>
+                     <li><a href="{cfg name='path.root.domain'}/news/show/">Шоу-бизнес</a></li>
+                     <li><a href="{cfg name='path.root.domain'}/news/kz/">В Казахстане</a></li>
+                     <li><a href="{cfg name='path.root.domain'}/news/portal/">Новости портала</a></li>
    			     </ul>
     	       </li>
  	       </ul>
