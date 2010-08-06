@@ -13,7 +13,7 @@
     <link href="{cfg name='path.static.skin'}/css/style2.css?v=1" type="text/css" rel="stylesheet">
 	<link href="{cfg name='path.static.skin'}/css/ext/main.css?v=1" type="text/css" rel="stylesheet">
     
-    <link href="http://kaznetmedia.kz/km_headlinks/km_headlinks.css" type="text/css" rel="stylesheet">
+    <link href="{cfg name='path.static.skin'}/css/ext/km_headlinks.css" type="text/css" rel="stylesheet">
     
 	<link href="{cfg name='path.static.skin'}/images/favicon.ico" rel="shortcut icon" />
 	<link rel="search" type="application/opensearchdescription+xml" href="{router page='search'}opensearch/" title="{cfg name='view.name'}" />
@@ -57,9 +57,21 @@ var msgNoticeBox=new Roar({
 			position: 'upperRight',
 			className: 'roar-notice',
 			margin: {x: 30, y: 10}
-		});	
+		});
 </script>
 {/literal}
+
+<!--[if IE 6]>
+<script type="text/javascript" src="{cfg name='path.static.skin'}/js/ext/DD_belatedPNG_0.0.8a-min.js"></script>
+<script type="text/javascript">
+	DD_belatedPNG.fix('#tip_box, #tip_box ul, .slider, #prevBtn, #nextBtn, div.item,'+ 
+    '.block_hide, .block_bottom, .block_bottom2, .block_bottom3, .block_bottom4,'+
+    'li.first, li.first2, li.first3, li.first a, li.first2 a, li.first3 a,'+
+    'a.close, a.open, li.close a, a.opened,'+
+    '.audio_play, .video_play, a.smile, div.add, .user_info, .vipblog_info, .notes_info,'+
+    '.cur_rating a, #circle, .title, .title2, .block .white');
+</script>
+<![endif]-->
 
 {if $oUserCurrent && $oConfig->GetValue('module.talk.reload')}
 {literal}

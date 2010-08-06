@@ -12,14 +12,26 @@
 	{$aHtmlHeadFiles.css}
     <link href="{cfg name='path.static.skin'}/css/style2.css?v=1" type="text/css" rel="stylesheet">
 	<link href="{cfg name='path.static.skin'}/css/ext/main.css?v=1" type="text/css" rel="stylesheet"
-    <link href="http://kaznetmedia.kz/km_headlinks/km_headlinks.css" type="text/css" rel="stylesheet">
-    
 	<link href="{cfg name='path.static.skin'}/images/favicon.ico" rel="shortcut icon" />
 	<link rel="search" type="application/opensearchdescription+xml" href="{router page='search'}opensearch/" title="{cfg name='view.name'}" />
 	
 	{if $aHtmlRssAlternate}
 		<link rel="alternate" type="application/rss+xml" href="{$aHtmlRssAlternate.url}" title="{$aHtmlRssAlternate.title}">
 	{/if}
+    
+<!--[if IE 6]>
+<script type="text/javascript" src="{cfg name='path.static.skin'}/js/ext/DD_belatedPNG_0.0.8a-min.js"></script>
+<script type="text/javascript">
+	DD_belatedPNG.fix('#tip_box, #tip_box ul, .slider, #prevBtn, #nextBtn, div.item,'+ 
+    '.block_hide, .block_bottom, .block_bottom2, .block_bottom3, .block_bottom4,'+
+    'li.first, li.first2, li.first3, li.first a, li.first2 a, li.first3 a,'+
+    'a.close, a.open, li.close a, a.opened,'+
+    '.audio_play, .video_play, a.smile, div.add, .user_info, .vipblog_info, .notes_info,'+
+    '.cur_rating a, #circle, .title, .title2, .block .white');
+</script>
+<![endif]-->
+
+<link href="{cfg name='path.static.skin'}/css/ext/km_headlinks.css" type="text/css" rel="stylesheet">
 
 <script language="JavaScript" type="text/javascript">
 var DIR_WEB_ROOT='{cfg name="path.root.web"}';
@@ -104,6 +116,34 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
     echo $km_headlinks;
 }
 {/php}
+{*
+<ul class="KM_headLinks">
+    <li><a href="http://versus.kz/" title="Версус" class="km_versus">Версус</a></li>
+    <li><a href="http://ts.1in.kz" title="Форум" class="km_forum">Форум</a></li>
+    <li><a href="http://1in.kz/video/" title="Видео" class="km_video">Видео</a></li>
+    <li><a href="http://1in.kz/music/" title="Музыка" class="km_music">Музыка</a></li>
+    <li><a href="http://1in.kz/photo/" title="Обои" class="km_wallpapers">Обои</a></li>
+    <li><a href="http://1in.kz/soft/" title="Программы" class="km_programs">Программы</a></li>
+    <li><a href="http://1in.kz/games/" title="Игры" class="km_games">Игры</a></li>
+    <li><a href="http://1in.kz/jokes/" title="Приколы" class="km_fun">Приколы</a></li>
+    <li><a href="http://1in.kz/books/" title="Книги" class="km_books">Книги</a></li>
+    <li><a href="http://1in.kz/erotic/" title="Эротика" class="km_adult">Эротика</a></li>
+    <li><a href="http://whois.1in.kz/" title="Сайты" class="km_sites">Сайты</a></li>
+    <li><a href="http://pics.kz" title="Пикс" class="km_pics">Пикс</a></li>
+    <li><a href="http://bashorg.kz" title="Цитаты" class="km_quotes">Цитаты</a></li>
+    <li><a href="http://3cm.kz" title="Ссылки" class="km_links">Ссылки</a></li>
+    <li><a href="http://kaznetmedia.kz/km_headlinks/report.html" title="Шеф" class="km_chief">Шеф</a></li>
+    <li><a href="#" title="ещё" class="km_more">ещё</a>
+        <ul>
+            <li><a href="http://1in.kz/horo/" title="Гороскоп" class="km_horoscope">Гороскоп</a></li>
+            <li><a href="http://1in.kz/dreams/" title="Сонник" class="km_dream">Сонник</a></li>
+            <li><a href="http://lyakhov.kz/" title="Блинная" class="km_blin">Блинная</a></li>
+            <li><a href="http://love.1in.kz/" title="Знакомства" class="km_love">Знакомства</a></li>
+            <li><a href="http://doit.kz/" title="Задачи" class="km_doit">Задачи</a></li>
+        </ul>
+    </li>
+</ul>
+*}
 {*include file=header_nav.tpl*}
   <div id="head">
      <div id="head_inside">
@@ -317,7 +357,7 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
         <div class="title"><a href="{router page='people'}" class="link"><h1>Популярные блогеры</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
         <div class="block_content">
         <ul class="gradient">
-           <li class="first3"><a href="{router page='people'}">Все</a></li>
+           <li class="first"><a href="{router page='people'}">Все</a></li>
            {*
            <li class="first3"><a href="#">За день</a></li>
            <li><a href="#">За неделю</a></li>
@@ -392,7 +432,7 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
         <div class="title"><a href="{router page='blog'}" class="link"><h1>Что нового в блогах</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
         <div class="block_content">
         <ul class="gradient">
-           <li class="first3"><a href="{router page='blog'}">Все</a></li>
+           <li class="first"><a href="{router page='blog'}">Все</a></li>
            {*
            <li class="first3"><a href="#">За день</a></li>
            <li><a href="#">За неделю</a></li>
