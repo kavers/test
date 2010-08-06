@@ -431,8 +431,8 @@ ul.vidget_list li dl dd {float:left;width:30px;padding:10px 0px 0px 0px;}
 
 
 /*  dropdown menu    */
-#main_menu ul.all_menu {z-index:950; margin:0px 0px 0px -55px;//margin-left:-112px;position:absolute;display:none; background:#FFF;border:1px solid #DBDBDB;width:113px;float:right;padding:30px 0px 5px 0px;}
-#main_menu ul.all_menu li {display:block;clear:both;width:113px;overflow:hidden;}
+#main_menu ul.all_menu {z-index:950; margin:0px 0px 0px -55px;//margin-left:-112px;position:absolute;display:none; background:#FFF;border:1px solid #DBDBDB;width:113px;float:right;padding:30px 0px 5px 0px;width:150px}
+#main_menu ul.all_menu li {display:block;clear:both;width:113px;overflow:hidden;width:150px}
 #main_menu ul.all_menu li a {color:#5F5D5D !important;font-size:0.9em !important;display:block; font-family:Arial !important;padding:0px 0px 4px 13px;}
 
 /*  Footer  */
