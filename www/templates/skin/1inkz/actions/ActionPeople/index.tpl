@@ -11,7 +11,7 @@
             <li {if $sEvent=='bad'}class="first2"{/if}><a href="{router page='people'}bad/">{$aLang.user_bad}</a></li>
         </ul>
         <div class="block_content">
-           <ul class="table_list dop">
+           <ul class="table_list">
            {if $aUsersRating}
                 {foreach from=$aUsersRating item=oUser}
                <li>
