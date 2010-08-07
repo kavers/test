@@ -123,8 +123,9 @@ $(document).ready(function(){
 {else}
 {$aLang.blog_no_topic}
 {/if}
-        <div class="block_bottom3"></div>
+        
         </div>
+        <div class="block_bottom3"></div>
      </li>
 
 <!-- Блог -->
