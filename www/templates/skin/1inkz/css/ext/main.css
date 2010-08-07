@@ -28,7 +28,8 @@ p {     margin:0px 0px 10px 0px;
         color:#000;
         text-align:justify;}
 
-h1 {    margin: 0px 10px 10px 0px;
+h1 {    margin: 0px;/* 10px 10px 0px;*/
+        padding:0;
         font-size:1.9em;
         font-weight:normal;
         text-align:left;
@@ -59,6 +60,9 @@ h3 {    margin:0px 10px 10px 0px;
 /*
 .top_menu li.active a {color:#E96800;}
 */
+
+.title .block_menu {height:auto;}
+.title .block_menu li a {margin:0}
 
 /* Header */
 #head {width:100%;height:96px;clear:both;background:#FFF;}
@@ -283,10 +287,10 @@ h3 {    margin:0px 10px 10px 0px;
 .block_hide .title_white {overflow:hidden;width:626px; min-height:41px;_height:41px;}
 
 .block .white {overflow:hidden;width:306px; height:41px; background:URL('../../img/title_fon2.png') no-repeat top left;}
-.block3 .title h1,.block .title h1,.block2 .title h1, .block .white h1, .block_hide .title_white h1 {z-index:1;position:relative;font-size:1.1em;font-weight:bold;font-family:Tahoma, san-serif;padding:7px 0px 10px 12px;}
+.block3 .title h1,.block .title h1,.block2 .title h1, .block .white h1, .block_hide .title_white h1 {z-index:1;position:relative;font-size:1.1em;font-weight:bold;font-family:Tahoma, san-serif;padding:0/*7px 0px 10px 12px*/;}
 
-.block .title a.link, .block2 .title a.link, .block3 .title a.link  {display:table-cell;float:left;cursor:hand;text-decoration:none;margin:0px 0px -15px 0px;}
-.block2 .title .arrow, .block3 .title .arrow  {display:table-cell;float:left;padding:12px 0px 0px 0px;}
+.block .title a.link, .block2 .title a.link, .block3 .title a.link  {display:table-cell;float:left;cursor:hand;text-decoration:none;margin:0px}
+.block2 .title .arrow, .block3 .title .arrow  {display:table-cell;float:left;margin:5px 5px 0 5px;}
 .block_hide .title_white a.link {display:block;width:300px;}
 .block_hide .title_white a.link:hover {text-decoration:none}
 
@@ -312,7 +316,9 @@ h3 {    margin:0px 10px 10px 0px;
 .lilac .title h1 {color:#691E79;}
 .sea_wave .title h1 {color:#0A7DA4;}
 
-
+.title {padding:10px;}
+.block .title {margin-bottom:-20px}
+.title h1 {margin:0;padding:0}
 
 .block .white h1, .block2 .white h1 {color:#FFF !important;}
 
