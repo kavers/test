@@ -209,7 +209,7 @@ h3 {    margin:0px 10px 10px 0px;
 
 /*  Horoscope item  */
 .bayan_item {padding:0px;width:286px;clear:both;margin:20px 0px 0px 0px !important;overflow:hidden; zoom:1;}
-.bayan_item a {background:none !important; text-align:left; margin:0px !important;color:#000 !important; font-weight:bold; font-size:1.1em;height:115px;}
+.bayan_item a {background:none !important; text-align:left; margin:0px !important;color:#000 !important; font-weight:bold; font-size:1.1em;}
 .bayan_item dt {float:left; width:65px;margin:-5px 10px 0px 5px;overflow:hidden;}
 .bayan_item dt a {color:#FFF !important; text-align:center;font-size:1.3em !important;}
 .bayan_item dd {float:right; width:189px; height:129px;background:URL('../../img/horoscope_fon.gif') no-repeat top left; padding:0px 5px 0px 5px !important;overflow:hidden;}
@@ -421,11 +421,12 @@ ul.vidget_list li dl dd {float:left;width:30px;padding:10px 0px 0px 0px;}
 .bayan ul li a img {display:block; float:left; margin:0px 9px 0px 0px;}
 
 .bayan ul li.active {overflow:hidden;}
-.bayan ul li a.opened {font-size:1.1em;color:#FFF;position:absolute;bottom:0px;padding:10px 5px 10px 10px;width:276px;min-height:20px;_height:20px;background:URL('../../img/halfopacity3.png') no-repeat top;}
+.bayan ul li a.opened {font-size:1.1em;color:#FFF;position:absolute;bottom:0px;padding:10px 25px 10px 10px;width:250px;min-height:20px;_height:20px;background:URL('../../img/halfopacity3.png') no-repeat top;}
+.bayan ul li a.closed {padding-left:10px;padding-right:25px;width:250px;}
 .bayan ul li ul {height:162px;margin:0px;}
 .bayan ul li ul li {border:0px;margin:0px;}
 .bayan ul li.active div, .bayan ul li ul {text-align:center; background:#BEBEBE URL('../../img/gray_gradient.gif') repeat-x top;}
-.bayan ul li a.opened strong {font-size:1.1em;right:15px;}
+.bayan ul li a.opened strong {font-size:1.1em;right:10px;}
 
 
 .bayan ul li ul li .audio_play { height:92px; background:transparent URL('../../img/audio_play.png') no-repeat center;display:block;margin-bottom:-100px;}
