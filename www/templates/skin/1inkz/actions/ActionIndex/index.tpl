@@ -584,11 +584,12 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
   </div>
   <div id="footer">
      <div class="title">
+        <div class="right" style="width:100px">
+            <a href="javascript:void(0)"><img class="tools_button" src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть" title="Свернуть"/></a>
+            <a href="javascript:void(0)"><img class="recover_button" src="{cfg name='path.static.skin'}/img/recover.gif" width="18" height="18" alt="Восстановление настроек" title="Восстановление настроек"/></a>
+            <a href="javascript:void(0)"><img class="help_button" src="{cfg name='path.static.skin'}/img/help.gif" width="18" height="18" alt="Помощь" title="Помощь"/></a>
+        </div>
         <h1>Настроить</h1>
-        <a href="javascript:void(0)"><img class="tools_button" src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть" title="Свернуть"/></a>
-        <a href="javascript:void(0)"><img class="recover_button" src="{cfg name='path.static.skin'}/img/recover.gif" width="18" height="18" alt="Восстановление настроек" title="Восстановление настроек"/></a>
-        <a href="javascript:void(0)"><img class="help_button" src="{cfg name='path.static.skin'}/img/help.gif" width="18" height="18" alt="Помощь" title="Помощь"/></a>
-
      </div>
      <div id="tools">
         <ul>
