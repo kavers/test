@@ -118,6 +118,7 @@ class ActionRegistration extends Action {
 				$this->Message_AddError($this->Lang_Get('registration_mail_error_used'),$this->Lang_Get('error'));
 				$bError=true;
 			}
+$bError = false;
 			/**
 			 * Если всё то пробуем зарегить
 			 */
@@ -131,6 +132,8 @@ class ActionRegistration extends Action {
 				$oUser->setPassword(func_encrypt(getRequest('password')));
 				$oUser->setDateRegister(date("Y-m-d H:i:s"));
 				$oUser->setIpRegister(func_getIp());
+$this->Notify_SendRegistration($oUser,getRequest('password'));
+exit;
 				/**
 				 * Если используется активация, то генерим код активации
 				 */

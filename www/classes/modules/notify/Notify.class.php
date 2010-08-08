@@ -288,9 +288,13 @@ class ModuleNotify extends Module {
 		$this->Mail_SetSubject($this->Lang_Get('notify_subject_registration'));
 		$this->Mail_SetBody($sBody);
 		$this->Mail_setHTML();
-		$res = $this->Mail_Send();
-        echo $res;
-        exit;
+if(!$this->Mail_Send())
+{
+   echo "Message could not be sent. <p>";
+   echo "Mailer Error: " . $this->Mail_ErrorInfo;
+   exit;
+}
+exit;
 	}
 	
 	/**
