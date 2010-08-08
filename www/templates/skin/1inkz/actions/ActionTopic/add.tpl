@@ -27,7 +27,7 @@ $(document).ready(function(){
 </script>
 <!-- Редактирование записи -->
      <li id="video_player" class="block2 green">
-        <div class="title"><a href="#111" class="link"><h1>
+        <div class="title"><a href="#" class="link"><h1>
                 {if $sEvent=='add'}
 					{$aLang.topic_topic_create}
 				{else}

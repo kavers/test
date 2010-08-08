@@ -48,17 +48,20 @@ tinyMCE.init({
 	{include file='window_load_img.tpl' sToLoad='talk_text'}
 {/if}
 
-
-
-			<div class="topic">
-				<h1>{$aLang.talk_create}</h1>
+<li id="video_player" class="block2 green">
+    <div class="title"><a href="#" class="link"><h1>{$aLang.talk_create}</h1></a></div>
+    <div class="block_content">
+        <div id="text">
 				<form action="" method="POST" enctype="multipart/form-data">
-					<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
-					
-					<p><label for="talk_users">{$aLang.talk_create_users}:</label><input type="text" class="w100p" id="talk_users" name="talk_users" value="{$_aRequest.talk_users}"/></p>
-					<p><label for="talk_title">{$aLang.talk_create_title}:</label><input type="text" class="w100p" id="talk_title" name="talk_title" value="{$_aRequest.talk_title}"/></p>
+					<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" />
+                     <div class="right_text settings" style="width:100%">
+					<div id="add_book_format">
+					<p>{$aLang.talk_create_users}:
+                    <input type="text" class="w100p" id="talk_users" name="talk_users" value="{$_aRequest.talk_users}"/></p>
+					<p>{$aLang.talk_create_title}:<input type="text" class="w100p" id="talk_title" name="talk_title" value="{$_aRequest.talk_title}"/></p>
 
-					<p><div class="note"></div><label for="talk_text">{$aLang.talk_create_text}:</label>
+					<p>{$aLang.talk_create_text}:<br/>
+                    <div style="padding:0 15px">
 					{if !$oConfig->GetValue('view.tinymce')}
             			<div class="panel_form">
 							<select onchange="lsPanel.putTagAround('talk_text',this.value); this.selectedIndex=0; return false;" style="width: 91px;">
@@ -86,12 +89,14 @@ tinyMCE.init({
 	 					</div>
 	 				{/if}					
 					<textarea name="talk_text" id="talk_text" rows="12">{$_aRequest.talk_text}</textarea>
+                    </div>
 					</p>
 					
 					<p><input type="submit" value="{$aLang.talk_create_submit}" name="submit_talk_add"/></p>
+                    </div></div>
 				</form>
-			</div>
-
-
-
+        </div>
+        
+    </div><div class="block_bottom3"></div>
+</li>
 {include file='footer.tpl'}

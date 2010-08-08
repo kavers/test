@@ -1,11 +1,8 @@
-			<div class="block blogs">
-				<div class="tl"><div class="tr"></div></div>
-				<div class="cl"><div class="cr">
-					
-					<h1>{$aLang.block_friends}</h1>
-					
-				{if $aUsersFriend}
-					<div class="block-content">
+     <li id="about_author" class="block green">
+        <div class="title"><a href="" class="link"><h1>{$aLang.block_friends}</h1></a><a href="" class="close_block"><img src="/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
+        <div class="block_content block blogs">
+            <div class="block-content">
+            {if $aUsersFriend}
 					{literal}
 						<script language="JavaScript" type="text/javascript">
 						function friendToogle(element) {
@@ -70,19 +67,16 @@
 						});
 						</script>
 					{/literal}
-					
-						<ul class="list" id="friends">
+            		    <ul class="descriptions list" id="friends">
 							{foreach from=$aUsersFriend item=oFriend}
-								<li><input type="checkbox" name="friend[{$oFriend->getId()}]"/> <a href="#" class="stream-author">{$oFriend->getLogin()}</a></li>						
+								<li class="descr1"><input type="checkbox" name="friend[{$oFriend->getId()}]"/> <a href="#" class="stream-author">{$oFriend->getLogin()}</a></li>						
 							{/foreach}
 						</ul>
-					</div>
-					<div class="right"><a href="#" id="friend_check_all">{$aLang.block_friends_check}</a> | <a href="#" id="friend_uncheck_all">{$aLang.block_friends_uncheck}</a></div>
-
-				{else}
-					{$aLang.block_friends_empty}
-				{/if}
-					
-				</div></div>
-				<div class="bl"><div class="br"></div></div>
-			</div>
+            {else}
+                {$aLang.block_friends_empty}
+            {/if}
+            </div>
+            <div class="right"><a href="#" id="friend_check_all">{$aLang.block_friends_check}</a> | <a href="#" id="friend_uncheck_all">{$aLang.block_friends_uncheck}</a></div>
+            <div class="block_bottom"></div>
+        </div>
+     </li>

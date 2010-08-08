@@ -1070,3 +1070,5 @@ p.disabled input,p.disabled textarea,p.disabled a.del {opacity:0.4;filter: alpha
 #columns {margin-top:10px}
 
 a.block {margin:0 !important;}
+
+#friends li a {display:inline;margin-left:5px}
