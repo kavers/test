@@ -289,9 +289,8 @@ h3 {    margin:0px 10px 10px 0px;
 .block .white {overflow:hidden;width:306px; background:URL('../../img/title_fon2.png') no-repeat top left;}
 .block3 .title h1,.block .title h1,.block2 .title h1, .block .white h1, .block_hide .title_white h1 {z-index:1;position:relative;font-size:1.1em;font-weight:bold;font-family:Tahoma, san-serif;padding:0/*7px 0px 10px 12px*/;}
 
-.block .title a.link, .block2 .title a.link, .block3 .title a.link  {display:table-cell;float:left;cursor:hand;text-decoration:none;margin:0px}
+.title_white a.link, .block .title a.link, .block2 .title a.link, .block3 .title a.link  {display:table-cell;float:left;cursor:hand;text-decoration:none;margin:0px}
 .block2 .title .arrow, .block3 .title .arrow  {display:table-cell;float:left;margin:5px 5px 0 5px;}
-.block_hide .title_white a.link {display:block;width:300px;}
 .block_hide .title_white a.link:hover {text-decoration:none}
 
 #music_player .title {padding:0px 0px 10px 0px !important;}
@@ -316,7 +315,7 @@ h3 {    margin:0px 10px 10px 0px;
 .lilac .title h1 {color:#691E79;}
 .sea_wave .title h1 {color:#0A7DA4;}
 
-.title {padding:9px;}
+.title, .title_white {padding:9px;}
 .title h1 {margin:0;padding:0}
 
 .block .white h1, .block2 .white h1 {color:#FFF !important;}
@@ -347,9 +346,9 @@ ul.vidget_list li dl dd {float:left;width:30px;padding:10px 0px 0px 0px;}
 
 .collapse {float:right; margin:0px 20px 0px 0px; background:URL('../../img/colapse.gif') no-repeat left; width:18px; height:18px;display:block;position:relative;//margin-right:10px}
 
-.block .close_block  {display:none; float:right; margin:-27px 12px 0px 0px;}
-.block2 .close_block2 {display:block; position:relative;float:right; margin:12px 12px 0px 0px;}
-.block_hide .close_block2 {display:block; float:right; margin:-27px 12px 0px 0px;}
+.block .close_block  {display:none; float:right; margin:0px 20px 0px 0px;}
+.block2 .close_block2 {display:block; position:relative;float:right; margin:0px 20px 0px 0px;}
+.block_hide .close_block2 {display:block; float:right; margin:0px 20px 0px 0px;}
 .block_hide p {color:#FFF;padding:0px 0px 0px 10px;font-size:0.8em;//margin-top:-10px;}
 .block_hide a {color:#FF7200;}
 
@@ -1072,3 +1071,4 @@ p.disabled input,p.disabled textarea,p.disabled a.del {opacity:0.4;filter: alpha
 a.block {margin:0 !important;}
 
 #friends li a {display:inline;margin-left:5px}
+.simply_block {padding:10px;background:#fff;color:#000;font-size:0.75em}

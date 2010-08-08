@@ -1,22 +1,17 @@
-<li id="about_author" class="block orange">
-<div class="block blogs">
-
-            <div class="block white">
-				<div class="tl"><div class="tr"></div></div>
-				<div class="cl"><div class="cr">					
-					<h1>{$aLang.block_blog_info} &darr;</h1>				
-					<div id="block_blog_info"></div>					
-				</div></div>
-				<div class="bl"><div class="br"></div></div>
-			</div>
-			
-			<div class="block white">
-				<div class="tl"><div class="tr"></div></div>
-				<div class="cl"><div class="cr">					
-					<h1>{$aLang.block_blog_info_note} &darr;</h1>						
-					<p>{$aLang.block_blog_info_note_text}</p>					
-				</div></div>
-				<div class="bl"><div class="br"></div></div>
-			</div>
-			</div>
+<li class="block orange">
+    <div class="title"><a class="link" href="#"><h1>{$aLang.block_blog_info}</h1></a></div><div class="simply_block">
+        <div id="block_blog_info"></div>
+    </div>
+    <div class="block_bottom"></div>
 </li>
+<li class="block green">
+    <div class="title"><a class="link" href="#"><h1>{$aLang.block_blog_info_note}</h1></a></div>
+    <div class="simply_block">
+        <div>{$aLang.block_blog_info_note_text}</div>
+    </div>
+    <div class="block_bottom"></div>
+</li>
+
+<script>
+ajaxBlogInfo($('blog_id').value);
+</script>
