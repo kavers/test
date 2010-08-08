@@ -147,7 +147,7 @@ class ModuleMail extends Module {
 	 * @return unknown
 	 */
 	public function Send() {
-echo $this->oMailer->sMailerType;
+echo $this->sMailerType;
 print_r($this->oMailer);
 		$this->oMailer->Subject=$this->sSubject;
 		$this->oMailer->Body=$this->sBody;
