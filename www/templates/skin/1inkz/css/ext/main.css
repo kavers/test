@@ -800,7 +800,7 @@ p.disabled input,p.disabled textarea,p.disabled a.del {opacity:0.4;filter: alpha
 
 /*  blogs list  */
 .line_list li.note {padding:10px;}
-.line_list li.note h1 {color:#767676;font-weight:bold;float:left;}
+.line_list li.note h1 {color:#767676;font-weight:bold;}
 .line_list li.note h1 a {color:#767676;}
 
 .line_list li.note a {color:#FF7200;}
