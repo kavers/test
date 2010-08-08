@@ -292,7 +292,8 @@ print_r(
     array(
         'mail' => $oUser->getMail(),
         'login' => $oUser->getLogin(),
-        'body' => $sBody
+        'body' => $sBody,
+        'mailer' => $this->Mail_Mailer;
         )
 );
 if(!$this->Mail_Send())
