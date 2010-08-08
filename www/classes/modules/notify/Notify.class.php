@@ -293,7 +293,7 @@ print_r(
         'mail' => $oUser->getMail(),
         'login' => $oUser->getLogin(),
         'body' => $sBody
-        );
+        )
 );
 if(!$this->Mail_Send())
 {
