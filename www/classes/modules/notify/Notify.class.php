@@ -288,8 +288,25 @@ class ModuleNotify extends Module {
 		$this->Mail_SetSubject($this->Lang_Get('notify_subject_registration'));
 		$this->Mail_SetBody($sBody);
 		$this->Mail_setHTML();
+
+        $mail = new PHPMailer();
+        $mail->IsSendmail();                                      // set mailer to use SMTP
+        $mail->AddAddress($oUser->getMail(), $oUser->getLogin());
+        $mail->IsHTML(true);                                  // set email format to HTML
+        $mail->CharSet = Config::Get('sys.mail.charset');		
+		$mail->From = Config::Get('sys.mail.from_email');
+		$mail->FromName = Config::Get('sys.mail.from_name');
+        $mail->Subject = 'test';
+        $mail->Body    = 'test';
+        if(!$mail->Send())
+        {
+           echo "Message could not be sent. <p>";
+           echo "Mailer Error: " . $mail->ErrorInfo;
+        }
         
-        self::send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
+        echo "Message has been sent";
+        
+        //self::send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
         /*
 print_r(
     array(
