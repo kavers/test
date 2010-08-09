@@ -834,7 +834,7 @@ exit;
 		
         $mail->CharSet = Config::Get('sys.mail.charset');		
 		$mail->From = Config::Get('sys.mail.from_email');
-	//	$mail->FromName = Config::Get('sys.mail.from_name');
+		$mail->FromName = Config::Get('sys.mail.from_name');
 echo Config::Get('sys.mail.charset') . '<br>' . Config::Get('sys.mail.from_email') . '<br>' . Config::Get('sys.mail.from_name');
 
         $mail = new PHPMailer();
@@ -843,7 +843,7 @@ echo Config::Get('sys.mail.charset') . '<br>' . Config::Get('sys.mail.from_email
       //  $mail->CharSet = 'utf-8';
         $mail->ContentType = 'text/html';
        // $mail->From = "blogs@blogs.com";
-        $mail->FromName = "blogs";
+        //$mail->FromName = "blogs";
         $mail->AddAddress($to_mail, $to_name);
         $mail->Subject = $subject;
         $mail->Body = $body;
