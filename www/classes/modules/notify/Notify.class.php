@@ -289,7 +289,6 @@ class ModuleNotify extends Module {
 		$this->Mail_SetBody($sBody);
 		$this->Mail_setHTML();
         $this->Mail_Send();
-exit;
 	}
 	
 	/**
