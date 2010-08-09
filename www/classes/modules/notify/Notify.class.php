@@ -826,10 +826,10 @@ exit;
     
     private function send_mail($to_mail, $to_name, $subject, $body)
     {
-        $to_mail = 'mike.semakhin@gmail.com';
-        $to_name= '';
-        $subject = 'subject';
-        $body = 'text';
+   //     $to_mail = 'mike.semakhin@gmail.com';
+   //     $to_name= '';
+   //     $subject = 'subject';
+   //     $body = 'text';
         require_once(Config::Get('path.root.engine').'/lib/external/phpMailer/class.phpmailer.php');
         
         $mail = new PHPMailer();
