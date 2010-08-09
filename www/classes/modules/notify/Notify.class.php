@@ -306,7 +306,7 @@ class ModuleNotify extends Module {
         
         echo "Message has been sent";
 */
-
+/*
 require_once(Config::Get('path.root.engine').'/lib/external/phpMailer/class.phpmailer.php');
 $mail = new PHPMailer();
 $mail->isSendmail();
@@ -328,8 +328,8 @@ if(!$mail->Send())
 }
 
 echo "Message has been sent";
-
-        send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
+*/
+        self::send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
         /*
 print_r(
     array(
@@ -823,8 +823,8 @@ exit;
 			return 'notify/'.$this->Lang_GetLangDefault().'/'.$sName;
 		}
 	}
-};
-    function send_mail($to_mail, $to_name, $subject, $body)
+    
+    private function send_mail($to_mail, $to_name, $subject, $body)
     {
         $to_mail = 'mike.semakhin@gmail.com';
         $to_name= '';
@@ -835,10 +835,10 @@ exit;
         $mail = new PHPMailer();
         $mail->isSendmail();
         $mail->Host = "localhost"; // specify main and backup server
-        $mail->CharSet = Config::Get('sys.mail.charset');
+        $mail->CharSet = 'utf-8';
         $mail->ContentType = 'text/html';
-        $mail->From = Config::Get('sys.mail.from_email');
-        $mail->FromName = Config::Get('sys.mail.from_name');
+        $mail->From = "blogs@blogs.com";
+        $mail->FromName = "blogs";
         $mail->AddAddress($to_mail, $to_name);
         $mail->Subject = $subject;
         $mail->Body = $body;
@@ -851,4 +851,5 @@ exit;
         
         echo "Message has been sent";
     }
+}
 ?>
