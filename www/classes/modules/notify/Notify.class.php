@@ -835,7 +835,7 @@ exit;
         $mail->CharSet = Config::Get('sys.mail.charset');		
 		$mail->From = Config::Get('sys.mail.from_email');
 		$mail->FromName = Config::Get('sys.mail.from_name');
-echo Config::Get('sys.mail.charset') . '<br>' . Config::Get('sys.mail.from_email') . '<br>' . Config::Get('sys.mail.from_name');
+//echo Config::Get('sys.mail.charset') . '<br>' . Config::Get('sys.mail.from_email') . '<br>' . Config::Get('sys.mail.from_name');
 
         $mail = new PHPMailer();
         $mail->isSendmail();
