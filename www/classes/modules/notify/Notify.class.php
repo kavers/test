@@ -289,8 +289,6 @@ class ModuleNotify extends Module {
 		$this->Mail_SetBody($sBody);
 		$this->Mail_setHTML();
         $this->Mail_Send();
-
-        self::send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
 exit;
 	}
 	
@@ -768,38 +766,5 @@ exit;
 			return 'notify/'.$this->Lang_GetLangDefault().'/'.$sName;
 		}
 	}
-    
-    private function send_mail($to_mail, $to_name, $subject, $body)
-    {
-   //     $to_mail = 'mike.semakhin@gmail.com';
-   //     $to_name= '';
-   //     $subject = 'subject';
-   //     $body = 'text';
-        require_once(Config::Get('path.root.engine').'/lib/external/phpMailer/class.phpmailer.php');
-		
-//      $mail->CharSet = Config::Get('sys.mail.charset');		
-//		$mail->From = Config::Get('sys.mail.from_email');
-//		$mail->FromName = Config::Get('sys.mail.from_name');
-//echo Config::Get('sys.mail.charset') . '<br>' . Config::Get('sys.mail.from_email') . '<br>' . Config::Get('sys.mail.from_name');
-
-        $mail = new PHPMailer();
-        $mail->isSendmail();
-        $mail->Host = "localhost"; // specify main and backup server
-        $mail->CharSet = 'utf-8';
-        $mail->ContentType = 'text/html';
-        $mail->From = "info@1inkz.ru";
-        $mail->FromName = "Блоги на Первом Казахстанском";
-        $mail->AddAddress($to_mail, $to_name);
-        $mail->Subject = $subject;
-        $mail->Body = $body;
-        if(!$mail->Send())
-        {
-           echo "Message could not be sent.";
-           echo "Mailer Error: " . $mail->ErrorInfo;
-           exit;
-        }
-        
-        echo "Message has been sent";
-    }
 }
 ?>
