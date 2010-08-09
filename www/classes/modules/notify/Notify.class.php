@@ -306,7 +306,7 @@ class ModuleNotify extends Module {
         
         echo "Message has been sent";
 */
-/*
+
 require_once(Config::Get('path.root.engine').'/lib/external/phpMailer/class.phpmailer.php');
 $mail = new PHPMailer();
 $mail->isSendmail();
@@ -328,8 +328,8 @@ if(!$mail->Send())
 }
 
 echo "Message has been sent";
-*/
-        self::send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
+
+//        self::send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
         /*
 print_r(
     array(
