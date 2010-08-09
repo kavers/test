@@ -289,64 +289,8 @@ class ModuleNotify extends Module {
 		$this->Mail_SetBody($sBody);
 		$this->Mail_setHTML();
         $this->Mail_Send();
-/*
-        $mail = new PHPMailer();
-        $mail->IsSendmail();                                      // set mailer to use SMTP
-        $mail->AddAddress($oUser->getMail(), $oUser->getLogin());
-        $mail->IsHTML(true);                                  // set email format to HTML
-        $mail->CharSet = Config::Get('sys.mail.charset');		
-		$mail->From = Config::Get('sys.mail.from_email');
-		$mail->FromName = Config::Get('sys.mail.from_name');
-        $mail->Subject = 'test';
-        $mail->Body    = 'test';
-        if(!$mail->Send())
-        {
-           echo "Message could not be sent. <p>";
-           echo "Mailer Error: " . $mail->ErrorInfo;
-        }
-        
-        echo "Message has been sent";
-*/
-/*
-require_once(Config::Get('path.root.engine').'/lib/external/phpMailer/class.phpmailer.php');
-$mail = new PHPMailer();
-$mail->isSendmail();
-$mail->Host = "localhost"; // specify main and backup server
-$mail->CharSet = 'utf-8';
-$mail->ContentType = 'text/html';
-$mail->From = "blogs@blogs.com";
-$mail->FromName = "blogs";
-$mail->AddAddress("mike.semakhin@gmail.com", '');
-$mail->Subject = "Test phpMailer";
-$mail->Body = "This is the HTML message body in bold!";
-if(!$mail->Send())
-{
-   echo "Message could not be sent.
 
-";
-   echo "Mailer Error: " . $mail->ErrorInfo;
-   exit;
-}
-
-echo "Message has been sent";
-*/
-     //   self::send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
-        /*
-print_r(
-    array(
-        'mail' => $oUser->getMail(),
-        'login' => $oUser->getLogin(),
-        'body' => $sBody,
-        'mailer' => $this->Mail_Mailer
-        )
-);
-if(!$this->Mail_Send())
-{
-   echo "Message could not be sent. <p>";
-   echo "Mailer Error: " . $this->Mail_ErrorInfo;
-   exit;
-}
-*/
+        self::send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
 exit;
 	}
 	
