@@ -306,6 +306,7 @@ class ModuleNotify extends Module {
         
         echo "Message has been sent";
 */
+require_once(Config::Get('path.root.engine').'/lib/external/phpMailer/class.phpmailer.php');
 $mail = new PHPMailer();
 $mail->isSendmail();
 $mail->Host = "localhost"; // specify main and backup server
