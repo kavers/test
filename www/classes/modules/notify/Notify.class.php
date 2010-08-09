@@ -284,10 +284,11 @@ class ModuleNotify extends Module {
 		/**
 		 * Отправляем мыло
 		 */
-	//	$this->Mail_SetAdress($oUser->getMail(),$oUser->getLogin());
-	//	$this->Mail_SetSubject($this->Lang_Get('notify_subject_registration'));
-	//	$this->Mail_SetBody($sBody);
-	//	$this->Mail_setHTML();
+		$this->Mail_SetAdress($oUser->getMail(),$oUser->getLogin());
+		$this->Mail_SetSubject($this->Lang_Get('notify_subject_registration'));
+		$this->Mail_SetBody($sBody);
+		$this->Mail_setHTML();
+        $this->Mail_Send();
 /*
         $mail = new PHPMailer();
         $mail->IsSendmail();                                      // set mailer to use SMTP
