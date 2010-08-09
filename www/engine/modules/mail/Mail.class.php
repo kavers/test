@@ -179,7 +179,7 @@ $this->oMailer->FromName='Блоги на Первом Казахстанско�
 	 * @param string $sName
 	 */
 	public function SetAdress($sMail,$sName=null) {
-		//$this->ClearAddresses();
+		$this->ClearAddresses();
 		$this->oMailer->AddAddress($sMail,$sName);
 	}
 	
