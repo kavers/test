@@ -1175,6 +1175,7 @@ class ModuleUser extends Module {
 	public function GetPopularUsers($mode = 'all') {
 	//	if (false === ($data = $this->Cache_Get("popular_user_($mode)"))) {
 			$data = $this->oMapper->GetPopularUsers($mode);
+            pr($data);
             $_data = array_keys($data);
 	//		$this->Cache_Set($_data, "popular_user_{$mode}", array(), 60*60*24*2);
 	//	}
