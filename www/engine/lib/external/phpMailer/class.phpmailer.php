@@ -431,14 +431,11 @@ class PHPMailer {
    */
   public function SendmailSend($header, $body) {
     if ($this->Sender != '') {
-echo "1<br>";
       $sendmail = sprintf("%s -oi -f %s -t", escapeshellcmd($this->Sendmail), escapeshellarg($this->Sender));
     } else {
-echo "2<br>";
       $sendmail = sprintf("%s -oi -t", escapeshellcmd($this->Sendmail));
     }
-echo "<br><br>$sendmail";
-echo "<br><br>";
+    
     if(!@$mail = popen($sendmail, 'w')) {
       $this->SetError($this->Lang('execute') . $this->Sendmail);
       return false;
@@ -448,7 +445,7 @@ echo "<br><br>";
     fputs($mail, $body);
 
     $result = pclose($mail);
-echo "<br>res = $result<br>";
+    
     if (version_compare(phpversion(), '4.2.3') == -1) {
       $result = $result >> 8 & 0xFF;
     }
