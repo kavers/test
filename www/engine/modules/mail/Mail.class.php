@@ -122,7 +122,8 @@ $this->oMailer->Mailer='sendmail';
 $this->oMailer->CharSet='utf-8';
 
 $this->oMailer->From='info@1inkz.ru';
-$this->oMailer->FromName='Блоги на Первом Казахстанском';			
+$this->oMailer->FromName='Блоги на Первом Казахстанском';
+$this->oMailer->IsSendmail();
 	}
 	
 	/**
