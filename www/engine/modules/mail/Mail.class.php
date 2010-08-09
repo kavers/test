@@ -99,7 +99,7 @@ class ModuleMail extends Module {
 		/**
 		 * Создаём объект phpMailer и устанвливаем ему необходимые настройки
 		 */
-	//	$this->oMailer = new phpmailer();		
+		$this->oMailer = new phpmailer();		
 	//	$this->oMailer->Host=$this->sHost;	
 	//	$this->oMailer->Port=$this->iPort;
 	//	$this->oMailer->Username=$this->sUsername;
@@ -112,17 +112,17 @@ class ModuleMail extends Module {
 	//	$this->oMailer->From=$this->sFrom;
 	//	$this->oMailer->FromName=$this->sFromName;	
 
-$this->oMailer->Host='localhost';	
-//$this->oMailer->Port=$this->iPort;
-//$this->oMailer->Username=$this->sUsername;
-//$this->oMailer->Password=$this->sPassword;
-//$this->oMailer->SMTPAuth=$this->bSmtpAuth;
-$this->oMailer->Mailer='sendmail';
-//$this->oMailer->WordWrap=$this->iWordWrap;
-$this->oMailer->CharSet='utf-8';
-
-$this->oMailer->From='info@1inkz.ru';
-$this->oMailer->FromName='Блоги на Первом Казахстанском';
+        $this->oMailer->Host='localhost';	
+        //$this->oMailer->Port=$this->iPort;
+        //$this->oMailer->Username=$this->sUsername;
+        //$this->oMailer->Password=$this->sPassword;
+        //$this->oMailer->SMTPAuth=$this->bSmtpAuth;
+        $this->oMailer->Mailer='sendmail';
+        //$this->oMailer->WordWrap=$this->iWordWrap;
+        $this->oMailer->CharSet='utf-8';
+        
+        $this->oMailer->From='info@1inkz.ru';
+        $this->oMailer->FromName='Блоги на Первом Казахстанском';
 	}
 	
 	/**
