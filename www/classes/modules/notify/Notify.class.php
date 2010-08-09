@@ -777,18 +777,18 @@ exit;
    //     $body = 'text';
         require_once(Config::Get('path.root.engine').'/lib/external/phpMailer/class.phpmailer.php');
 		
-        $mail->CharSet = Config::Get('sys.mail.charset');		
-		$mail->From = Config::Get('sys.mail.from_email');
-		$mail->FromName = Config::Get('sys.mail.from_name');
+//      $mail->CharSet = Config::Get('sys.mail.charset');		
+//		$mail->From = Config::Get('sys.mail.from_email');
+//		$mail->FromName = Config::Get('sys.mail.from_name');
 //echo Config::Get('sys.mail.charset') . '<br>' . Config::Get('sys.mail.from_email') . '<br>' . Config::Get('sys.mail.from_name');
 
         $mail = new PHPMailer();
         $mail->isSendmail();
         $mail->Host = "localhost"; // specify main and backup server
-      //  $mail->CharSet = 'utf-8';
+        $mail->CharSet = 'utf-8';
         $mail->ContentType = 'text/html';
-       // $mail->From = "blogs@blogs.com";
-        //$mail->FromName = "blogs";
+        $mail->From = "info@1inkz.ru";
+        $mail->FromName = "Блоги на Первом Казахстанском";
         $mail->AddAddress($to_mail, $to_name);
         $mail->Subject = $subject;
         $mail->Body = $body;
