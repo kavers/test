@@ -284,11 +284,11 @@ class ModuleNotify extends Module {
 		/**
 		 * Отправляем мыло
 		 */
-		$this->Mail_SetAdress($oUser->getMail(),$oUser->getLogin());
-		$this->Mail_SetSubject($this->Lang_Get('notify_subject_registration'));
-		$this->Mail_SetBody($sBody);
-		$this->Mail_setHTML();
-
+	//	$this->Mail_SetAdress($oUser->getMail(),$oUser->getLogin());
+	//	$this->Mail_SetSubject($this->Lang_Get('notify_subject_registration'));
+	//	$this->Mail_SetBody($sBody);
+	//	$this->Mail_setHTML();
+/*
         $mail = new PHPMailer();
         $mail->IsSendmail();                                      // set mailer to use SMTP
         $mail->AddAddress($oUser->getMail(), $oUser->getLogin());
@@ -305,7 +305,28 @@ class ModuleNotify extends Module {
         }
         
         echo "Message has been sent";
-        
+*/
+$mail = new PHPMailer();
+$mail->isSendmail();
+$mail->Host = "localhost"; // specify main and backup server
+$mail->CharSet = 'utf-8';
+$mail->ContentType = 'text/html';
+$mail->From = "blogs@blogs.com";
+$mail->FromName = "blogs";
+$mail->AddAddress("mike.semakhin@gmail.com", '');
+$mail->Subject = "Test phpMailer";
+$mail->Body = "This is the HTML message body in bold!";
+if(!$mail->Send())
+{
+   echo "Message could not be sent.
+
+";
+   echo "Mailer Error: " . $mail->ErrorInfo;
+   exit;
+}
+
+echo "Message has been sent";
+
         //self::send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
         /*
 print_r(
