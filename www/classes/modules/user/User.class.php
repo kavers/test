@@ -1177,7 +1177,7 @@ class ModuleUser extends Module {
 			$data = $this->oMapper->GetPopularUsers($mode);
             $_data = array_keys($data);
 	//		$this->Cache_Set($_data, "popular_user_{$mode}", array(), 60*60*24*2);
-		}
+	//	}
 
 		$_data = $this->GetUsersAdditionalData($_data);
 
