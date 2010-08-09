@@ -369,6 +369,20 @@ function func_array_merge_assoc($aArr1,$aArr2) {
 	return $aRes;
 }
 
+function pr($item)
+{
+    if ($_SERVER["SERVER_NAME"])
+    {
+        echo "<pre>";
+        print_r($item);
+        echo "</pre>";
+    }
+    else
+    {
+        print_r($item);
+    }
+}
+
 if (!function_exists('array_fill_keys')) {
 	function array_fill_keys($aArr, $values) {
 		if (!is_array($aArr)) {
