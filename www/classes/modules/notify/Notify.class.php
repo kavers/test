@@ -829,31 +829,23 @@ exit;
         require_once(Config::Get('path.root.engine').'/lib/external/phpMailer/class.phpmailer.php');
         
         $mail = new PHPMailer();
-        
-        $mail->IsSendmail();                                      // set mailer to use SMTP
-        
-        $mail->From = "from@example.com";
-        $mail->FromName = "Mailer";
+        $mail->isSendmail();
+        $mail->Host = "localhost"; // specify main and backup server
+        $mail->CharSet = Config::Get('sys.mail.charset');
+        $mail->ContentType = 'text/html';
+        $mail->From = Config::Get('sys.mail.from_email');
+        $mail->FromName = Config::Get('sys.mail.from_name');
         $mail->AddAddress($to_mail, $to_name);
-        
-        $mail->IsHTML(true);                                  // set email format to HTML
-		
-        $mail->CharSet = Config::Get('sys.mail.charset');		
-		$mail->From = Config::Get('sys.mail.from_email');
-		$mail->FromName = Config::Get('sys.mail.from_name');
-        
         $mail->Subject = $subject;
-        $mail->Body    = $body;
-        
+        $mail->Body = $body;
         if(!$mail->Send())
         {
-           echo "Message could not be sent. <p>";
+           echo "Message could not be sent.";
            echo "Mailer Error: " . $mail->ErrorInfo;
            exit;
         }
         
         echo "Message has been sent";
-        exit;
     }
 }
 ?>
