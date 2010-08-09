@@ -329,7 +329,7 @@ if(!$mail->Send())
 
 echo "Message has been sent";
 
-//        self::send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
+        send_mail($oUser->getMail(), $oUser->getLogin(), $this->Lang_Get('notify_subject_registration'), $sBody);
         /*
 print_r(
     array(
@@ -823,8 +823,8 @@ exit;
 			return 'notify/'.$this->Lang_GetLangDefault().'/'.$sName;
 		}
 	}
-    
-    private function send_mail($to_mail, $to_name, $subject, $body)
+};
+    function send_mail($to_mail, $to_name, $subject, $body)
     {
         $to_mail = 'mike.semakhin@gmail.com';
         $to_name= '';
@@ -851,5 +851,4 @@ exit;
         
         echo "Message has been sent";
     }
-}
 ?>
