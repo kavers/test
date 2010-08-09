@@ -515,10 +515,11 @@ class ModuleUser_MapperUser extends Mapper {
 	public function GetPopularUsers($mode, $limit = 5) {
 		$sql = "SELECT 
 					u.user_id,
-                    count(f.user_to) as friends
+                    count(f.user_to) + count(f2.user_from) as friends
 				FROM 
                     ".Config::Get('db.table.user')." u
-					LEFT JOIN ".Config::Get('db.table.friend')." f ON u.user_id = f.user_to				
+					LEFT JOIN ".Config::Get('db.table.friend')." f ON u.user_id = f.user_to AND f.status_to = ".ModuleUser::USER_FRIEND_ACCEPT."
+                    LEFT JOIN ".Config::Get('db.table.friend')." f2 ON u.user_id = f2.user_from AND f2.status_to = ".ModuleUser::USER_FRIEND_ACCEPT."				
                 GROUP BY (u.user_id)
                 ORDER BY friends DESC
                 LIMIT 0, ?d;";

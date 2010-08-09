@@ -93,7 +93,6 @@ class ActionIndex extends Action {
 		 * Меню
 		 */
 	//	$this->sMenuSubItemSelect='good';
-        
         $aPopularUsers = $this->User_GetPopularUsers();
 
 		$iTimeDelta=$this->GetTimeDelta();				
