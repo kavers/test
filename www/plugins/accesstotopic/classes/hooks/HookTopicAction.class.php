@@ -21,10 +21,11 @@
 class PluginAccesstotopic_HookTopicAction extends Hook {
 
 	public function RegisterHook() {
-		/**
-		* ’ук дл€ добавлени€ данных об уровне доступа в объект
-		*/
+		//’ук дл€ добавлени€ данных об уровне доступа в объект
 		$this->AddHook('topic_add_before', 'AddAccessLevelToTopic');
+		$this->AddHook('topic_edit_before', 'AddAccessLevelToTopic');
+		//’ук дл€ добавлени€ данных в форму редактировани€ топика о текущем уровне доступа
+		$this->AddHook('topic_edit_show', 'AddAccessLevelToShowForm');
 	}
 
 	public function AddAccessLevelToTopic($data) {
@@ -38,7 +39,12 @@ class PluginAccesstotopic_HookTopicAction extends Hook {
 				Config::Get('plugin.accesstotopic.personalBlog.accessLevels.'. $accessLevelName) :
 				Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_ALL');
 		}
+		
 		$data['oTopic']->setAccessLevel($accessLevelNum);
+	}
+	
+	public function AddAccessLevelToShowForm($data) {
+		$this->Viewer_Assign('access_level',$data['oTopic']->getAccessLevelName());
 	}
 }
 ?>

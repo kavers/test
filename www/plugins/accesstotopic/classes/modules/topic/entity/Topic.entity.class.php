@@ -23,5 +23,20 @@ class PluginAccesstotopic_ModuleTopic_EntityTopic extends PluginAccesstotopic_In
 	public function setAccessLevel($data) {
 		$this->_aData['access_level']=$data;
 	}
+	
+	public function getAccessLevelName() {
+		foreach(Config::Get('plugin.accesstotopic.personalBlog.accessLevels') as $levelName => $levelValue) {
+			if($levelValue == $this->getAccessLevel()) {
+				return $levelName;
+			}
+		}
+		
+		foreach(Config::Get('plugin.accesstotopic.collectiveBlog.accessLevels') as $levelName => $levelValue) {
+			if($levelValue == $this->getAccessLevel()) {
+				return $levelName;
+			}
+		}
+		return '';
+	}
 }
 ?>

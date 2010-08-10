@@ -30,7 +30,7 @@ var collectiveAccessLevelsTitles = [
 	"{$aLang[$langKey]}"{if !$smarty.foreach.cbTitles.last},{/if}
 {/foreach}
 ];
-
+var selectedAccessLevel = "{$access_level}";
 {literal}
 function switchAccessSelect(blogSelectId, accessLevelSelectId) {
 	var blogSelect = document.getElementById(blogSelectId);
@@ -41,14 +41,15 @@ function switchAccessSelect(blogSelectId, accessLevelSelectId) {
 	} 
 	//Персональный блог всегда имеет значение 0, используем это
 	if(blogSelect.options[blogSelect.selectedIndex].value === '0') {
-		addOptions(accessLevelSelect, personalAccessLevelsKeys, personalAccessLevelsTitles);
+		addOptions(accessLevelSelect, personalAccessLevelsKeys, personalAccessLevelsTitles, selectedAccessLevel);
 	} else {
-		addOptions(accessLevelSelect, collectiveAccessLevelsKeys, collectiveAccessLevelsTitles);
+		addOptions(accessLevelSelect, collectiveAccessLevelsKeys, collectiveAccessLevelsTitles, selectedAccessLevel);
 	}
 }
 
-function addOptions(selectObject, keysArray, titlesArray) {
+function addOptions(selectObject, keysArray, titlesArray, curValue) {
 		var i = 0;
+		var sIndex = 0;
 		while(i < keysArray.length) {
 			var opt = document.createElement('option');
 			opt.value = keysArray[i];
@@ -57,6 +58,10 @@ function addOptions(selectObject, keysArray, titlesArray) {
 				selectObject.add(opt,null);
 			} catch(ex) {
 				selectObject.add(opt);
+			}
+			
+			if(opt.value ==  curValue) {
+				opt.selected = true;
 			}
 			i++;
 		}
