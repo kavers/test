@@ -217,8 +217,8 @@ h3 {    margin:0px 10px 10px 0px;
 
 /* Main block */
 #columns {clear:both;width:945px;margin:0 auto;overflow:hidden; zoom:1;}
-.left_colomn {width:306px;float:left;}
-.middle_colomn {width:306px;float:left;margin:0px 13px 0px 14px;}
+.left_colomn {width:306px;float:left;margin:0px 13px 0px 0px;}
+.middle_colomn {width:306px;float:left;margin:0px 13px 0px 0px;}
 .right_colomn {width:306px;float:left;}
 .big_colomn {width:625px;float:left;margin:0px 13px 0px 0px;}
 
