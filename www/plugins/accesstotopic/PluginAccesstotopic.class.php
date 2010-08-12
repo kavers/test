@@ -34,7 +34,12 @@ class PluginAccesstotopic extends Plugin {
 	 * Создание дополнительной колонки в таблицe _topic в базе.
 	 */
 	public function Activate() {
-		$this->ExportSQL(dirname(__FILE__).'/sql.sql');
+		$alreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+			WHERE COLUMN_NAME="access_level" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
+			AND TABLE_NAME LIKE "%_topic";
+');
+
+		if(!$alreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql.sql');
 		return true;
 	}
 	
