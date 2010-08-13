@@ -1,8 +1,7 @@
-			<div class="block blogs">
-				<div class="tl"><div class="tr"></div></div>
-				<div class="cl"><div class="cr">
+<li class="block orange">
+    <div class="title"><a class="link" href="#"><h1>{$aLang.talk_speaker_title}</h1></a></div><div class="simply_block">
+
 					
-					<h1>{$aLang.talk_speaker_title}</h1>
 				{if $oTalk->getUserId()==$oUserCurrent->getId() or $oUserCurrent->isAdministrator() }
 				{literal}
 						<script language="JavaScript" type="text/javascript">
@@ -121,7 +120,6 @@
 					</ul>
 				{/if}
 			</div>
-				<br />	
-				</div></div>
-				<div class="bl"><div class="br"></div></div>
-			</div>
+    </div>
+    <div class="block_bottom"></div>
+</li>

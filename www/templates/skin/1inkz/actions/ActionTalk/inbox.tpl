@@ -1,9 +1,12 @@
 {include file='header.tpl' menu='talk' noShowSystemMessage=false}
+<li id="video_player" class="block2 green">
+    <div class="title"><a href="#" class="link"><h1>{$aLang.talk_inbox}</h1></a></div>
+    <div class="block_content">
 
-
-			<div class="topic people top-blogs talk-table">
-				<h1>{$aLang.talk_inbox}</h1>
+            <div id="text" class="topic people top-blogs talk-table">
 				<form action="{router page='talk'}" method="post" id="form_talks_list">
+         <div class="right_text settings" style="width:100%">
+        <div id="add_book_format">
 				<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
 				<table>
 					<thead>
@@ -51,7 +54,11 @@
 					</tbody>
 				</table>
 				<input type="submit" name="submit_talk_del" value="{$aLang.talk_inbox_delete}" onclick="return ($$('.form_talks_checkbox:checked').length==0)?false:confirm('{$aLang.talk_inbox_delete_confirm}');">
+                </div></div>
 				</form>
 			</div>
-{include file='paging.tpl' aPaging=`$aPaging`}
+            {include file='paging.tpl' aPaging=`$aPaging`}
+        </div>
+    </li>
+
 {include file='footer.tpl'}

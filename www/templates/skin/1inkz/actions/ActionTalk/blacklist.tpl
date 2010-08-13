@@ -1,8 +1,6 @@
-			<div class="block blogs">
-				<div class="tl"><div class="tr"></div></div>
-				<div class="cl"><div class="cr">
+<li class="block green">
+    <div class="title"><a class="link" href="#"><h1>{$aLang.talk_blacklist_title}</h1></a></div><div class="simply_block">
 					
-					<h1>{$aLang.talk_blacklist_title}</h1>
 				{literal}
 						<script language="JavaScript" type="text/javascript">
 						document.addEvent('domready', function() {	
@@ -143,6 +141,6 @@
 				</div>
 				<div class="right"><a href="#" id="list_uncheck_all" {if !$aUsersBlacklist}style="display:none;"{/if}>{$aLang.talk_balcklist_delete_all}</a></div>
 					
-				</div></div>
-				<div class="bl"><div class="br"></div></div>
-			</div>
+    </div>
+    <div class="block_bottom"></div>
+</li>

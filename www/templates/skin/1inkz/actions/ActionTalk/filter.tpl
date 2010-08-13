@@ -1,8 +1,6 @@
-			<div class="block blogs">
-				<div class="tl"><div class="tr"></div></div>
-				<div class="cl"><div class="cr">
-					
-					<h1>{$aLang.talk_filter_title}</h1>
+<li class="block orange">
+    <div class="title"><a class="link" href="#"><h1>{$aLang.talk_filter_title}</h1></a></div><div class="simply_block">
+
 {literal}
 <script language="JavaScript" type="text/javascript">
 document.addEvent('domready', function() {	
@@ -78,6 +76,6 @@ document.addEvent('domready', function() {
 						</form>
 					</div>
 					<div class="right"><a href="#" onclick="return eraseFilterForm();">{$aLang.talk_filter_erase_form}</a> | <a href="{router page='talk'}">{$aLang.talk_filter_erase}</a></div>					
-				</div></div>
-				<div class="bl"><div class="br"></div></div>
-			</div>
+    </div>
+    <div class="block_bottom"></div>
+</li>
