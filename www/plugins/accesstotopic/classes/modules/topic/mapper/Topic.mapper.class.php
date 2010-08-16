@@ -251,9 +251,27 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 								(
 								0 < 
 									(
-									SELECT COUNT(f.user_to) FROM '.Config::Get('db.table.friend').' as f
-									WHERE (t.user_id = f.user_from AND f.user_to = '.$currentUserId.' AND f.status_from < 3)
-									OR (t.user_id = f.user_to AND f.user_from = '.$currentUserId.' AND f.status_to < 3)
+										SELECT COUNT(f.user_to) FROM '.Config::Get('db.table.friend').' as f
+										WHERE
+										(
+											t.user_id = f.user_from AND f.user_to = '.$currentUserId.'
+											AND 
+											(
+												f.status_from = '.ModuleUser::USER_FRIEND_OFFER.'
+												OR
+												f.status_from = '.ModuleUser::USER_FRIEND_ACCEPT.'
+											)
+										)
+										OR 
+										(
+											t.user_id = f.user_to AND f.user_from = '.$currentUserId.' 
+											AND
+											(
+												f.status_to = '.ModuleUser::USER_FRIEND_OFFER.'
+												OR
+												f.status_to = '.ModuleUser::USER_FRIEND_ACCEPT.'
+											)
+										)
 									)
 								)
 							)
@@ -261,12 +279,40 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 							(
 								(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_TWOSIDE_FRIENDS').')
 								AND
+								(
 								0 <
 									(
-									SELECT COUNT(f.user_from) FROM '.Config::Get('db.table.friend').' as f
-									WHERE (t.user_id = f.user_from AND f.user_to = '.$currentUserId.' AND (f.status_from + f.status_to) = 3)
-									OR (t.user_id = f.user_to AND f.user_from = '.$currentUserId.' AND (f.status_to + f.status_from) = 3)
+										SELECT COUNT(f.user_from) FROM '.Config::Get('db.table.friend').' as f
+										WHERE 
+										(
+											t.user_id = f.user_from AND f.user_to = '.$currentUserId.' 
+											AND 
+											(
+												(f.status_from + f.status_to) = '. (ModuleUser::USER_FRIEND_OFFER + ModuleUser::USER_FRIEND_ACCEPT) .'
+												OR
+												(
+													f.status_to = '.ModuleUser::USER_FRIEND_ACCEPT.'
+													AND
+													f.status_from = '.ModuleUser::USER_FRIEND_ACCEPT.'
+												)
+											)
+										)
+										OR 
+										(
+											t.user_id = f.user_to AND f.user_from = '.$currentUserId.' 
+											AND 
+											(
+												(f.status_from + f.status_to) = '. (ModuleUser::USER_FRIEND_OFFER + ModuleUser::USER_FRIEND_ACCEPT) .'
+												OR
+												(
+													f.status_to = '.ModuleUser::USER_FRIEND_ACCEPT.'
+													AND
+													f.status_from = '.ModuleUser::USER_FRIEND_ACCEPT.'
+												)
+											)
+										)
 									)
+								)
 							)';
 		
 		$statmentCollective = '

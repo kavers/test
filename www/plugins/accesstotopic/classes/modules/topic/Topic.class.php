@@ -129,20 +129,20 @@ class PluginAccesstotopic_ModuleTopic extends PluginAccesstotopic_Inherit_Module
 		//Обходим все топики в выборке и принимаем решение оставлять ли каждый из них.
 		$aNewResult = array();
 		foreach($aTopics as $oTopic) {
-			//echo('Title ' . $oTopic->getTitle() . ' Level ' . $oTopic->getAccessLevel() .' | '. $this->checkAccessToTopic($oUserCurrent, $oTopic));
-			if($this->checkAccessToTopic($oUserCurrent, $oTopic)) $aNewResult[$oTopic->getId()] = $oTopic;
+			//echo('Title ' . $oTopic->getTitle() . ' Level ' . $oTopic->getAccessLevel() .' | '. $this->CheckAccessToTopic($oUserCurrent, $oTopic));
+			if($this->CheckAccessToTopic($oUserCurrent, $oTopic)) $aNewResult[$oTopic->getId()] = $oTopic;
 		}
 		return $aNewResult;
 	}
 	
-		/**
+	/**
 	* Проверяем, есть ли у пользователя доступ к топику
 	* 
 	* @param	object		Проверяемый пользователь
 	* @param	object		Проверяемый топик
 	* @return	boolean		Решение. true, если доступ есть.
 	*/
-	protected function checkAccessToTopic($oUser, $oTopic) {
+	public function CheckAccessToTopic($oUser, $oTopic) {
 		//Пользователь всегда имеет доступ к собственным топикам в личном блоге
 		if($oUser->getId() == $oTopic->getUserId()) {
 			return true;
@@ -158,17 +158,19 @@ class PluginAccesstotopic_ModuleTopic extends PluginAccesstotopic_Inherit_Module
 				}
 				break;
 			case Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_FRIENDS'):
-				if($oFriend = $this->USER_GetFriend($oTopic->getUserId(), $oUser->getId())) {
-					//FIXME: Не знаю как корректно обращаться к константам в стандартных модулях, поэтому пока magic numbers
-					if($oFriend->getStatusByUserId($oTopic->getUserId()) < 3 && $oFriend->getStatusByUserId($oTopic->getUserId()) > 0) {
+				if($oFriend = $this->User_GetFriend($oTopic->getUserId(), $oUser->getId())) {
+					if($oFriend->getStatusByUserId($oTopic->getUserId()) < ModuleUser::USER_FRIEND_OFFER + ModuleUser::USER_FRIEND_ACCEPT && $oFriend->getStatusByUserId($oTopic->getUserId()) > 0) {
 						return true;
 					}
 				}
 				break;
 			case Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_TWOSIDE_FRIENDS'):
-				if($oFriend = $this->USER_GetFriend($oTopic->getUserId(), $oUser->getId())) {
-					//FIXME: Не знаю как корректно обращаться к константам в стандартных модулях, поэтому пока magic numbers
-					if($oFriend->getFriendStatus() == 3) {
+				if($oFriend = $this->User_GetFriend($oTopic->getUserId(), $oUser->getId())) {
+					if($oFriend->getFriendStatus() == ModuleUser::USER_FRIEND_OFFER + ModuleUser::USER_FRIEND_ACCEPT 
+						||
+						$oFriend->getFriendStatus() == ModuleUser::USER_FRIEND_ACCEPT + ModuleUser::USER_FRIEND_ACCEPT 
+						) 
+					{
 						return true;
 					}
 				}

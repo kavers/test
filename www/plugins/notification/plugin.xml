@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <plugin>
 	<name>
-		<lang name="default">Livestreet Access to Topic</lang>
+		<lang name="default">Livestreet Additional Notifications</lang>
 	</name>
 	<author>
 		<lang name="default">FreeLanceSpb for 1in.kz</lang>
 	</author>
 	<homepage>http://1in.kz/</homepage>
-	<version>0.0.5</version>
+	<version>0.0.1</version>
 	<requires>
 		<livestreet>0.4.2</livestreet>
 		<plugins>
@@ -15,7 +15,7 @@
 		</plugins>
 	</requires>
 	<description>
-		<lang name="default">Managing level of access to topics.</lang>
-		<lang name="russian">Управление уровнем доступа к топикам.</lang>
+		<lang name="default">Additional notifcations for some actions.</lang>
+		<lang name="russian">Дополнительные уведомления на разные события.</lang>
 	</description>
 </plugin>
