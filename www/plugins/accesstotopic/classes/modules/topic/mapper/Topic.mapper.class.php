@@ -231,6 +231,8 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 	protected function getAccessWhereStatment($currentUserId = 0) {
 		$currentUserId = (int) $currentUserId;
 		$statmentPersonal = '
+							(t.user_id = '.$currentUserId.')
+							OR
 							(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_ALL').')
 							OR
 							(
