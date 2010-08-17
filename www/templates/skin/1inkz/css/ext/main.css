@@ -785,7 +785,7 @@ p.disabled input,p.disabled textarea,p.disabled a.del {opacity:0.4;filter: alpha
 
 
 .line_list {width:602px; margin:0 auto;overflow:hidden; zoom:1;color:#767676;padding:10px 0px 0px 0px;}
-.line_list li {display:block;font-size:0.7em; min-height:80px;padding:10px 10px 10px 0px; margin:0px 0px 10px 0px;background:#F1F1F1 URL('../../img/descr_fon.gif') repeat-x top;border:1px solid #DBDBDB;overflow:hidden; zoom:1;}
+.line_list li {display:block;font-size:0.8em; min-height:80px;padding:10px 10px 10px 0px; margin:0px 0px 10px 0px;background:#F1F1F1 URL('../../img/descr_fon.gif') repeat-x top;border:1px solid #DBDBDB;overflow:hidden; zoom:1;}
 .line_list li.when {display:block;font-size:0.7em; min-height:10px;padding:5px 10px 5px 15px; margin:0px 0px 10px 0px;background:#F2F2F2 URL('../../img/news_razd.gif') repeat-x top;border:1px solid #DBDBDB;overflow:hidden; zoom:1;}
 .line_list li.when a {color:#767676;font-weight:bold; font-size:1.25em;}
 .line_list li.when strong {color:#767676;font-weight:bold; font-size:1.25em;}
@@ -1071,4 +1071,9 @@ p.disabled input,p.disabled textarea,p.disabled a.del {opacity:0.4;filter: alpha
 a.block {margin:0 !important;}
 
 #friends li a {display:inline;margin-left:5px}
-.simply_block {padding:10px;background:#fff;color:#000;font-size:0.75em}
+.simply_block {padding:10px;background:#fff;color:#000;}
+.block_content table {color:#000}
+.block_content table th {font-weight: bold;}
+.block_content table td {font-weight: normal;}
+.orange {color:#E96800}
+.gray {color:#828282;}

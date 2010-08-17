@@ -182,3 +182,8 @@ select { width: 99%; }
 .checkbox { position: relative; top: 2px; margin-left: 0; }
 
 .mask {z-index:200}
+.form_note {color:#828282;font-size:0.8em}
+
+.people.talk-table thead td.user { padding-left: 10px; }
+.people.talk-table .author { margin-left: 10px; }
+.people.talk-table .inactive { color: #cfcfcf !important; }

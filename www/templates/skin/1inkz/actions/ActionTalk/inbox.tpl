@@ -12,10 +12,10 @@
 					<thead>
 						<tr>
 							<td width="20px"><input type="checkbox" name="" onclick="checkAllTalk(this);"></td>
-							<td class="user" width="200px">{$aLang.talk_inbox_target}</td>
-							<td></td>
-							<td>{$aLang.talk_inbox_title}</td>
-							<td>{$aLang.talk_inbox_date}</td>
+							<td class="user" width="200px"><b>{$aLang.talk_inbox_target}</b></td>
+							<td></th>
+							<td><b>{$aLang.talk_inbox_title}</b></td>
+							<td><b>{$aLang.talk_inbox_date}</b></td>
 						</tr>
 					</thead>
 					
@@ -28,7 +28,7 @@
 								{foreach from=$oTalk->getTalkUsers() item=oTalkUser name=users}
 									{if $oTalkUser->getUserId()!=$oUserCurrent->getId()}
 									{assign var="oUser" value=$oTalkUser->getUser()}
-										<a href="{$oUser->getUserWebPath()}" class="author {if $oTalkUser->getUserActive()!=$TALK_USER_ACTIVE}inactive{/if}">{$oUser->getLogin()}</a>
+										<a href="{$oUser->getUserWebPath()}" class="orange author {if $oTalkUser->getUserActive()!=$TALK_USER_ACTIVE}inactive{/if}">{$oUser->getLogin()}</a>
 									{/if}
 								{/foreach}
 							</td>							
@@ -39,16 +39,16 @@
 							</td>
 							<td>	
 							{if $oTalkUserAuthor->getCommentCountNew() or !$oTalkUserAuthor->getDateLast()}
-								<a href="{router page='talk'}read/{$oTalk->getId()}/"><b>{$oTalk->getTitle()|escape:'html'}</b></a>
+								<a class="orange" href="{router page='talk'}read/{$oTalk->getId()}/"><b>{$oTalk->getTitle()|escape:'html'}</b></a>
 							{else}
-								<a href="{router page='talk'}read/{$oTalk->getId()}/">{$oTalk->getTitle()|escape:'html'}</a>
+								<a class="orange" href="{router page='talk'}read/{$oTalk->getId()}/">{$oTalk->getTitle()|escape:'html'}</a>
 							{/if}
 					 		&nbsp;	
 							{if $oTalk->getCountComment()}
 								{$oTalk->getCountComment()} {if $oTalkUserAuthor->getCommentCountNew()}<span style="color: #008000;">+{$oTalkUserAuthor->getCommentCountNew()}</span>{/if}
 							{/if}
 							</td>
-							<td>{date_format date=$oTalk->getDate()}</td>
+							<td class="gray">{date_format date=$oTalk->getDate()}</td>
 						</tr>
 					{/foreach}
 					</tbody>
