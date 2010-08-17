@@ -599,7 +599,7 @@ class ActionBlog extends Action {
 		if (!$oTopic->getPublish() and (!$this->oUserCurrent or ($this->oUserCurrent->getId()!=$oTopic->getUserId() and !$this->oUserCurrent->isAdministrator()))) {
 			return parent::EventNotFound();
 		}
-
+		
 		/**
 		 * Определяем права на отображение записи из закрытого блога
 		 */
@@ -657,6 +657,21 @@ class ActionBlog extends Action {
 			$oTopicRead->setDateRead(date("Y-m-d H:i:s"));
 			$this->Topic_SetTopicRead($oTopicRead);
 		}
+
+        $sShowType=$this->sCurrentEvent;
+        $aResult=$this->Topic_GetTopicsCollective(0,0,$sShowType);
+		$aTopicsIds=array_keys($aResult['collection']);
+        if ($aTopicsIds)
+        {
+            $next = false;
+            $prev = false;
+            $curr = array_search($oTopic->getId(), $aTopicsIds);
+            $prev = @$aTopicsIds[$curr - 1];
+            $next = @$aTopicsIds[$curr + 1];
+        }
+        $this->Viewer_Assign('next',$next);
+        $this->Viewer_Assign('prev',$prev);
+        
 		/**
 		 * Вызов хуков
 		 */

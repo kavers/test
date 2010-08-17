@@ -28,8 +28,8 @@
         </div>
         <div class="block_content">
            <ul class="news_nav">
-             <li class="prev"><a href="">Предыдущая</a></li>
-             <li class="next"><a href="">Следующая</a></li>
+             {if $prev}<li class="prev"><a href="{router page='blog'}{$oBlog->getUrl()}/{$prev}.html">Предыдущая</a></li>{/if}
+             {if $next}<li class="next"><a href="{router page='blog'}{$oBlog->getUrl()}/{$next}.html">Следующая</a></li>{/if}
            </ul>
            <div class="news_block">
              <div class="news_inside">
@@ -59,7 +59,7 @@
              </div>
            </div>
            <ul class="add_icons dream_icons">
-             <li><a href="" class="more_menu2 close"><img src="{cfg name='path.static.skin'}/img/icon1.png" width="44" height="44" alt="Поделиься" title="Поделиться"/>Поделиться</a>
+             <li><a href="#" class="more_menu2 close"><img src="{cfg name='path.static.skin'}/img/icon1.png" width="44" height="44" alt="Поделиься" title="Поделиться"/>Поделиться</a>
                 <ul class="all_menu share">
 	               <li><a href="#"><img src="{cfg name='path.static.skin'}/img/1.gif" /></a></li>
 	               <li><a href="#"><img src="{cfg name='path.static.skin'}/img/2.gif" /></a></li>
@@ -69,7 +69,7 @@
 	               <li><a href="#"><img src="{cfg name='path.static.skin'}/img/6.gif" /></a></li>
  			    </ul>
              </li>
-             <li><a href=""><img src="{cfg name='path.static.skin'}/img/icon3.gif" width="44" height="44" alt="В избранное" title="В избранное"/>В закладки</a></li>
+             <li><a href="" onclick="lsFavourite.toggle({$oTopic->getId()},this,'topic'); return false;"><img src="{cfg name='path.static.skin'}/img/icon3.gif" width="44" height="44" alt="В избранное" title="В избранное"/>В закладки</a></li>
              <li><a href="" class="more_menu2 close"><img src="{cfg name='path.static.skin'}/img/icon4.png" width="44" height="44" alt="Отправить другу" title="Отправить другу"/>Отправить другу</a>
                 <ul class="all_menu message">
 	               <li><strong>Электронная почта</strong></li>
