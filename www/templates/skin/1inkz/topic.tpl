@@ -1,6 +1,7 @@
 			{assign var="oBlog" value=$oTopic->getBlog()} 
 			{assign var="oUser" value=$oTopic->getUser()}
 			{assign var="oVote" value=$oTopic->getVote()} 
+            
 <!-- Видео плеер -->
      <li id="video_player" class="block2 green">
         <div class="title">
@@ -58,6 +59,7 @@
 {$oTopic->getText()}
              </div>
            </div>
+
            <ul class="add_icons dream_icons">
              <li><a href="#" class="more_menu2 close"><img src="{cfg name='path.static.skin'}/img/icon1.png" width="44" height="44" alt="Поделиься" title="Поделиться"/>Поделиться</a>
                 <ul class="all_menu share">
@@ -69,7 +71,7 @@
 	               <li><a href="#"><img src="{cfg name='path.static.skin'}/img/6.gif" /></a></li>
  			    </ul>
              </li>
-             <li><a href="" onclick="lsFavourite.toggle({$oTopic->getId()},this,'topic'); return false;"><img src="{cfg name='path.static.skin'}/img/icon3.gif" width="44" height="44" alt="В избранное" title="В избранное"/>В закладки</a></li>
+             <li><div class="favorite {if $oUserCurrent}{if $oTopic->getIsFavourite()}active{/if}{else}fav-guest{/if}"><a href="" onclick="lsFavourite.toggle({$oTopic->getId()},this,'topic'); return false;"><img src="{cfg name='path.static.skin'}/img/icon3.gif" width="44" height="44" alt="В избранное" title="В избранное"/>В закладки</a></div></li>
              <li><a href="" class="more_menu2 close"><img src="{cfg name='path.static.skin'}/img/icon4.png" width="44" height="44" alt="Отправить другу" title="Отправить другу"/>Отправить другу</a>
                 <ul class="all_menu message">
 	               <li><strong>Электронная почта</strong></li>
@@ -156,5 +158,4 @@
 				</ul>
 			</div>
 			<!-- /Topic -->
-            
-*}
+            *}
