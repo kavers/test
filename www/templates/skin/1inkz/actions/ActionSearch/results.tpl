@@ -32,7 +32,12 @@
 					{include file='search_comment_list.tpl' blog_title=$smarty.capture.blog_title}
 				{/if}
 			{else}
-				<h2>{$aLang.search_results_empty}</h2> 
+                <li class="block2 green">
+                    <div class="title"><a href="#" class="link"><h1>Поиск</h1></a></div>
+                    <div class="block_content">
+                        {$aLang.search_results_empty}
+                    </div>
+                </li>
 			{/if}
 
 {include file='footer.tpl'}
