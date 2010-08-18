@@ -34,7 +34,7 @@
 			{else}
                 <li class="block2 green">
                     <div class="title"><a href="#" class="link"><h1>Поиск</h1></a></div>
-                    <div class="block_content">
+                    <div class="block_content" style="padding:10px;color:#000">
                         {$aLang.search_results_empty}
                     </div>
                 </li>
