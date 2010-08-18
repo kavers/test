@@ -46,17 +46,29 @@ class PluginNotification extends Plugin {
 			AND TABLE_NAME LIKE "'.Config::Get('db.table.prefix').'user";');
 		if(!$topicCommentAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/topic_comment.sql');
 		
-		//Дополнительно поле для уведомлений о прокомментированных комментариях
-		$commentCommentAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
-			WHERE COLUMN_NAME="user_settings_notice_new_comment_commented" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
-			AND TABLE_NAME LIKE "'.Config::Get('db.table.prefix').'user";');
-		if(!$commentCommentAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/comment_comment.sql');
-		
-		//Дополнительно поле для уведомлений о прокомментированных комментариях
+		//Дополнительно поле для уведомлений о новостях друзей
 		$friendNewsAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
 			WHERE COLUMN_NAME="user_settings_notice_friend_news" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
 			AND TABLE_NAME LIKE "'.Config::Get('db.table.prefix').'user";');
 		if(!$friendNewsAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/friend_news.sql');
+		
+		//Дополнительно поле для уведомлений о просьбах написать в блог
+		$requestAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+			WHERE COLUMN_NAME="user_settings_notice_request" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
+			AND TABLE_NAME LIKE "'.Config::Get('db.table.prefix').'user";');
+		if(!$requestAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/request.sql');
+		
+		//Дополнительно поле для уведомлений для подписки на блоги
+		$blogSubscribeAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+			WHERE COLUMN_NAME="user_settings_notice_new_topic_subscribe" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
+			AND TABLE_NAME LIKE "'.Config::Get('db.table.prefix').'blog_user";');
+		if(!$blogSubscribeAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/blog_topic_subscriber.sql');
+		
+		//Дополнительно поле для уведомлений для подписки на комментарии в блогах
+		$blogCommentSubscribeAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+			WHERE COLUMN_NAME="user_settings_notice_new_comment_subscribe" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
+			AND TABLE_NAME LIKE "'.Config::Get('db.table.prefix').'blog_user";');
+		if(!$blogCommentSubscribeAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/blog_comment_subscriber.sql');
 		
 		return true;
 	}

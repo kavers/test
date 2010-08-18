@@ -31,9 +31,8 @@ class PluginNotification_HookBlogAction extends Hook {
 	* По-умолчанию уведомления о комментариях отправляется только автору топика
 	* Здесь отправляем уведомления всем, кто комментировал топик и включил функции их доставки.
 	* 
-	* Первым проверяем автора родительского комментария.
-	* Вторыми остальных комментаторов топика
-	* Последними различным подписчикам на новости этого топика, 
+	* Первыми остальных комментаторов топика
+	* Потом различным подписчикам на новости этого топика, 
 	* если они не вошли в первые две группы.
 	*
 	* Автору топика и автору комментария уведомления не высылаются. Для автора комментария это 
@@ -48,9 +47,11 @@ class PluginNotification_HookBlogAction extends Hook {
 		);
 		
 		if($data['oCommentParent']) {
-			$aParentCommentatorId = $this->Notify_SendNotificationsToParentCommentator($data['oTopic'], $data['oCommentNew'], $data['oCommentParent'], $aExceptUserId);
-			if(is_array($aParentCommentatorId)) {
-				$aExceptUserId = array_merge($aExceptUserId, $aParentCommentatorId);
+			$oParentCommentator = $this->User_GetUserById($data['oCommentParent']->getUserId());
+			//Если автор родительского комментария, включил уведомления для комментов к его 
+			//комментарию, то ему будет выслано уведомление стандартными средствами
+			if($oParentCommentator->getSettingsNoticeReplyComment()) {
+				$aExceptUserId[]=$oParentCommentator->getId();
 			}
 		}
 		

@@ -20,24 +20,24 @@ class PluginNotification_ModuleUser_EntityUser extends PluginNotification_Inheri
 		return $this->_aData['user_settings_notice_new_topic_commented'];
 	}
 	
-	public function getSettingsNoticeNewCommentCommented() {
-		return $this->_aData['user_settings_notice_new_comment_commented'];
-	}
-	
 	public function getSettingsNoticeFriendNews() {
 		return $this->_aData['user_settings_notice_friend_news'];
+	}
+	
+	public function getSettingsNoticeRequest() {
+		return $this->_aData['user_settings_notice_request'];
 	}
 	
 	public function setSettingsNoticeNewTopicCommented($data) {
 		return $this->_aData['user_settings_notice_new_topic_commented'] = $data;
 	}
 	
-	public function setSettingsNoticeNewCommentCommented($data) {
-		return $this->_aData['user_settings_notice_new_comment_commented'] = $data;
-	}
-	
 	public function setSettingsNoticeFriendNews($data) {
 		return $this->_aData['user_settings_notice_friend_news'] = $data;
+	}
+	
+	public function setSettingsNoticeRequest($data) {
+		return $this->_aData['user_settings_notice_request'] = $data;
 	}
 }
 ?>

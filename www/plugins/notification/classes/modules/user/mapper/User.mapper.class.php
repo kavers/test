@@ -46,8 +46,8 @@ class PluginNotification_ModuleUser_MapperUser extends  PluginNotification_Inher
 				user_settings_notice_reply_comment = ? ,
 				user_settings_notice_new_friend = ? ,
 				user_settings_notice_new_topic_commented = ? ,
-				user_settings_notice_new_comment_commented = ?,
-				user_settings_notice_friend_news = ?
+				user_settings_notice_friend_news = ? ,
+				user_settings_notice_request = ? 
 			WHERE user_id = ?
 		";
 		echo($oUser->getSettingsNoticeNewTopicCommented());
@@ -78,8 +78,8 @@ class PluginNotification_ModuleUser_MapperUser extends  PluginNotification_Inher
 								   $oUser->getSettingsNoticeReplyComment(),
 								   $oUser->getSettingsNoticeNewFriend(),
 								   $oUser->getSettingsNoticeNewTopicCommented(),
-								   $oUser->getSettingsNoticeNewCommentCommented(),
 								   $oUser->getSettingsNoticeFriendNews(),
+								   $oUser->getSettingsNoticeRequest(),
 								   $oUser->getId())) {
 			return true;
 		}		

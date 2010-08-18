@@ -20,11 +20,13 @@
  */
 return array(
 	'notification_subject_topic_comment_new' => 'Новый комментарий к топику',
-	'notification_subject_comment_comment_new' => 'Новый комментарий к Вашему',
 	'notification_subject_friend_news' => 'Новости друга',
-	'notification_settings_topic_comment_new' => 'Уведомления обо всех комментариях в прокомментированных Вами топиках',
-	'notification_settings_comment_comment_new' => 'Уведомления о комментариях к вашим комментариям',
-	'notification_settings_friend_news' => 'Уведомления о новостях друзей',
+	'notification_settings_topic_comment_new' => 'Новые комментарии к записям, которые я комментировал',
+	'notification_settings_friend_news' => 'Новости друзей',
+	'notification_request_sent' => 'Запрос отправлен',
+	'notification_request_not_sent' => 'Пользователь отключил эту функцию',
+	'notification_subject_request' => 'Проснитесь!',
+	'notification_settings_request' => 'Меня просят написать что-то в блог'
 );
 
 ?>

@@ -32,7 +32,7 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 	* @param	array		id пользователей, которым не нужно высылать уведомления (авторы и прочая)
 	* @return	array		id всех кому были отправлены уведомления
 	*/
-	public function SendNotificationsToTopicCommentators($oTopic, $oCommentNew, $oCommentParent, $aExceptUserId) {
+	public function SendNotificationsToTopicCommentators($oTopic, $oCommentNew, $oCommentParent, $aExceptUserId = array()) {
 		if(!is_array($aExceptUserId)) {
 			$aExceptUserId = array($aExceptUserId);
 		}
@@ -72,7 +72,11 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 	* @param	array		id пользователей, которым не нужно высылать уведомления (авторы и прочая)
 	* @return	array|null		id всех кому были отправлены уведомления
 	*/
-	public function SendNotificationsToParentCommentator($oTopic, $oCommentNew, $oCommentParent, $aExceptUserId) {
+	public function SendNotificationsToParentCommentator($oTopic, $oCommentNew, $oCommentParent, $aExceptUserId = array()) {
+		if(!is_array($aExceptUserId)) {
+			$aExceptUserId = array($aExceptUserId);
+		}
+
 		if(!$oCommentParent) {
 			return null;
 		}
@@ -107,7 +111,34 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 	* @param	array		список id пользователей, которым уведомления не высылаются
 	* @return	array		список id пользователей, которым были высланы уведомления
 	*/
-	public function SendNotificationsToBlogSubscribers($oTopic, $oBlog, $aExceptUserId) {
+	public function SendNotificationsToBlogSubscribers($oTopic, $oBlog, $aExceptUserId = array()) {
+		if(!is_array($aExceptUserId)) {
+			$aExceptUserId = array($aExceptUserId);
+		}
+		
+		$aSubscriberId = $this->oMapper->GetBlogSubscribersUids($oBlog);
+		if(!$aSubscriberId) {
+			return null;
+		}
+		
+		$aSubscriberId = array_diff($aSubscriberId, $aExceptUserId);
+		
+		$aSubscriber = $this->User_GetUsersByArrayId($aSubscriberId);
+		
+		$aRecipientId = array();
+		foreach($aSubscriber as $oSubscriber) {
+			if($this->isAccessModuleAvailable()) {
+				if(!$this->PluginAccesstotopic_Access_CheckUserAccess($oSubscriber, $oTopic, 'read')) {
+					continue;
+				}
+			}
+			if($this->sendNotifyToBlogSubscriber($oSubscriber, $oTopic, $oBlog, $this->User_GetUserCurrent())) {
+				$aRecipientId[] = $oSubscriber->getId();
+			}
+		}
+		
+		return $aRecipientId;
+		
 		return array();
 	}
 	
@@ -120,12 +151,17 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 	* @param	array		список id пользователей, которым уведомления не высылаются
 	* @return	array|null		список id пользователей, которым были высланы уведомления
 	*/
-	public function SendNotificationsToAuthorFriends($oTopic, $oBlog, $aExceptUserId) {
+	public function SendNotificationsToAuthorFriends($oTopic, $oBlog, $aExceptUserId = array()) {
+		if(!is_array($aExceptUserId)) {
+			$aExceptUserId = array($aExceptUserId);
+		}
+
 		$aSubscriberId = $this->oMapper->GetUserSubscribers($oTopic->getUserId());
 		
 		if(!$aSubscriberId) {
 			return null;
 		}
+		
 		$aSubscriberId = array_diff($aSubscriberId, $aExceptUserId);
 		
 		$aSubscriber = $this->User_GetUsersByArrayId($aSubscriberId);
@@ -153,7 +189,11 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 	* @param	array		список id пользователей, которым уведомления не высылаются
 	* @return	array|null		список id пользователей, которым были высланы уведомления
 	*/
-	public function SendNotificationsAboutNewFriends($oFriend, $aExceptUserId) {
+	public function SendNotificationsAboutNewFriends($oFriend, $aExceptUserId = array()) {
+		if(!is_array($aExceptUserId)) {
+			$aExceptUserId = array($aExceptUserId);
+		}
+
 		if(!$oFriend) {
 			return null;
 		}
@@ -178,11 +218,59 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 		return $aExceptUserId;
 	}
 	
-	protected function sendNotifycationToFriends($oUser, $oNewFriend, $aFriend, $aExceptUserId) {
+	/**
+	* Высылаем уведомление пользователю что бы он написал в блог,
+	* если он включил соответсвующую функцию.
+	* 
+	* @param	oUser		получатель сообщения
+	* @param	oUser		отправитель сообщения
+	* @param	array		список id пользователей, которым уведомления не высылаются
+	* @return	boolean		результат попытки
+	*/
+	public function SendRequestToUser($oUserTo, $oUserFrom, $aExceptUserId = array()) {
+		if(!is_array($aExceptUserId)) {
+			$aExceptUserId = array($aExceptUserId);
+		}
+		if(!in_array($oUserTo->getId(), $aExceptUserId)) {
+			return $this->sendNotifyRequestToUser($oUserTo, $oUserFrom);
+		}
+		
+		return false;
+	}
+	
+	/**
+	* Непосредственная отправка запроса сделать запись
+	*
+	* @param	oUser		кому отправляем уведомление
+	* @param	oUser		кто отправляет
+	* @return	boolean		результат отправки
+	*/
+	protected function sendNotifyRequestToUser($oUserTo, $oUserFrom) {
+		if(!$oUserTo->getSettingsNoticeRequest()) {
+			return false;
+		}
+		$this->Send($oUserTo, 'notification.request.tpl', $this->Lang_Get('notification_subject_request'),
+			$aAssigns = array(
+				'oUserTo' => $oUserTo,
+				'oUser' => $oUserFrom
+			),
+			PLUGIN_NOTIFICATION_NAME
+		);
+		
+		return true;
+	}
+	
+	protected function sendNotifycationToFriends($oUser, $oNewFriend, $aFriend, $aExceptUserId = array()) {
+		if(!is_array($aExceptUserId)) {
+			$aExceptUserId = array($aExceptUserId);
+		}
+
 		$aRecipientId = array();
 		foreach($aFriend as $oUserFriend) {
-			if($this->sendNotifyToFriend($oUserFriend, $oUser, $oNewFriend)) {
-				$aRecipientId[] = $oUserFriend->getId();
+			if(!in_array($oUserFriend->getId(), $aExceptUserId)) {
+				if($this->sendNotifyToFriend($oUserFriend, $oUser, $oNewFriend)) {
+					$aRecipientId[] = $oUserFriend->getId();
+				}
 			}
 		}
 		
@@ -299,6 +387,30 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 		
 		return true;
 	}
+	
+	/**
+	* Непосредственная отправка уведомления подписчику блога
+	*
+	* @param	oUser		кому отправляем уведомление
+	* @param	oTopic		новый топик
+	* @param	oComment	в каком блоге
+	* @param	oUser		автор
+	* @return	boolean		результат отправки
+	*/
+	protected function sendNotifyToBlogSubscriber($oUserTo, $oTopic, $oBlog, $oTopicAuthor) {
+		$this->Send($oUserTo, 'notification.new_blog_topic.tpl', $this->Lang_Get('notification_subject_new_blog_topic'),
+			$aAssigns = array(
+				'oUserTo' => $oUserTo,
+				'oTopic' => $oTopic,
+				'oBlog' => $oBlog,
+				'oTopicAuthor' => $oTopicAuthor
+			),
+			PLUGIN_NOTIFICATION_NAME
+		);
+		
+		return true;
+	}
+
 	
 	/**
 	* Проверяем установку плагина AccessToTopic для проверки прав доступа

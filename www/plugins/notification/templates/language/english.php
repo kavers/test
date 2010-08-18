@@ -25,6 +25,10 @@ return array(
 	'notification_settings_topic_comment_new' => 'Notifications aboult all commentaries in commented topics',
 	'notification_settings_comment_comment_new' => 'Notifications about all commentaries to your comment',
 	'notification_settings_friend_news' => 'Notifications about friends news',
+	'notification_request_sent' => 'Request was been send',
+	'notification_request_not_sent' => 'User disabled this function'
+	'notification_subject_request' => 'Wake Up!',
+	'notification_settings_request' => 'Me asking to write something'
 );
 
 ?>

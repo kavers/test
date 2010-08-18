@@ -19,8 +19,8 @@ class PluginNotification_ActionSettings extends PluginNotification_Inherit_Actio
 	protected function EventTuning() {
 		if(isPost('submit_settings_tuning')) {
 			$this->oUserCurrent->setSettingsNoticeNewTopicCommented( getRequest('settings_notice_new_topic_commented') ? 1 : 0 );
-			$this->oUserCurrent->setSettingsNoticeNewCommentCommented( getRequest('settings_notice_new_comment_commented') ? 1 : 0 );
 			$this->oUserCurrent->setSettingsNoticeFriendNews( getRequest('settings_notice_friend_news') ? 1 : 0 );
+			$this->oUserCurrent->setSettingsNoticeRequest( getRequest('settings_notice_request') ? 1 : 0 );
 		}
 		parent::EventTuning();
 	}

@@ -52,13 +52,44 @@ class PluginNotification_ModuleNotify_MapperNotify extends  PluginNotification_I
 	 * ћетод GetUsersFriend модул€ User не применим, так как возвращает
 	 * только взаимных друзей.
 	 *
-	 * @param  string $sUserId
-	 * @param  int    $iStatus
-	 * @return array
+	 * @param	string		$sUserId
+	 * @return	array
 	 */
 	public function GetUserSubscribers($sUserId) {
 		$aSubscribers = array_merge($this->getUserSubscribersFromDB($sUserId, true), $this->getUserSubscribersFromDB($sUserId, false));
 		return array_unique($aSubscribers);
+	}
+	
+	/**
+	 * ѕолучить список подписчиков указанного блога
+	 *
+	 * @param	oBlog 
+	 * @return array
+	 */
+	public function GetBlogSubscribersUids($oBlog) {
+		$sql = '
+				SELECT 
+					DISTINCT bu.user_id
+				FROM '.Config::Get('db.table.blog_user').' as bu
+				WHERE 
+					bu.blog_id = ?d AND
+					bu.user_settings_notice_new_topic_subscribe = 1 AND
+					bu.user_role = ? OR bu.user_role = ? OR bu.user_role = ?
+					';
+		if (
+			$aRows=$this->oDb->select($sql,
+				$oBlog->getId(),
+				ModuleBlog::BLOG_USER_ROLE_USER,
+				ModuleBlog::BLOG_USER_ROLE_MODERATOR,
+				ModuleBlog::BLOG_USER_ROLE_ADMINISTRATOR
+			)
+		) {
+			foreach($aRows as $row) {
+				$aResult[] = $row['user_id'];
+			}
+			return $aResult;
+		}
+		return null;
 	}
 	
 	protected function getUserSubscribersFromDB($sUserId, $bTo = true) {
