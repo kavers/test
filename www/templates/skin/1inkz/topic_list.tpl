@@ -73,7 +73,7 @@ $(document).ready(function(){
                      {/if}
                      </h1>
                  {elseif $page_type=="my"}
-                     <a href="#" class="blog_avatar"><img src="{$oBlog->getAvatarPath(48)}"/></a>
+                     <a href="#" class="blog_avatar"><img src="{$oUser->getProfileAvatarPath(48)}"/></a>
                      <h1>
                      {if $oBlog->getType() == 'personal'}
                         <a href="{if $oTopic->getType()=='link'}{router page='link'}go/{$oTopic->getId()}/{else}{$oTopic->getUrl()}{/if}">{$oTopic->getTitle()|escape:'html'}</a>
@@ -82,7 +82,7 @@ $(document).ready(function(){
                      {/if}
                      </h1>
                  {else}
-                     <a href="#" class="blog_avatar"><img src="{$oBlog->getAvatarPath(48)}"/></a>
+                     <a href="#" class="blog_avatar"><img src="{$oUser->getProfileAvatarPath(48)}"/></a>
                      <h1><a href="{router page='my'}{$oUser->getLogin()}">{$oUser->getLogin()}</a> &#151; <a href="{if $oTopic->getType()=='link'}{router page='link'}go/{$oTopic->getId()}/{else}{$oTopic->getUrl()}{/if}">{$oTopic->getTitle()|escape:'html'}</a></h1>                 
                  {/if}
                 {*if $oTopic->getCountComment()>0*}
