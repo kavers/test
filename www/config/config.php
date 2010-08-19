@@ -320,7 +320,7 @@ $config['block']['rule_index_blog'] = array(
 			'index', 'new'
 		),
 	'blocks'  => array(
-			'right' => array('info'=>array('block.info.tpl', 'priority' => 110),'stream'=>array('priority'=>100),'tags'=>array('priority'=>50),'blogs'=>array('params'=>array(),'priority'=>1))
+			'right' => array('info'=>array('block.info.tpl','priority'=>100),'stream'=>array('priority'=>100),'tags'=>array('priority'=>50),'blogs'=>array('params'=>array(),'priority'=>1))
 		),
 	'clear' => false,
 );
@@ -332,6 +332,10 @@ $config['block']['rule_topic_type'] = array(
 		'topic'    => array('add','edit')  
 	),
 	'blocks'  => array( 'right' => array('block.blogInfo.tpl') ),
+);
+$config['block']['rule_my'] = array(
+	'action'  => array( 'my' ),
+	'blocks'  => array( 'right' => array('block.authorInfo.tpl') ),
 );
 $config['block']['rule_people'] = array(
 	'action'  => array( 'people' ),
