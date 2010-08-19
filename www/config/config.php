@@ -320,7 +320,7 @@ $config['block']['rule_index_blog'] = array(
 			'index', 'new'
 		),
 	'blocks'  => array(
-			'right' => array('stream'=>array('priority'=>100),'tags'=>array('priority'=>50),'blogs'=>array('params'=>array(),'priority'=>1))
+			'right' => array('info'=>array('block.info.tpl', 'priority' => 110),'stream'=>array('priority'=>100),'tags'=>array('priority'=>50),'blogs'=>array('params'=>array(),'priority'=>1))
 		),
 	'clear' => false,
 );
