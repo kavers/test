@@ -43,12 +43,10 @@
            <li class="descr1">
               <h2>Описание и теги</h2>
               <p class="lt">Язык записи <strong>Русский</strong>&nbsp;&nbsp; Место <strong>Питер</strong>&nbsp;&nbsp; Настроение <strong>Норма</strong>&nbsp;&nbsp; Музыка <strong>Britney Spears - Piece of Me</strong></p>
-              <ul class="tags">
-                 <li><a href="#">смотреть видео</a></li>
-                 <li><a href="#">видео онлайн</a></li>
-                 <li><a href="#">плющенко</a></li>
-                 <li><a href="#">лучшее видео</a></li>
-                 <li><a href="#">фильмы</a></li>
+				<ul class="tags">
+                    {foreach from=$oTopic->getTagsArray() item=sTag name=tags_list}
+						<li><a href="{router page='tag'}{$sTag|escape:'html'}/">{$sTag|escape:'html'}</a>{if !$smarty.foreach.tags_list.last}, {/if}</li>
+					{/foreach}
               </ul>
            </li>
            <li class="descr1">
