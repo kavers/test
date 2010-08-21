@@ -19,6 +19,9 @@
 //используется тоже поле БД, что и на свои топики 
 $config['unionCommentsNotification'] = false;
 
+//Единая ли настройка для коментариев в сообществах, или отдельно для каждого
+$config['oneSettingForBlogsComments'] = true;
+
 Config::Set('router.page.request', 'PluginNotification_ActionNotification');
 return $config;
 ?>

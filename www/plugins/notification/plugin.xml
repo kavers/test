@@ -7,7 +7,7 @@
 		<lang name="default">FreeLanceSpb for 1in.kz</lang>
 	</author>
 	<homepage>http://1in.kz/</homepage>
-	<version>0.0.2</version>
+	<version>0.0.4</version>
 	<requires>
 		<livestreet>0.4.2</livestreet>
 		<plugins>

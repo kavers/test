@@ -27,48 +27,42 @@ define('PLUGIN_NOTIFICATION_NAME', 'notification');
 
 class PluginNotification extends Plugin {
 	protected $aInherits=array(
-		'entity' => array('ModuleUser_EntityUser' => '_ModuleUser_EntityUser'),
+		'entity' => array('ModuleUser_EntityUser' => '_ModuleUser_EntityUser',
+							'ModuleBlog_EntityBlogUser' => '_ModuleBlog_EntityBlogUser',
+							'ModuleNotify_EntityTask' => '_ModuleNotify_EntityTask'),
 		'module' => array('ModuleNotify' => '_ModuleNotify',
-							'ModuleUser' => '_ModuleUser'),
+							'ModuleUser' => '_ModuleUser',
+							'ModuleTopic'=>'_ModuleTopic',
+							'ModuleBlog' => '_ModuleBlog'),
 		'mapper' => array('ModuleNotify_MapperNotify' => '_ModuleNotify_MapperNotify',
-							'ModuleUser_MapperUser' => '_ModuleUser_MapperUser'),
+							'ModuleUser_MapperUser' => '_ModuleUser_MapperUser',
+							'ModuleBlog_MapperBlog' => '_ModuleBlog_MapperBlog'),
 		'action' => array('ActionSettings' => '_ActionSettings')
 	);
 	
+	protected $aSqlConfig = array(
+		array('field' => 'user_settings_notice_new_topic_commented', 'table' => 'user', 'file' => 'topic_comment.sql'),
+		array('field' => 'user_settings_notice_friend_news', 'table' => 'user', 'file' => 'friend_news.sql'),
+		array('field' => 'user_settings_notice_request', 'table' => 'user', 'file' => 'request.sql'),
+		array('field' => 'user_settings_notice_new_topic_subscribe', 'table' => 'blog_user', 'file' => 'blog_topic_subscriber.sql'),
+		array('field' => 'user_settings_notice_new_comment_subscribe', 'table' => 'blog_user', 'file' => 'blog_comment_subscriber.sql'),
+		array('field' => 'user_settings_notice_new_comment_blogs_subscribe', 'table' => 'user', 'file' => 'user_blog_comment_subscriber.sql'),
+		array('field' => 'user_settings_notice_new_gift', 'table' => 'user', 'file' => 'new_gift.sql'),
+		array('field' => 'user_settings_notice_frequency', 'table' => 'user', 'file' => 'notice_frequency.sql'),
+		array('field' => 'notify_freq_type', 'table' => 'notify_task', 'file' => 'notify_task_frequency.sql'),
+		array('field' => 'user_settings_notice_new_user_blogs_subscribe', 'table' => 'user', 'file' => 'user_blog_new_user_subscriber.sql')
+	);
 	/**
 	 * Активация плагина Доступ к Топику.
 	 * Создание дополнительной колонки в таблицe _topic в базе.
 	 */
 	public function Activate() {
-		//Дополнительно поле для уведомлений о прокомментированных топиках
-		$topicCommentAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
-			WHERE COLUMN_NAME="user_settings_notice_new_topic_commented" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
-			AND TABLE_NAME LIKE "'.Config::Get('db.table.prefix').'user";');
-		if(!$topicCommentAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/topic_comment.sql');
-		
-		//Дополнительно поле для уведомлений о новостях друзей
-		$friendNewsAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
-			WHERE COLUMN_NAME="user_settings_notice_friend_news" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
-			AND TABLE_NAME LIKE "'.Config::Get('db.table.prefix').'user";');
-		if(!$friendNewsAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/friend_news.sql');
-		
-		//Дополнительно поле для уведомлений о просьбах написать в блог
-		$requestAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
-			WHERE COLUMN_NAME="user_settings_notice_request" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
-			AND TABLE_NAME LIKE "'.Config::Get('db.table.prefix').'user";');
-		if(!$requestAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/request.sql');
-		
-		//Дополнительно поле для уведомлений для подписки на блоги
-		$blogSubscribeAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
-			WHERE COLUMN_NAME="user_settings_notice_new_topic_subscribe" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
-			AND TABLE_NAME LIKE "'.Config::Get('db.table.prefix').'blog_user";');
-		if(!$blogSubscribeAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/blog_topic_subscriber.sql');
-		
-		//Дополнительно поле для уведомлений для подписки на комментарии в блогах
-		$blogCommentSubscribeAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
-			WHERE COLUMN_NAME="user_settings_notice_new_comment_subscribe" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
-			AND TABLE_NAME LIKE "'.Config::Get('db.table.prefix').'blog_user";');
-		if(!$blogCommentSubscribeAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/blog_comment_subscriber.sql');
+		/*
+			Выделять для каждого вида подписки отдельное поле в базе не очень красиво и удобно с 
+			точки зрения расширяемости,
+			но такой вариант выбрали авторы LiveStreet, так что не выделываюсь и следую ему.
+		*/
+		$this->exportSqlIfNeed($this->aSqlConfig);
 		
 		return true;
 	}
@@ -77,6 +71,15 @@ class PluginNotification extends Plugin {
 	 * Инициализация плагина Дополнительные уведомления
 	 */
 	public function Init() {
+	}
+	
+	protected function exportSqlIfNeed($aConf = array()) {
+		foreach($aConf as $aSqlConf) {
+			$fieldAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+			WHERE COLUMN_NAME="'. $aSqlConf['field'] .'" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
+			AND TABLE_NAME = "'.Config::Get('db.table.prefix'). $aSqlConf['table'] .'";');
+			if(!$fieldAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/'.$aSqlConf['file']);
+		}
 	}
 }
 ?>

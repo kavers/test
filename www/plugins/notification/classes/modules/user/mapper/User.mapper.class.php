@@ -47,10 +47,13 @@ class PluginNotification_ModuleUser_MapperUser extends  PluginNotification_Inher
 				user_settings_notice_new_friend = ? ,
 				user_settings_notice_new_topic_commented = ? ,
 				user_settings_notice_friend_news = ? ,
-				user_settings_notice_request = ? 
+				user_settings_notice_request = ? ,
+				user_settings_notice_new_comment_blogs_subscribe = ?,
+				user_settings_notice_new_gift = ?,
+				user_settings_notice_frequency = ?,
+				user_settings_notice_new_user_blogs_subscribe = ?
 			WHERE user_id = ?
 		";
-		echo($oUser->getSettingsNoticeNewTopicCommented());
 		if ($this->oDb->query($sql,$oUser->getPassword(),
 								   $oUser->getMail(),
 								   $oUser->getSkill(),
@@ -80,6 +83,10 @@ class PluginNotification_ModuleUser_MapperUser extends  PluginNotification_Inher
 								   $oUser->getSettingsNoticeNewTopicCommented(),
 								   $oUser->getSettingsNoticeFriendNews(),
 								   $oUser->getSettingsNoticeRequest(),
+								   $oUser->getSettingsNoticeNewCommentBlogsSubscribe(),
+								   $oUser->getSettingsNoticeNewGift(),
+								   $oUser->getSettingsNoticeFrequency(),
+								   $oUser->getSettingsNoticeNewUserBlogsSubscribe(),
 								   $oUser->getId())) {
 			return true;
 		}		

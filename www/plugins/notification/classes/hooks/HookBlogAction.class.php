@@ -32,8 +32,8 @@ class PluginNotification_HookBlogAction extends Hook {
 	* Здесь отправляем уведомления всем, кто комментировал топик и включил функции их доставки.
 	* 
 	* Первыми остальных комментаторов топика
-	* Потом различным подписчикам на новости этого топика, 
-	* если они не вошли в первые две группы.
+	* Потом различным подписчикам на новости этого топика.
+	* 
 	*
 	* Автору топика и автору комментария уведомления не высылаются. Для автора комментария это 
 	* лишено смысла, а автор топика получит уведомление встроенными средствами LiveStreet.
@@ -55,7 +55,12 @@ class PluginNotification_HookBlogAction extends Hook {
 			}
 		}
 		
-		$this->Notify_SendNotificationsToTopicCommentators($data['oTopic'], $data['oCommentNew'], $data['oCommentParent'], $aExceptUserId);
+		$aCommentatorId = $this->Notify_SendNotificationsToTopicCommentators($data['oTopic'], $data['oCommentNew'], $data['oCommentParent'], $aExceptUserId);
+		if(is_array($aCommentatorId)) {
+			$aExceptUserId = array_merge($aExceptUserId, $aCommentatorId);
+		}
+		
+		$this->Notify_SendNotificationsToBlogCommentSubscribers($data['oTopic'], $data['oCommentNew'], $data['oCommentParent'], $aExceptUserId);
 	}
 }
 ?>

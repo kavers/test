@@ -28,6 +28,22 @@ class PluginNotification_ModuleUser_EntityUser extends PluginNotification_Inheri
 		return $this->_aData['user_settings_notice_request'];
 	}
 	
+	public function getSettingsNoticeNewCommentBlogsSubscribe() {
+		return $this->_aData['user_settings_notice_new_comment_blogs_subscribe'];
+	}
+	
+	public function getSettingsNoticeNewGift() {
+		return $this->_aData['user_settings_notice_new_gift'];
+	}
+	
+	public function getSettingsNoticeFrequency() {
+		return $this->_aData['user_settings_notice_frequency'];
+	}
+	
+	public function getSettingsNoticeNewUserBlogsSubscribe() {
+		return $this->_aData['user_settings_notice_new_user_blogs_subscribe'];
+	}
+	
 	public function setSettingsNoticeNewTopicCommented($data) {
 		return $this->_aData['user_settings_notice_new_topic_commented'] = $data;
 	}
@@ -39,5 +55,22 @@ class PluginNotification_ModuleUser_EntityUser extends PluginNotification_Inheri
 	public function setSettingsNoticeRequest($data) {
 		return $this->_aData['user_settings_notice_request'] = $data;
 	}
+	
+	public function setSettingsNoticeNewCommentBlogsSubscribe($data) {
+		return $this->_aData['user_settings_notice_new_comment_blogs_subscribe'] = $data;
+	}
+	
+	public function setSettingsNoticeNewGift($data) {
+		return $this->_aData['user_settings_notice_new_gift'] = $data;
+	}
+	
+	public function setSettingsNoticeFrequency($data) {
+		return $this->_aData['user_settings_notice_frequency'] = $data;
+	}
+	
+	public function setSettingsNoticeNewUserBlogsSubscribe($data) {
+		return $this->_aData['user_settings_notice_new_user_blogs_subscribe'] = $data;
+	}
+
 }
 ?>
