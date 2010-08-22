@@ -27,7 +27,6 @@
               </ul>
            </li>
         </ul>
-        
         <ul class="descriptions">
            <li class="descr1">
               <h2>Опубликовал</h2>
