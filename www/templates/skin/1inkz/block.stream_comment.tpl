@@ -2,6 +2,7 @@
 						{foreach from=$aComments item=oComment name="cmt"}
 							{assign var="oUser" value=$oComment->getUser()}
 							{assign var="oTopic" value=$oComment->getTarget()}
+                            {if $oTopic}
 							{assign var="oBlog" value=$oTopic->getBlog()}
 							
 							<li {if $smarty.foreach.cmt.iteration % 2 == 1}class="even"{/if}>
@@ -9,6 +10,7 @@
 								<span class="stream-comment-icon"></span><a href="{$oTopic->getUrl()}#comment{$oComment->getId()}" class="stream-comment">{$oTopic->getTitle()|escape:'html'}</a>
 								<span> {$oTopic->getCountComment()}</span> в <a href="{$oBlog->getUrlFull()}" class="stream-blog">{$oBlog->getTitle()|escape:'html'}</a>
 							</li>
+                            {/if}
 						{/foreach}
 					</ul>
 
