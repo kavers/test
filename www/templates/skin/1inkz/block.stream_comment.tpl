@@ -2,7 +2,7 @@
 						{foreach from=$aComments item=oComment name="cmt"}
 							{assign var="oUser" value=$oComment->getUser()}
 							{assign var="oTopic" value=$oComment->getTarget()}
-							{assign var="oBlog" value=$oTopic->getBlog()}
+							{*assign var="oBlog" value=$oTopic->getBlog()*}
 							
 							<li {if $smarty.foreach.cmt.iteration % 2 == 1}class="even"{/if}>
 								<a href="{$oUser->getUserWebPath()}" class="stream-author">{$oUser->getLogin()}</a>&nbsp;&#8594;
