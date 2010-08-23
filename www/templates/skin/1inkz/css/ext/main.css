@@ -1,4 +1,4 @@
-html,body    {  margin:0;
+fhtml,body    {  margin:0;
                 padding:0;
                 background:#6E6E6E;background-position: center 122px;
                 color: #000;
@@ -393,6 +393,8 @@ ul.vidget_list li dl dd {float:left;width:30px;padding:10px 0px 0px 0px;}
 .gradient li.first3 {background:URL('../../img/first3a.png') no-repeat left bottom; height:29px;margin:2px 25px 0px 0px;padding:0px;}
 .gradient li.first3 a {background:URL('../../img/first3b.png') no-repeat right;color:#fff;height:22px;margin:5px -7px 0px 0px;padding:4px 10px 0px 10px}
 
+.block.stream li.active, .block.blogs li.active {background:URL('../../img/first3a.png') no-repeat left bottom; height:29px;margin:2px 25px 0px 0px;padding:0px;}
+.block.stream li.active a, .block.blogs li.active a {background:URL('../../img/first3b.png') no-repeat right;color:#fff;height:22px;margin:5px -7px 0px 0px;padding:4px 10px 0px 10px}
 
 .gradient li a.close {background:URL('../../img/all_down.png') no-repeat right;padding:4px 12px 0px 0px;position:relative;z-index:200;}
 .gradient li a.open, .block .gradient li.close a:hover {background:URL('../../img/all_up.png') no-repeat right;padding:4px 12px 0px 0px;color:#000; z-index:200;position:relative;}
