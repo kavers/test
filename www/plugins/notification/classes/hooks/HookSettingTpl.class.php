@@ -31,9 +31,9 @@ class PluginNotification_HookSettingTpl extends Hook {
 	* Выводим HTML
 	*/
 	public function AddAdditionCheckBoxForNotification() {
-		if(strtolower(Router::GetActionEvent()) == 'tuning' ) {
-			return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'notification_checkbox.tpl');
-		}
+	//	if(strtolower(Router::GetActionEvent()) == 'tuning' ) {
+	//		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'notification_checkbox.tpl');
+	//	}
 		
 		return '';
 	}
