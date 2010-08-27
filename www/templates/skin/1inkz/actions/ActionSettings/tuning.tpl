@@ -5,7 +5,7 @@
         <div class="block_content">
           <div id="text">
 			<form action="{router page='settings'}tuning/" method="POST" enctype="multipart/form-data">
-				{hook run='form_settings_tuning_begin'}
+				{*hook run='form_settings_tuning_begin'*}
                 <input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" />
              <div class="left_text">
                 <p>{$aLang.settings_tuning_notice}</p>
