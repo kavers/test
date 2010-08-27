@@ -20,7 +20,7 @@
              </div>
              <input type="hidden" name="submit_settings_tuning" value="1">
              <p class="cn refill"><input type="image" src="{cfg name='path.static.skin'}/img/save_button.gif" width="212" height="32" alt="{$aLang.settings_tuning_submit}" title="{$aLang.settings_tuning_submit}"/></p>
-             {hook run='form_settings_tuning_end'}
+             {*hook run='form_settings_tuning_end'*}
              </form>
            </div>
         <div class="block_bottom3"></div>
