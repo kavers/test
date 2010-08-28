@@ -80,7 +80,11 @@ function Palitra (event,name){
 		}, function() {
 		});
 
-
+		$(".authorInfo").hover(function() {
+            $('.user_info').show();
+		}, function() {
+			$('.user_info').hide();
+		});
 
         $(".slider").easySlider({
             prevText: '<img src="'+DIR_STATIC_SKIN+'/img/left_arrow.gif" width="18" height="18" alt="prev" title="prev" />',

@@ -321,7 +321,7 @@ $config['block']['rule_index_blog'] = array(
 		),
 	'blocks'  => array(
 			'right' => array(
-                'info'=>array('block.info.tpl','priority'=>100),
+                'block.blogInfo2.tpl'=>array('priority'=>150),
                 'stream'=>array('priority'=>100),
                 'tags'=>array('priority'=>50),
                 'blogs'=>array('params'=>array(),'priority'=>1))

@@ -28,13 +28,13 @@
            </li>
         </ul>
         <ul class="descriptions">
-           <li class="descr1">
+           <li class="descr1 authorInfo">
               <h2>Опубликовал</h2>
               <a href="{$oUserOwner->getUserWebPath()}"><img src="{$oUserOwner->getProfileAvatarPath(48)}" width="47" height="44" alt="avatar" title="avatar" /></a>
               <a href="{$oUserOwner->getUserWebPath()}">{$oUserOwner->getLogin()}</a>
-              <span>10 дней назад</span>
+              <span>{date_format date=$oTopic->getDateAdd()}</span>
 
-              <div class="user_info">
+              <div class="user_info hidden">
                  <a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
                  <a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico6.png" width="24" height="23" alt="" title=""/></a>
                  <a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico7.png" width="24" height="23" alt="" title=""/></a>
@@ -49,6 +49,7 @@
 					{/foreach}
               </ul>
            </li>
+           {*
            <li class="descr1">
               <h2>Статистика</h2>
               <div class="rating_title">Рейтинг</div><div class="cur_rating red"><a href="javascript:void(0);" id="cur_name">баян</a></div>
@@ -74,6 +75,7 @@
               <p>Просмотров <strong>56778</strong>&nbsp;Оценок <strong>1048</strong><br />
               Обсуждают <strong>48</strong></p>
            </li>
+           *}
         </ul>
         <div class="block_bottom"></div>
         </div>
