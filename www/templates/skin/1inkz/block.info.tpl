@@ -54,6 +54,7 @@
            </li>
            <li class="descr1">
               <h2>Описание и теги</h2>
+              {*<p>{$oBlog->getDescription()}</p>*}
               <p class="lt">Язык записи <strong>Русский</strong>&nbsp;&nbsp; Место
                 {if $oUserOwner->getProfileCountry()}
                     <a style="display:inline;font-size:1em" href="{router page='people'}country/{$oUserOwner->getProfileCountry()|escape:'html'}/">{$oUserOwner->getProfileCountry()|escape:'html'}</a>{if $oUserOwner->getProfileCity()},{/if}

@@ -33,16 +33,20 @@
            <li class="descr3">
               <a href="{$oBlog->getFullPath()}" class="user_avatar"><img src="{$oBlog->getAvatarPath(100)}" alt="avatar" title="avatar" /></a>
               <div class="user_info">
-                 <a href="#" class="username">{$oUserOwner->getProfileName()}</a>
-                 <a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
-                 <a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico6.png" width="24" height="23" alt="" title=""/></a>
+                 <a href="{$oBlog->getFullPath()}" class="username">{$oBlog->getTitle()}</a>
+                 {*<a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
+                 *}{if $oUserCurrent and $oUserCurrent->getId()!=$oBlog->getOwnerId()}
+							<a href="#" onclick="ajaxJoinLeaveBlog(this,{$oBlog->getId()}); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico6.png" width="24" height="23" alt="" title=""/></a>
+			     {/if}
 
                 </div>
            </li>
+           {if $oBlog->getDescription()}
            <li class="descr1">
               <h2>Описание</h2>
               <p>{$oBlog->getDescription()}</p>
            </li>
+           {/if}
            {*
            <li class="descr1">
 				<ul class="tags">

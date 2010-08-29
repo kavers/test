@@ -50,10 +50,13 @@
                  {/if}
                 </div>
            </li>
+           {if $oUserOwner->getProfileAbout()}
            <li class="descr1">
               <h2>О себе</h2>
               <p>{$oUserOwner->getProfileAbout()}</p>
-           </li>{*
+           </li>
+           {/if}
+           {*
            <li class="descr1">
 				<ul class="tags">
                     {foreach from=$oTopic->getTagsArray() item=sTag name=tags_list}
