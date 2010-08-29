@@ -85,6 +85,8 @@ class ActionMy extends Action {
 		 */			
 		$this->Viewer_Assign('aPaging',$aPaging);			
 		$this->Viewer_Assign('aTopics',$aTopics);
+        $this->Viewer_Assign('oUserOwner',$this->oUserProfile);	
+        
 		$this->Viewer_AddHtmlTitle($this->Lang_Get('user_menu_publication').' '.$this->oUserProfile->getLogin());
 		$this->Viewer_AddHtmlTitle($this->Lang_Get('user_menu_publication_blog'));
 		$this->Viewer_SetHtmlRssAlternate(Router::GetPath('rss').'personal_blog/'.$this->oUserProfile->getLogin().'/',$this->oUserProfile->getLogin());

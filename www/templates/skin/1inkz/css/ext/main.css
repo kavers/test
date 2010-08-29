@@ -911,6 +911,11 @@ p.disabled input,p.disabled textarea,p.disabled a.del {opacity:0.4;filter: alpha
 .user_info a {display:block; float:left; margin:0px 8px 0px 0px;width:23px;}
 .user_info a.username {color:#FFF; width:170px;margin:5px 0px 0px -80px;}
 
+.descr3 .user_info {
+   margin:-28px -20px 0px -10px;
+   //margin:-13px 0px 0px -141px;
+}
+
 /* Profile edit  */
 .profile div.add {position:absolute;
                        left:0px;

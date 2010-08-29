@@ -1,11 +1,17 @@
-{assign var="oUserOwner" value=$oBlog->getOwner()}
+{if !$oUserOwner}
+    {if $oTopic}
+        {assign var="oBlog" value=$oTopic->getBlog()}
+        {assign var="oUserOwner" value=$oBlog->getOwner()}
+    {/if}
+    {assign var="oUserOwner" value=$oBlog->getOwner()}
+{/if}
 <!--  Блок Сведения о новости -->
      <li id="about_news" class="block green">
         <div class="title"><a href="#111" class="link"><h1>Сведения</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
         <div class="block_content">
         <ul class="gradient">
            <li class="first3"><a href="">Блог</a></li>
-           <li><a href="#">Профиль</a></li>
+         {*  <li><a href="#">Профиль</a></li>
            <li><a href="#">Записи друзей</a></li>
            <li><a href="" class="more_menu close">ещё</a>
               <ul class="all_menu">
@@ -26,6 +32,7 @@
                  <li><a href="#">Рок-н-ролл</a></li>
               </ul>
            </li>
+           *}
         </ul>
         <ul class="descriptions">
            <li class="descr1 authorInfo">
@@ -33,16 +40,31 @@
               <a href="{$oUserOwner->getUserWebPath()}"><img src="{$oUserOwner->getProfileAvatarPath(48)}" width="47" height="44" alt="avatar" title="avatar" /></a>
               <a href="{$oUserOwner->getUserWebPath()}">{$oUserOwner->getLogin()}</a>
               <span>{date_format date=$oTopic->getDateAdd()}</span>
-
-              <div class="user_info hidden">
-                 <a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
-                 <a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico6.png" width="24" height="23" alt="" title=""/></a>
-                 <a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico7.png" width="24" height="23" alt="" title=""/></a>
-              </div>
+                 {if $oUserOwner->getId() != $oUserCurrent->getId()}
+                 <div class="user_info hidden">
+                 {if $oUserFriend and ($oUserFriend->getFriendStatus()==$USER_FRIEND_ACCEPT+$USER_FRIEND_OFFER or $oUserFriend->getFriendStatus()==$USER_FRIEND_ACCEPT+$USER_FRIEND_ACCEPT) }
+                    <a href="#"  title="{$aLang.user_friend_del}" onclick="ajaxDeleteUserFriendFromInfo(this,{$oUserOwner->getId()},'del'); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
+                 {elseif !$oUserFriend}	
+                    <a href="#"  title="{$aLang.user_friend_add}" onclick="ajaxAddUserFriendFromInfo(this,{$oUserOwner->getId()},'add'); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
+                 {/if}
+                 {*<a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico6.png" width="24" height="23" alt="" title=""/></a>*}
+                 {*<a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico7.png" width="24" height="23" alt="" title=""/></a>*}
+                 </div>
+                 {/if}
            </li>
            <li class="descr1">
               <h2>Описание и теги</h2>
-              <p class="lt">Язык записи <strong>Русский</strong>&nbsp;&nbsp; Место <strong>Питер</strong>&nbsp;&nbsp; Настроение <strong>Норма</strong>&nbsp;&nbsp; Музыка <strong>Britney Spears - Piece of Me</strong></p>
+              <p class="lt">Язык записи <strong>Русский</strong>&nbsp;&nbsp; Место
+                {if $oUserOwner->getProfileCountry()}
+                    <a style="display:inline;font-size:1em" href="{router page='people'}country/{$oUserOwner->getProfileCountry()|escape:'html'}/">{$oUserOwner->getProfileCountry()|escape:'html'}</a>{if $oUserOwner->getProfileCity()},{/if}
+                {/if}						
+                {if $oUserOwner->getProfileCity()}
+                    <a style="display:inline;font-size:1em" href="{router page='people'}city/{$oUserOwner->getProfileCity()|escape:'html'}/">{$oUserOwner->getProfileCity()|escape:'html'}</a>
+                {/if}
+              {*<strong>Питер</strong>&nbsp;&nbsp; Настроение <strong>Норма</strong>&nbsp;&nbsp; Музыка <strong>Britney Spears - Piece of Me</strong>
+              *}
+              </p>
+              <br>
 				<ul class="tags">
                     {foreach from=$oTopic->getTagsArray() item=sTag name=tags_list}
 						<li><a href="{router page='tag'}{$sTag|escape:'html'}/">{$sTag|escape:'html'}</a>{if !$smarty.foreach.tags_list.last}, {/if}</li>

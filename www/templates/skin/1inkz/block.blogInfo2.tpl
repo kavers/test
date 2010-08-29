@@ -1,3 +1,4 @@
+{if $oBlog}
 {assign var="oUserOwner" value=$oBlog->getOwner()}
 <!--  Блок Сведения о новости -->
      <li id="about_news" class="block green">
@@ -131,3 +132,6 @@
 				<div class="bl"><div class="br"></div></div>
 			</div>
 *}
+{else $oTopic}
+{include file="block.info.tpl"}
+{/if}

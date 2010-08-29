@@ -1,4 +1,10 @@
-{assign var="oUserOwner" value=$oTopic->getOwner()}
+{if !$oUserOwner}
+    {if $oTopic}
+    {assign var="oUserOwner" value=$oTopic->getOwner()}
+    {elseif $oBlog}
+    {assign var="oUserOwner" value=$oBlog->getOwner()}
+    {/if}
+{/if}
 <!--  Блок Сведения о новости -->
      <li id="about_news" class="block green">
         <div class="title"><a href="#" class="link"><h1>Об авторе</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
@@ -32,15 +38,16 @@
            <li class="descr3">
               <a href="{$oUserOwner->getUserWebPath()}" class="user_avatar"><img src="{$oUserOwner->getProfileAvatarPath(100)}" alt="avatar" title="avatar" /></a>
               <div class="user_info">
-                 <a href="#" class="username">{$oUserOwner->getProfileName()}</a>
+                 <a href="{$oUserOwner->getUserWebPath()}" class="username">{$oUserOwner->getProfileName()}</a>
+                 {if $oUserOwner->getId() != $oUserCurrent->getId()}
                  {if $oUserFriend and ($oUserFriend->getFriendStatus()==$USER_FRIEND_ACCEPT+$USER_FRIEND_OFFER or $oUserFriend->getFriendStatus()==$USER_FRIEND_ACCEPT+$USER_FRIEND_ACCEPT) }
-                    <a href="#"  title="{$aLang.user_friend_del}" onclick="ajaxDeleteUserFriendFromInfo(this,{$oUserProfile->getId()},'del'); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
+                    <a href="#"  title="{$aLang.user_friend_del}" onclick="ajaxDeleteUserFriendFromInfo(this,{$oUserOwner->getId()},'del'); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
                  {elseif !$oUserFriend}	
-                    <a href="#"  title="{$aLang.user_friend_add}" onclick="ajaxAddUserFriendFromInfo(this,{$oUserProfile->getId()},'add'); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
+                    <a href="#"  title="{$aLang.user_friend_add}" onclick="ajaxAddUserFriendFromInfo(this,{$oUserOwner->getId()},'add'); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
                  {/if}
                  {*<a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico6.png" width="24" height="23" alt="" title=""/></a>*}
                  {*<a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico7.png" width="24" height="23" alt="" title=""/></a>*}
-
+                 {/if}
                 </div>
            </li>
            <li class="descr1">
