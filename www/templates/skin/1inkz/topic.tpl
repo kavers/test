@@ -63,12 +63,14 @@
            <ul class="add_icons dream_icons">
              <li><a href="#" class="more_menu2 close"><img src="{cfg name='path.static.skin'}/img/icon1.png" width="44" height="44" alt="Поделиься" title="Поделиться"/>Поделиться</a>
                 <ul class="all_menu share">
-	               <li><a href="#"><img src="{cfg name='path.static.skin'}/img/1.gif" /></a></li>
-	               <li><a href="#"><img src="{cfg name='path.static.skin'}/img/2.gif" /></a></li>
-	               <li><a href="#"><img src="{cfg name='path.static.skin'}/img/3.gif" /></a></li>
-	               <li><a href="#"><img src="{cfg name='path.static.skin'}/img/4.gif" /></a></li>
-	               <li><a href="#"><img src="{cfg name='path.static.skin'}/img/5.gif" /></a></li>
-	               <li><a href="#"><img src="{cfg name='path.static.skin'}/img/6.gif" /></a></li>
+                    <li><a rel="nofollow" target="_blank" href="http://twitter.com/home?status=%231inkz%20{$oTopic->getTitle()|escape:'html'}%20{$oTopic->getUrl()}" title="Добавить в Twitter"><img src="{cfg name='path.static.skin'}/img/twitter.png" title="Опубликовать в Twitter" alt="Опубликовать в Twitter" /></a></li>
+                    <li><a rel="nofollow" target="_blank" href="http://www.facebook.com/sharer.php?u={$oTopic->getUrl()}"><img src="{cfg name='path.static.skin'}/img/facebook.png" title="Поделиться в Facebook" alt="Поделиться в Facebook" /></a></li>
+                    <li><a rel="nofollow" target="_blank" href="http://vkontakte.ru/share.php?url={$oTopic->getUrl()}"><img src="{cfg name='path.static.skin'}/img/vkontakte.png" title="Поделиться ВКонтакте" alt="Поделиться ВКонтакте" /></a></li>
+                    <li><a rel="nofollow" target="_blank" href="http://connect.mail.ru/share?share_url={$oTopic->getUrl()}"><img src="{cfg name='path.static.skin'}/img/mailru.png" title="Поделиться в Моём Мире" alt="Поделиться в Моём Мире" /></a></li>
+                    <li><a rel="nofollow" target="_blank" href="http://www.google.com/bookmarks/mark?op=edit&bkmk={$oTopic->getUrl()}&title={$oTopic->getTitle()|escape:'html'}&annotation=" ><img src="{cfg name='path.static.skin'}/img/google.png" title="Сохранить в Закладки Google" alt="Сохранить в Закладки Google " /></a></li>
+                    <li><a rel="nofollow" target="_blank" href="http://www.google.com/buzz/post?url={$oTopic->getUrl()}&title={$oTopic->getTitle()|escape:'html'}&srcURL=http://1in.kz/" ><img src="{cfg name='path.static.skin'}/img/buzz.png" title="Поделиться в Google Buzz" alt="Поделиться в Google Buzz" /></a></li>
+                    <li><a rel="nofollow" target="_blank" href="http://delicious.com/post?url={$oTopic->getUrl()}&title={$oTopic->getTitle()|escape:'html'}"><img src="{cfg name='path.static.skin'}/img/delicious.png" title="Добавить в Delicious" alt="Добавить в Delicious" /></a></li>
+                    <li><a rel="nofollow" target="_blank" href="http://www.bobrdobr.ru/add.html?url={$oTopic->getUrl()}&title={$oTopic->getTitle()|escape:'html'}"><img src="{cfg name='path.static.skin'}/img/bobrdobr.png" title="Добавить в BobrDobr" alt="Добавить в BobrDobr" /></a></li> 
  			    </ul>
              </li>
              <li><div class="favorite {if $oUserCurrent}{if $oTopic->getIsFavourite()}active{/if}{else}fav-guest{/if}"><a href="" onclick="lsFavourite.toggle({$oTopic->getId()},this,'topic'); return false;"><img src="{cfg name='path.static.skin'}/img/icon3.gif" width="44" height="44" alt="В избранное" title="В избранное"/>В закладки</a></div></li>
