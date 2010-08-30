@@ -3,8 +3,11 @@
         {assign var="oBlog" value=$oTopic->getBlog()}
         {assign var="oUserOwner" value=$oBlog->getOwner()}
     {/if}
+    {if $oBlog}
     {assign var="oUserOwner" value=$oBlog->getOwner()}
+    {/if}
 {/if}
+{if $oUserOwner}
 <!--  Блок Сведения о новости -->
      <li id="about_news" class="block green">
         <div class="title"><a href="#111" class="link"><h1>Сведения</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
@@ -166,3 +169,4 @@
 				<div class="bl"><div class="br"></div></div>
 			</div>
 *}
+{/if}
