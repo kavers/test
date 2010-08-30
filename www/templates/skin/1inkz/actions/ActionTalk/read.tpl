@@ -12,14 +12,14 @@
     </div>
     <div class="block_content">
         
-		<div style="padding:15px" class="topic talk">
+		<div style="padding:15px" id="text">
 		    <div class="favorite {if $oTalk->getIsFavourite()}active{else}guest{/if}"><a href="#" onclick="lsFavourite.toggle({$oTalk->getId()},this,'talk'); return false;"></a></div>			
             <div class="content">
-                {$oTalk->getText()}				
+                {$oTalk->getText()}
             </div>				
             <ul class="descr1">
                 <li class="date">{date_format date=$oTalk->getDate()}</li>
-                <li class="author"><a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></li>
+                <li class="author"><a class="orange" href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></li>
             </ul>
         </div>
 			{*
