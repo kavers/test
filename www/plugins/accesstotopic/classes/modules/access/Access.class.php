@@ -17,6 +17,7 @@
 
 /**
 * Функции для проверки уровня доступа пользователя к топику.
+* Так же для создания фильтрующих запросов к БД. Ввиду явно выделенного ADB модуля.
 * Ничего подобного в Livestreet нет, поэтому отдельным модулем.
 * 
 * Список доступа
@@ -42,7 +43,7 @@ class PluginAccesstotopic_ModuleAccess extends Module {
 	* @param	oTopic		Топик
 	* @return	array		Список доступа
 	*/
-	public function GetUserAccessLevel($oUser, $oTopic) {
+	static public function GetUserAccessLevel($oUser, $oTopic) {
 		if($oUser->isAdministrator()) {
 			return array(self::READ, self::COMMENT);
 		}
@@ -72,7 +73,7 @@ class PluginAccesstotopic_ModuleAccess extends Module {
 	* @param	string			проверяемый уровень доступа
 	* @return	boolean|null	Если уровня не существует - null
 	*/
-	public function CheckUserAccess($oUser, $oTopic, $sLevel) {
+	static public function CheckUserAccess($oUser, $oTopic, $sLevel) {
 		if($oUser->isAdministrator()) {
 			return true;
 		}
@@ -87,6 +88,126 @@ class PluginAccesstotopic_ModuleAccess extends Module {
 		}
 		
 		return null;
+	}
+	
+	/**
+	* Дополнительные условия к WHERE для фильтрации топиков согласно уровню доступа пользователя
+	* id = 0 - анонимный пользователь. Адмнистратор никак не выделен, для него имеет смыл просто 
+	* не вызывать данный метод.
+	* 
+	* @param	int		ID пользователя, для которого выполняется фильтрация
+	* @return	string	Строка для вставки в where. Заключена в скобки. Пробелов слева и права нет.
+	*/
+	static public function GetAccessWhereStatment($currentUserId = 0) {
+		$currentUserId = (int) $currentUserId;
+		$statmentPersonal = '
+							(t.user_id = '.$currentUserId.')
+							OR
+							(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_ALL').')
+							OR
+							(
+								(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_OWNER_ONLY').')
+								AND
+								(t.user_id = '.$currentUserId.')
+							)
+							OR
+							(
+								(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_REGISTERED').')
+								AND
+								('.$currentUserId.' > 0)
+							)
+							OR
+							(
+								(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_FRIENDS').')
+								AND
+								(
+								0 < 
+									(
+										SELECT COUNT(f.user_to) FROM '.Config::Get('db.table.friend').' as f
+										WHERE
+										(
+											t.user_id = f.user_from AND f.user_to = '.$currentUserId.'
+											AND 
+											(
+												f.status_from = '.ModuleUser::USER_FRIEND_OFFER.'
+												OR
+												f.status_from = '.ModuleUser::USER_FRIEND_ACCEPT.'
+											)
+										)
+										OR 
+										(
+											t.user_id = f.user_to AND f.user_from = '.$currentUserId.' 
+											AND
+											(
+												f.status_to = '.ModuleUser::USER_FRIEND_OFFER.'
+												OR
+												f.status_to = '.ModuleUser::USER_FRIEND_ACCEPT.'
+											)
+										)
+									)
+								)
+							)
+							OR
+							(
+								(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_TWOSIDE_FRIENDS').')
+								AND
+								(
+								0 <
+									(
+										SELECT COUNT(f.user_from) FROM '.Config::Get('db.table.friend').' as f
+										WHERE 
+										(
+											t.user_id = f.user_from AND f.user_to = '.$currentUserId.' 
+											AND 
+											(
+												(f.status_from + f.status_to) = '. (ModuleUser::USER_FRIEND_OFFER + ModuleUser::USER_FRIEND_ACCEPT) .'
+												OR
+												(
+													f.status_to = '.ModuleUser::USER_FRIEND_ACCEPT.'
+													AND
+													f.status_from = '.ModuleUser::USER_FRIEND_ACCEPT.'
+												)
+											)
+										)
+										OR 
+										(
+											t.user_id = f.user_to AND f.user_from = '.$currentUserId.' 
+											AND 
+											(
+												(f.status_from + f.status_to) = '. (ModuleUser::USER_FRIEND_OFFER + ModuleUser::USER_FRIEND_ACCEPT) .'
+												OR
+												(
+													f.status_to = '.ModuleUser::USER_FRIEND_ACCEPT.'
+													AND
+													f.status_from = '.ModuleUser::USER_FRIEND_ACCEPT.'
+												)
+											)
+										)
+									)
+								)
+							)';
+		
+		$statmentCollective = '
+							(t.access_level = '.Config::Get('plugin.accesstotopic.collectiveBlog.accessLevels.FOR_ALL').')
+							OR
+							(
+								(t.access_level = '.Config::Get('plugin.accesstotopic.collectiveBlog.accessLevels.FOR_REGISTERED').')
+								AND
+								('.$currentUserId.' > 0)
+							)
+							OR
+							(
+								(t.access_level = '.Config::Get('plugin.accesstotopic.collectiveBlog.accessLevels.FOR_COLLECTIVE').')
+								AND
+								(
+								0 < 
+									(
+									SELECT COUNT(bu.user_id) FROM '.Config::Get('db.table.blog_user').' as bu
+									WHERE bu.user_id = '.$currentUserId.' AND bu.blog_id = t.blog_id
+									)
+								)
+							)';
+		return '(' . $statmentPersonal . ' OR ' . $statmentCollective . ')';
 	}
 	
 	protected function canComment($oTopic, $oUser) {

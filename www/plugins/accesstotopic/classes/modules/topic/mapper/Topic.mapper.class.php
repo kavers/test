@@ -35,7 +35,7 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 						AND
 						t.topic_rating >= 0
 						AND
-						'.$this->getAccessWhereStatment($currentUserId).'
+						'.PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($currentUserId).'
 						{ AND t.blog_id NOT IN(?a) }
 					ORDER by t.topic_rating desc, t.topic_id desc
 					LIMIT 0, ?d ';
@@ -70,7 +70,7 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 				WHERE 
 					t.topic_id IN(?a)
 					AND
-					'.$this->getAccessWhereStatment($currentUserId).'
+					'.PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($currentUserId).'
 				ORDER BY FIELD(t.topic_id,?a) ';
 		$aTopics=array();
 		if ($aRows=$this->oDb->select($sql,$aArrayId,$aArrayId)) {
@@ -103,7 +103,7 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 						AND
 						t.blog_id=b.blog_id
 						AND
-						'.$this->getAccessWhereStatment($currentUserId).'
+						'.PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($currentUserId).'
 					ORDER BY '.
 						implode(', ', $aFilter['order'])
 				.'
@@ -131,7 +131,7 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 					1=1
 					'.$sWhere.'
 					AND
-					'.$this->getAccessWhereStatment($currentUserId).'
+					'.PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($currentUserId).'
 					AND
 					t.blog_id=b.blog_id;';
 		if ($aRow=$this->oDb->selectRow($sql)) {
@@ -155,7 +155,7 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 						1=1
 						'.$sWhere.'
 						AND
-						'.$this->getAccessWhereStatment($currentUserId).'
+						'.PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($currentUserId).'
 						AND
 						t.blog_id=b.blog_id
 					ORDER by t.topic_id desc';
@@ -202,7 +202,7 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 		$sql = "UPDATE ".Config::Get('db.table.topic')." 
 			SET 
 				blog_id= ?d,
-				topic_title= ?,				
+				topic_title= ?,
 				topic_tags= ?,
 				topic_date_add = ?,
 				topic_date_edit = ?,
@@ -220,124 +220,12 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 				access_level = ?d
 			WHERE
 				topic_id = ?d
-		";			
+		";
 		if ($this->oDb->query($sql,$oTopic->getBlogId(),$oTopic->getTitle(),$oTopic->getTags(),$oTopic->getDateAdd(),$oTopic->getDateEdit(),$oTopic->getUserIp(),$oTopic->getPublish(),$oTopic->getPublishDraft(),$oTopic->getPublishIndex(),$oTopic->getRating(),$oTopic->getCountVote(),$oTopic->getCountRead(),$oTopic->getCountComment(),$oTopic->getCutText(),$oTopic->getForbidComment(),$oTopic->getTextHash(),$oTopic->getAccessLevel(), $oTopic->getId())) {
 			$this->UpdateTopicContent($oTopic);
 			return true;
 		}		
 		return false;
-	}
-	
-	protected function getAccessWhereStatment($currentUserId = 0) {
-		$currentUserId = (int) $currentUserId;
-		$statmentPersonal = '
-							(t.user_id = '.$currentUserId.')
-							OR
-							(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_ALL').')
-							OR
-							(
-								(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_OWNER_ONLY').')
-								AND
-								(t.user_id = '.$currentUserId.')
-							)
-							OR
-							(
-								(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_REGISTERED').')
-								AND
-								('.$currentUserId.' > 0)
-							)
-							OR
-							(
-								(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_FRIENDS').')
-								AND
-								(
-								0 < 
-									(
-										SELECT COUNT(f.user_to) FROM '.Config::Get('db.table.friend').' as f
-										WHERE
-										(
-											t.user_id = f.user_from AND f.user_to = '.$currentUserId.'
-											AND 
-											(
-												f.status_from = '.ModuleUser::USER_FRIEND_OFFER.'
-												OR
-												f.status_from = '.ModuleUser::USER_FRIEND_ACCEPT.'
-											)
-										)
-										OR 
-										(
-											t.user_id = f.user_to AND f.user_from = '.$currentUserId.' 
-											AND
-											(
-												f.status_to = '.ModuleUser::USER_FRIEND_OFFER.'
-												OR
-												f.status_to = '.ModuleUser::USER_FRIEND_ACCEPT.'
-											)
-										)
-									)
-								)
-							)
-							OR
-							(
-								(t.access_level = '.Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_TWOSIDE_FRIENDS').')
-								AND
-								(
-								0 <
-									(
-										SELECT COUNT(f.user_from) FROM '.Config::Get('db.table.friend').' as f
-										WHERE 
-										(
-											t.user_id = f.user_from AND f.user_to = '.$currentUserId.' 
-											AND 
-											(
-												(f.status_from + f.status_to) = '. (ModuleUser::USER_FRIEND_OFFER + ModuleUser::USER_FRIEND_ACCEPT) .'
-												OR
-												(
-													f.status_to = '.ModuleUser::USER_FRIEND_ACCEPT.'
-													AND
-													f.status_from = '.ModuleUser::USER_FRIEND_ACCEPT.'
-												)
-											)
-										)
-										OR 
-										(
-											t.user_id = f.user_to AND f.user_from = '.$currentUserId.' 
-											AND 
-											(
-												(f.status_from + f.status_to) = '. (ModuleUser::USER_FRIEND_OFFER + ModuleUser::USER_FRIEND_ACCEPT) .'
-												OR
-												(
-													f.status_to = '.ModuleUser::USER_FRIEND_ACCEPT.'
-													AND
-													f.status_from = '.ModuleUser::USER_FRIEND_ACCEPT.'
-												)
-											)
-										)
-									)
-								)
-							)';
-		
-		$statmentCollective = '
-							(t.access_level = '.Config::Get('plugin.accesstotopic.collectiveBlog.accessLevels.FOR_ALL').')
-							OR
-							(
-								(t.access_level = '.Config::Get('plugin.accesstotopic.collectiveBlog.accessLevels.FOR_REGISTERED').')
-								AND
-								('.$currentUserId.' > 0)
-							)
-							OR
-							(
-								(t.access_level = '.Config::Get('plugin.accesstotopic.collectiveBlog.accessLevels.FOR_COLLECTIVE').')
-								AND
-								(
-								0 < 
-									(
-									SELECT COUNT(bu.user_id) FROM '.Config::Get('db.table.blog_user').' as bu
-									WHERE bu.user_id = '.$currentUserId.' AND bu.blog_id = t.blog_id
-									)
-								)
-							)';
-		return '(' . $statmentPersonal . ' OR ' . $statmentCollective . ')';
 	}
 }
 ?>
