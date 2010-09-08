@@ -29,7 +29,7 @@
 				<li>{$timeStamp|date_format:"%H:%M"}</li>
 				{/foreach}
 				<li class="right"><a name="#" style="cursor:pointer"><img src="{cfg name='path.static.skin'}/img/right_end.gif" width="13" height="13" alt="{$aLang.blogosphere_block_right}" title="{$aLang.blogosphere_block_right}"/></a></li>
-				<div class="act" style="background-color: #FF7200; opacity: 0.25; cursor:pointer; filter:alpha(opacity=50);">&nbsp;</div>
+				<li class="act" style="background-color: #FF7200; opacity: 0.25; cursor:pointer; filter:alpha(opacity=50);">&nbsp;</li>
 			</ul>
 			<div class="block_bottom5"></div>
 		</div>

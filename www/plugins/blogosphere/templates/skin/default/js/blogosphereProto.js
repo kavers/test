@@ -50,6 +50,7 @@ pluginBlogosphere.prototype = {
 	
 	//Получаем и отображаем массив топиков.
 	reloadTopics: function(filter) {
+		this.fieldObject.empty();
 		this.getTopics();
 		this.hardScrolling('end');
 	},
@@ -62,7 +63,7 @@ pluginBlogosphere.prototype = {
 				"data": {"security_ls_key":pluginBlogosphereConfig.securityKey, "filterType": this.filterType},
 				"dataType": "json",
 				"error": function() {
-					msgErrorBox.alert(this.sMsgTitle,this.sMsg);
+					msgErrorBox.alert('Error!', 'Can\'t load topics to blogosphere. Please, try later.');
 				},
 				"success": function(data, textStatus) {
 					oBlogosphere.drawTopics(data.topics);
@@ -96,7 +97,7 @@ pluginBlogosphere.prototype = {
 					.attr("href", topic.author.profileUrl)
 					.empty()
 					.append(topic.author.name)
-					.after(topic.date);
+					.after(topic.strDate);
 				
 				var mLeft = Math.ceil(oBlogosphere.stepByTime * (topic.date - oBlogosphere.timeStart) - 150);
 				var mTop = Math.ceil(oBlogosphere.stepByViews * (topic.viewCount - oBlogosphere.minViews));

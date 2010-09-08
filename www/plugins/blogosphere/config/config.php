@@ -22,6 +22,7 @@ $config['filters'] = array(
 	//array('titleIndex' => 'blogosphere_filter_celebrity', 'type' => 'celebrity'),
 	array('titleIndex' => 'blogosphere_filter_community', 'type' => 'community'),
 	//array('titleIndex' => 'blogosphere_filter_recommended', 'type' => 'recommended'),
+	array('titleIndex' => 'my_stuff', 'type' => 'friends', 'function' => 'PluginMystuff_ModuleMystuff_GetTopicsForBlogosphere'),
 );
 
 Config::Set('router.page.blogosphere', 'PluginBlogosphere_ActionBlogosphere');
@@ -31,10 +32,10 @@ $config['period'] = 12 * 3600;
 //Интервал между отметками на линии времени в секундах
 $config['interval'] = 6200;
 
-//Минимальный рейтинг, выше которого топик считается популярным
-$config['popularTopicMinRating']=0;
-//Минимальный рейтинг, выше которого пользователь считается популярным
-$config['popularUsersMinRating']=0;
+//Минимальный кол-во комментов, выше которого топик считается популярным
+$config['popularTopicMinComment'] = 10;
+//Число пользователей, которые беруться с вершины списка юзеров отсортированных по числу друзей, популярные пользователи
+$config['popularUsersCount'] = 20;
 
 return $config;
 ?>

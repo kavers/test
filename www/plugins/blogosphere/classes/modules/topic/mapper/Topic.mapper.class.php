@@ -17,21 +17,23 @@
 
 
 class PluginBlogosphere_ModuleTopic_MapperTopic extends PluginBlogosphere_Inherit_ModuleTopic_MapperTopic {
-	
-	public function GetAllTopicsFilteredByDate($aFilter,$accessModuleAvalible=false) {
-		$sWhere=$this->buildFilterDateAccess($aFilter);
+	/**
+	* Получаем массив id топиков удовлетворяющих фильтру
+	* 
+	* @param	array		параметры фильтра array(
+	* 											'more' => array('fieldName' => 'value'),
+	* 											'less' => ...,
+	* 											'in' => ...
+	* 										)
+	* @param	bool		доступен ли плагин для проверки на доступ к топикам
+	* @return	array		массив id
+	*/
+	public function GetTopicsForBlogosphereByFilter($aFilter,$accessModuleAvailable = false) {
+		$sWhere=$this->buildFilterForBlogosphere($aFilter);
 		
 		//фильтрация по уровню доступа к топикам
-		if(($accessModuleAvalible)AND(isset($aFilter['user_id']))AND($aFilter['user_admin'])) {
-			if($aFilter['user_id']==0) { //для анонимного юзера
-				$sWhere.=' AND ';
-				$sWhere.=PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment();
-			} else { //для авторизованного юзера
-				if($aFilter['user_admin']==0) { //для не администратора
-					$sWhere.=' AND ';
-					$sWhere.=PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($aFilter['user_id']);
-				} //для администратора не применяем фильтрацию по уровню доступа
-			}
+		if($accessModuleAvailable && !$aFilter['oUser']->isAdministrator()) {
+			$sWhere .= ' AND ' . PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($aFilter['oUser']->getId());
 		}
 		
 		$sql = 'SELECT 
@@ -51,22 +53,25 @@ class PluginBlogosphere_ModuleTopic_MapperTopic extends PluginBlogosphere_Inheri
 		return $aTopics;
 	}
 	
-	protected function buildFilterDateAccess($aFilter) {
-		$sWhere='';
-		
-		if (isset($aFilter['date_begin'])) {  //Диапазон дат Начальная дата
-			$sWhere.=" AND t.topic_date_add >= '".$aFilter['date_begin']."'";
+	/**
+	* Преобразуем парметры фильтрации в where statment
+	* 
+	* @param	array		Параметры фильтрации
+	* @return	string		where statment
+	*/
+	protected function buildFilterForBlogosphere($aFilter) {
+		$sWhere = '';
+		foreach($aFilter['more'] as $sFieldName => $sValue) {
+			$sWhere.=" AND t.{$sFieldName} >= \"" . mysql_real_escape_string($sValue) . '"';
 		}
-		if (isset($aFilter['date_end'])) {  //Диапазон дат Конечная дата
-			$sWhere.=" AND t.topic_date_add <= '".$aFilter['date_end']."'";
+		foreach($aFilter['less'] as $sFieldName => $sValue) {
+			$sWhere.=" AND t.{$sFieldName} <= \"" . mysql_real_escape_string($sValue) . '"';
+		}
+		foreach($aFilter['in'] as $sFieldName => $aValue) {
+				$sIn=implode(',',$aValue);
+				$sWhere.=" AND t.{$sFieldName} IN (" . mysql_real_escape_string($sIn) . ')';
 		}
 		return $sWhere;
-	}
-	
-	protected function buildFilterAddtionalAccess($aAdditionalFilter) {
-		foreach($aAdditionalFilter as $key => $value) {
-			$sWhere.=" AND t.{$key} >= {$value}";
-		}
 	}
 }
 ?>

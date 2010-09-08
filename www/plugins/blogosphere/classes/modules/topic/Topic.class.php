@@ -17,6 +17,8 @@
 
 
 class PluginBlogosphere_ModuleTopic extends PluginBlogosphere_Inherit_ModuleTopic {
+	//Константы анонимного пользователя
+	const ANONIM_USER_ID = 0;
 	
 	protected $accessModuleAvailable = null;
 	
@@ -34,34 +36,135 @@ class PluginBlogosphere_ModuleTopic extends PluginBlogosphere_Inherit_ModuleTopi
 	}
 	
 	/**
+	* Получить объект текущего пользователя, или создать объект с user_id = 0 для анонима
+	* 
+	* @return	object		объект-сущность пользователя
+	*/
+	protected function getCurrentUserObject() {
+		//Проверяем является находистя ли пользователь в системе
+		if(!$this->User_IsAuthorization()) {
+			$oUserCurrent = Engine::GetEntity('User_User', array('user_id' => self::ANONIM_USER_ID, 'user_is_administrator' => false));
+		} else {
+			$oUserCurrent = $this->User_GetUserCurrent();
+		}
+		
+		return $oUserCurrent;
+	}
+	
+	/**
+	* Проверяем анонимный ли пользователь.
+	* Решил не расширять класс ModuleUser_EntityUser, дабы не провоцировать возможные
+	* конфликты мз-за локального решения о сущности анонимного пользователя.
+	* 
+	* @param	object		объект-сущность пользователя
+	* @return	boolean		true, если передан объект анонимного пользователя.
+	*/
+	protected function isUserAnon($oUser) {
+		return $oUser->getId() == self::ANONIM_USER_ID ? true : false;
+	}
+	
+	/**
 	 * Список топиков по фильтру
 	 *
 	 * @param  array $aFilter
 	 * @return array
 	 */
 	public function GetTopicsForBlogosphereByFilter($aFilter) {
+		$aFilter['oUser'] = $this->getCurrentUserObject();
+		$aFilterConfig = $this->getFilterConfig($aFilter['filterType']);
 		
-		//получаем текущего пользователя
-		if (!$this->User_IsAuthorization()) {
-			$aFilter['user_id']=0;
-			$aFilter['user_admin']=0;
-		} else {
-			$this->oUserCurrent=$this->User_GetUserCurrent();
-			$aFilter['user_id']=$this->oUserCurrent->getId();
-			if($this->oUserCurrent->isAdministrator()) $aFilter['user_admin']=$this->oUserCurrent->isAdministrator();
-				else $aFilter['user_admin']=0;
+		if(isset($aFilterConfig['function'])) {
+			$sOutsideGetTopicsFunctionName = $aFilterConfig['function'];
+			return $this->$sOutsideGetTopicsFunctionName($aFilter);
+		} elseif(isset($aFilterConfig['type'])) {
+			$sPrepareStandartFilterMethodName = $this->getFilterMethodName($aFilterConfig['type']);
+			$aFilter = $this->$sPrepareStandartFilterMethodName($aFilter);
 		}
 		
 		$s=serialize($aFilter);
 		if (false === ($data = $this->Cache_Get("topic_filter_{$s}"))) {
-			$data = array(
-						'collection'=>$this->oMapperTopic->GetAllTopicsFilteredByDate($aFilter,$this->isAccessModuleAvailable()),
-						'count'=>$this->GetCountTopicsByFilter($aFilter)
-					);
+			$data = $this->oMapperTopic->GetTopicsForBlogosphereByFilter($aFilter,$this->isAccessModuleAvailable());
 			$this->Cache_Set($data, "topic_filter_{$s}", array('topic_update','topic_new'), 60*60*24*3);
 		}
-		$data['collection']=$this->GetTopicsAdditionalData($data['collection']);
+		$data = $this->GetTopicsAdditionalData($data);
 		return $data;
+	}
+	
+	/**
+	* Возвращает конфигурационный массив фильтра из конфига плагина
+	* 
+	* @param	string		Тип фильтра (должен быть так же определён в конфиге)
+	* @return	array		Конфигурационный массив фильтра
+	*/
+	protected function getFilterConfig($sFilterType) {
+		$aFilter = Config::Get('plugin.blogosphere.filters');
+		foreach($aFilter as $aConfig) {
+			if($aConfig['type'] == $sFilterType) {
+				return $aConfig;
+			}
+		}
+		
+		return array();
+	}
+	
+	/**
+	* На основании типа фильтра возвращает имя метода для его обработки
+	* 
+	* @param	string		тип фильтра
+	* @return	string		имя метода
+	*/
+	protected function getFilterMethodName($sFilterType) {
+		return 'prepareStandartFilter' . ucfirst($sFilterType); 
+	}
+	
+	/*
+	* Методы подготовки фильтра
+	*/
+	
+	/**
+	* Тип фильтра all, т.е. никакой дополнительной фильтрации
+	* 
+	* @param	array		Массив с параметрами фильтра
+	* @return	array		Массив с новыми параметрами фильтра
+	*/
+	protected function prepareStandartFilterAll($aFilter) {
+		return $aFilter;
+	}
+	
+	/**
+	* Тип фильтра popularTopics, возвращаем топики, чей рейтинг выше минимального, установленного
+	* в конфиге.
+	* 
+	* @param	array		Массив с параметрами фильтра
+	* @return	array		Массив с новыми параметрами фильтра
+	*/
+	protected function prepareStandartFilterPopularTopics($aFilter) {
+		$aFilter['more']['topic_count_comment'] = Config::Get('plugin.blogosphere.popularTopicMinComment');
+		return $aFilter;
+	}
+	
+	/**
+	* Тип фильтра popularUsers, возвращаем топики популярных пользователей
+	* 
+	* @param	array		Массив с параметрами фильтра
+	* @return	array		Массив с новыми параметрами фильтра
+	*/
+	protected function prepareStandartFilterPopularUsers($aFilter) {
+		$aPopularUserId = $this->User_GetPopularUsersBySubscribers(Config::Get('plugin.blogosphere.popularUsersCount'));
+		$aFilter['in']['user_id'] = $aPopularUserId;
+		return $aFilter;
+	}
+	
+	/**
+	* Тип фильтра community, возвращаем топики из сообществ
+	* 
+	* @param	array		Массив с параметрами фильтра
+	* @return	array		Массив с новыми параметрами фильтра
+	*/
+	protected function prepareStandartFilterCommunity($aFilter) {
+		$aAccessibleBlogId = $this->Blog_GetAccessibleBlogsByUser($aFilter['oUser']);
+		$aFilter['in']['blog_id'] = $aAccessibleBlogId;
+		return $aFilter;
 	}
 }
 ?>

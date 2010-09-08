@@ -1,0 +1,1 @@
+{if $oUserCurrent}<li {if $sAction=='mine'}class="active"{/if}><a href="{router page='mine'}" >{$aLang.my_stuff} {if $unreadTopics}({$unreadTopics}){/if}</a></li>{/if}

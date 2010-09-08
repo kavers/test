@@ -42,6 +42,7 @@ class PluginBlogosphere_ActionBlogosphere extends ActionPlugin {
 				'title' => $val->getTopicTitle(),
 				'url' => $val->getUrl(),
 				'date' => strtotime($val->getTopicDateAdd()),
+				'strDate' => strftime("%d %B, %H:%M", strtotime($val->getTopicDateAdd())),
 				'rating' => (float)$val->getTopicRating(),
 				'viewCount' => (int)$val->getCountRead()
 			);
@@ -60,12 +61,14 @@ class PluginBlogosphere_ActionBlogosphere extends ActionPlugin {
 		
 		//загоняем данные в фильтр
 		$aFilter=array(
-			'date_begin' => strftime('%Y-%m-%d %H:%M:00',$aDates['timeStart']),
-			'date_end' => strftime('%Y-%m-%d %H:%M:00',$aDates['timeEnd'])
+			'filterType' => getRequest('filterType'),
+			'more' => array('topic_date_add' => strftime('%Y-%m-%d %H:%M:00',$aDates['timeStart'])),
+			'less' => array('topic_date_add' => strftime('%Y-%m-%d %H:%M:00',$aDates['timeEnd'])),
+			'in' => array(),
 		);
 		
 		//Получаем список топиков
 		$aResult=$this->Topic_GetTopicsForBlogosphereByFilter($aFilter);
-		$this->Viewer_AssignAjax('topics', $aResult['collection'] ? $this->prepareData($aResult['collection']) : '');
+		$this->Viewer_AssignAjax('topics', $aResult ? $this->prepareData($aResult) : '');
 	}
 }

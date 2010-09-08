@@ -24,8 +24,10 @@ if (!class_exists('Plugin')) {
 
 class PluginBlogosphere extends Plugin {
 	protected $aInherits=array(
-		'module'  =>array('ModuleTopic'=>'_ModuleTopic'),
-		'mapper'  =>array('ModuleTopic_MapperTopic'=>'_ModuleTopic_MapperTopic')
+		'module' => array('ModuleTopic'=>'_ModuleTopic',
+						'ModuleUser' => '_ModuleUser'),
+		'mapper' => array('ModuleTopic_MapperTopic' => '_ModuleTopic_MapperTopic',
+						'ModuleUser_MapperUser' => '_ModuleUser_MapperUser')
 	);
 	
 	/**
