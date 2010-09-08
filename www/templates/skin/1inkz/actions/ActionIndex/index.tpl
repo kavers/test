@@ -284,9 +284,13 @@ if ($km_headlinks = @file_get_contents('http://kaznetmedia.kz/km_headlinks/km_he
      </div>
   </div>
   *}
+  <ul id="blogosphere" class="blogosphere">
+  <li class="first3">{hook run='html_pluginBlogosphere'}</li>
+	</ul>
   {*
 <!---   Блогосфера    -->
   <ul id="blogosphere" class="blogosphere">
+	
 <!-- Список видео -->
      <li class="block3 dark_green">
         <div class="title"><a href="#111" class="link"><h1>Блогосфера</h1></a><a href="javascript:void(0)"><img class="line_sort" src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть" title="Свернуть"/></a></div>
