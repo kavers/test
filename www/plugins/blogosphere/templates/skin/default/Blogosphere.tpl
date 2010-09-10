@@ -2,7 +2,7 @@
 <ul id="blogosphere" class="blogosphere">
 <!-- Список видео -->
 	<li class="block3 dark_green">
-		<div class="title"><a href="#111" class="link"><h1>{$aLang.blogosphere_block_title}</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
+		<div class="title"><a href="#111" class="link"><h1>{$aLang.blogosphere_block_title}</h1></a></div>
 		<ul class="gradient" id="pluginBlogosphereFilters">
 			{foreach from=$oConfig->GetValue('plugin.blogosphere.filters') item=filter name=filters}
 				<li{if $smarty.foreach.filters.first} class="first3"{/if}><a href="#" name="{$filter.type}">{$aLang[$filter.titleIndex]}</a></li>
@@ -12,12 +12,12 @@
 			<div class="blog_line">
 				<a name="#" class="prev" style="cursor:pointer"><img src="{cfg name='path.static.skin'}/img/wp_left.png" width="25" height="129" alt="{$aLang.blogosphere_block_left}" title="{$aLang.blogosphere_block_left}"/></a>
 				<div class="blogs_cloud" style="overflow: hidden">
-					<div class="blogs_items" style="width:2400px;">
+					<div class="blogs_items" style="width:2670px;">
 						<div class="item" style="display:none">
 							<a href="#" class="avatar"><img src="{cfg name='path.static.skin'}/img/avatar.gif" width="40" height="40" alt="avatar" title="avatar"/></a>
 							<a href="#" class="theme">#</a>
 							<a href="#" class="nickname">#</a>
-							<div class="rating red">#</div>
+							{*<div class="rating red">#</div>*}
 						</div>
 					</div>
 				</div>

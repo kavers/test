@@ -17,52 +17,6 @@
 
 
 class PluginBlogosphere_ModuleTopic extends PluginBlogosphere_Inherit_ModuleTopic {
-	//Константы анонимного пользователя
-	const ANONIM_USER_ID = 0;
-	
-	protected $accessModuleAvailable = null;
-	
-	/**
-	* Проверяем установку плагина AccessToTopic для проверки прав доступа
-	* 
-	* @return	boolean
-	*/
-	protected function isAccessModuleAvailable() {
-		if($this->accessModuleAvailable === null) {
-			$aActivePlugin = $this->Plugin_GetActivePlugins();
-			$this->accessModuleAvailable = in_array('accesstotopic', $aActivePlugin);
-		}
-		return $this->accessModuleAvailable;
-	}
-	
-	/**
-	* Получить объект текущего пользователя, или создать объект с user_id = 0 для анонима
-	* 
-	* @return	object		объект-сущность пользователя
-	*/
-	protected function getCurrentUserObject() {
-		//Проверяем является находистя ли пользователь в системе
-		if(!$this->User_IsAuthorization()) {
-			$oUserCurrent = Engine::GetEntity('User_User', array('user_id' => self::ANONIM_USER_ID, 'user_is_administrator' => false));
-		} else {
-			$oUserCurrent = $this->User_GetUserCurrent();
-		}
-		
-		return $oUserCurrent;
-	}
-	
-	/**
-	* Проверяем анонимный ли пользователь.
-	* Решил не расширять класс ModuleUser_EntityUser, дабы не провоцировать возможные
-	* конфликты мз-за локального решения о сущности анонимного пользователя.
-	* 
-	* @param	object		объект-сущность пользователя
-	* @return	boolean		true, если передан объект анонимного пользователя.
-	*/
-	protected function isUserAnon($oUser) {
-		return $oUser->getId() == self::ANONIM_USER_ID ? true : false;
-	}
-	
 	/**
 	 * Список топиков по фильтру
 	 *
@@ -70,7 +24,7 @@ class PluginBlogosphere_ModuleTopic extends PluginBlogosphere_Inherit_ModuleTopi
 	 * @return array
 	 */
 	public function GetTopicsForBlogosphereByFilter($aFilter) {
-		$aFilter['oUser'] = $this->getCurrentUserObject();
+		$aFilter['oUser'] = PluginLib_ModuleUser::GetUserCurrent();
 		$aFilterConfig = $this->getFilterConfig($aFilter['filterType']);
 		
 		if(isset($aFilterConfig['function'])) {
@@ -83,7 +37,7 @@ class PluginBlogosphere_ModuleTopic extends PluginBlogosphere_Inherit_ModuleTopi
 		
 		$s=serialize($aFilter);
 		if (false === ($data = $this->Cache_Get("topic_filter_{$s}"))) {
-			$data = $this->oMapperTopic->GetTopicsForBlogosphereByFilter($aFilter,$this->isAccessModuleAvailable());
+			$data = $this->oMapperTopic->GetTopicsForBlogosphereByFilter($aFilter);
 			$this->Cache_Set($data, "topic_filter_{$s}", array('topic_update','topic_new'), 60*60*24*3);
 		}
 		$data = $this->GetTopicsAdditionalData($data);

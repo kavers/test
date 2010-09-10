@@ -26,6 +26,7 @@ pluginBlogosphere.prototype = {
 	topics: [],
 	//Шаблон карточки топика
 	itemTemplate: null,
+	itemWidth: 270,
 	//Временные рамки (timestamp)
 	timeStart: 0,
 	timeEnd: 0,
@@ -97,17 +98,35 @@ pluginBlogosphere.prototype = {
 					.attr("href", topic.author.profileUrl)
 					.empty()
 					.append(topic.author.name)
-					.after(topic.strDate);
+					.after(" " + topic.strDate);
 				
-				var mLeft = Math.ceil(oBlogosphere.stepByTime * (topic.date - oBlogosphere.timeStart) - 150);
+				var mLeft = Math.ceil(oBlogosphere.stepByTime * (topic.date - oBlogosphere.timeStart));
 				var mTop = Math.ceil(oBlogosphere.stepByViews * (topic.viewCount - oBlogosphere.minViews));
 				var zIndex = Math.ceil(oBlogosphere.stepByRating * (topic.rating - oBlogosphere.minRating)) + 1;
 				itemObject
 					.css("margin-left", mLeft.toString() + "px")
 					.css("margin-top", mTop.toString() + "px")
-					.css("z-index", zIndex.toString());
-				
+					.css("z-index", zIndex.toString())
+					.hover(
+						function() {
+							jQuery(this).css(
+								"z-index",
+								function() {
+									return parseInt(jQuery(this).css("z-index")) + 1000;
+								}
+							);
+						},
+						function() {
+							jQuery(this).css(
+								"z-index",
+								function() {
+									return parseInt(jQuery(this).css("z-index")) - 1000;
+								}
+							);
+						}
+					);
 				oBlogosphere.fieldObject.append(itemObject);
+				
 			}
 		});
 	},
@@ -128,7 +147,7 @@ pluginBlogosphere.prototype = {
 			/*Получим отношение отступов*/
 			//К времени
 			if(this.timeEnd - this.timeStart) {
-				this.stepByTime = (this.fieldObject.width() - this.itemTemplate.width()) / (this.timeEnd - this.timeStart);
+				this.stepByTime = this.calcFieldWidth() / (this.timeEnd - this.timeStart);
 			} else {
 				this.stepByTime = 0;
 			}
@@ -243,6 +262,10 @@ pluginBlogosphere.prototype = {
 	
 	rightScrollerMargin: function() {
 		return "0px";
+	},
+	
+	calcFieldWidth: function() {
+		return this.fieldObject.width() - this.itemWidth;
 	},
 	
 	prepareScroller: function() {
