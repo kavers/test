@@ -63,9 +63,7 @@
 		*  Returns a list of topic IDs that belong to "my stuff"
 		*  @return Array()
 		***/
-		public function getTopicIDsForMyStuff($oUser, $accessModule = false, $aFilter = array()){
-			$accessWhere = (!$oUser->isAdministrator() && $accessModule) ?
-								' AND ' . PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($oUser->getId()) : ' ';
+		public function getTopicIDsForMyStuff($oUser, $aFilter = array()){
 			$sql = 'SELECT 
 						user_to 
 						FROM '.Config::Get('db.table.friend').' 
@@ -83,16 +81,18 @@
 							OR status_to = 2)';
 			
 			//first, get a list of all my friends
-			$friends    = $this->oDb->selectCol($sql, $oUser->getId(), $oUser->getId());
-			$friends[]  = $oUser->getId(); //I am my own friend :-)
+			$friends = $this->oDb->selectCol($sql, $oUser->getId(), $oUser->getId());
 			dump('My friends are: '.print_r($friends, true));
 
-			//now get a list of topics my friends commented on no more than 4 weeks ago
+			//now get a list of topics my friends commented
+			$oUserCurrent = PluginLib_ModuleUser::GetUserCurrent();
+			$sAccessWhere = (!$oUserCurrent->isAdministrator() && PluginLib_ModulePlugin::IsPluginAvailable('accesstotopic')) ?
+								' AND ' . PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($oUserCurrent->getId()) : ' ';
+			
+			$sDateWhere = '';
 			if(isset($aFilter['more']['topic_add_date']) && isset($aFilter['less']['topic_add_date'])) {
-				$dateWhere = ' AND tc.created >= "'.mysql_real_escape_string($aFilter['more']['topic_add_date']) .'" AND '.
+				$sDateWhere = ' AND tc.created >= "'.mysql_real_escape_string($aFilter['more']['topic_add_date']) .'" AND '.
 					'tc.created <= "'.mysql_real_escape_string($aFilter['less']['topic_add_date']) . '"';
-			} else {
-				$dateWhere = ' AND tc.created >= DATE_SUB(NOW(), INTERVAL 4 WEEK)';
 			}
 			
 			$sql = 'SELECT
@@ -104,8 +104,8 @@
 						tc.user_id IN (?a)
 						AND
 						tc.topic_id = t.topic_id
-						'. $dateWhere .'
-						'. $accessWhere .'
+						'. $sDateWhere .'
+						'. $sAccessWhere .'
 					';
 			if($topics = $this->oDb->selectCol($sql, $friends)){
 				$topics = array_unique($topics);

@@ -14,7 +14,7 @@ class PluginMystuff_ModuleTopic extends ModuleTopic {
 	public function Init() {
 		parent::Init(); //init all parent stuff
 		$this->oMapperTopic = Engine::GetMapper('PluginMystuff_ModuleTopic'); //this is essential, otherwise the default mapper is used, which we do not want
-		$this->oMapperTopic->SetUserCurrent($this->oUserCurrent);
+		$this->oMapperTopic->SetUserCurrent(PluginLib_ModuleUser::GetUserCurrent());
 	}
 	
 	
