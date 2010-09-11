@@ -14,7 +14,7 @@
 			{/if}
             
      {if $oUserProfile->getProfileIcq() || $oUserProfile->getProfileFoto()}
-     <li class="block green">
+     <li class="block orange">
         <div class="title"><a href="#" class="link"><h1>{*$aLang.profile_social_contacts*}Контакты</h1></a></div>
         <div class="block_content block blogs">
             <div class="block-content">

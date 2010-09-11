@@ -39,7 +39,7 @@
 				</div>
 			</div>
 *}
-    <li id="about_author" class="block green">
+    <li id="about_author" class="block pine_green">
         <div class="title"><h1>{$aLang.user_stats}</h1><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
         <div class="block_content block">
         <ul class="descriptions">

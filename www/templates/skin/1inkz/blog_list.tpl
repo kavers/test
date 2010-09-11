@@ -1,4 +1,4 @@
-     <li id="vip_blogs" class="block2 green">
+     <li id="vip_blogs" class="block2 dark_green">
         <div class="title"><a href="/" class="link"><h1>Блоги</h1></a>
         <img src="{cfg name='path.static.skin'}/img/arrow.gif" width="7" height="12" alt="arrow" title="arrow" class="arrow"/>
         <a href="{router page='blogs'}" class="link"><h1>Сообщества</h1></a>

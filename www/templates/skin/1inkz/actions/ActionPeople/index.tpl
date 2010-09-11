@@ -1,5 +1,5 @@
 {include file='header.tpl' showWhiteBack=true menu='people'}
-<li id="vip_blogs" class="block2 green">
+<li id="vip_blogs" class="block2 pine_green">
         {*<div class="title"><a href="/" class="link"><h1>{$aLang.user_list} <span>({$aStat.count_all})</span></h1></a>*}
         <div class="title">
             <a href="/" class="link"><h1>Блоги</h1></a>
