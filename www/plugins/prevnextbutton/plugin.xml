@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+	<name>
+		<lang name="default">Livestreet new previous and next buttons plugin</lang>
+	</name>
+	<author>
+		<lang name="default">Alexander Bezroukov for 1in.kz</lang>
+	</author>
+	<homepage>http://1in.kz/</homepage>
+	<version>0.0.1</version>
+	<requires>
+		<livestreet>0.4.2</livestreet>
+		<plugins>
+
+		</plugins>
+	</requires>
+	<description>
+		<lang name="default">Prev and next buttons in topic now work only in borders of current blog.</lang>
+		<lang name="russian">Кнопки следующая и предыдущая теперь работают только в рамках текущего блога, а не все доступных топиков</lang>
+	</description>
+</plugin>
