@@ -22,6 +22,9 @@ $config['unionCommentsNotification'] = false;
 //Единая ли настройка для коментариев в сообществах, или отдельно для каждого
 $config['oneSettingForBlogsComments'] = true;
 
+//Минамальное допустимое время в секундах между двумя запросами к пользователю
+$config['requestPeriod'] = 24 * 60 * 60;
+
 Config::Set('router.page.request', 'PluginNotification_ActionNotification');
 return $config;
 ?>

@@ -47,7 +47,15 @@ return array(
 	'notification_frequency_notice' => 'Частота уведомлений',
 	'notification_frequency_at_once' => 'Присылать уведомления при наступлении каждого события',
 	'notification_frequency_daily' => 'Ежедневный дайджест',
-	'notification_frequency_weekly' => 'Еженедельный дайджест'
+	'notification_frequency_weekly' => 'Еженедельный дайджест',
+	'notification_send_request' => 'Потыкать палочкой',
+	'notification_request_msgTitle_error' => 'Нельзя потыкать',
+	'notification_request_msg_anonim' => 'Анонимусы не могут тыкать пользователей',
+	'notification_request_msg_user_not_found' => 'Пользователь не найден',
+	'notification_request_msg_request_denied' => 'Пользовател отказался от уведомлений',
+	'notification_request_msg_request_not_accept' => 'Сегодня пользователя уже тыкали',
+	'notification_request_msgTitle_success' => 'Потыкали',
+	'notification_request_msg_request_success' => 'Пользователю отправлено уведомление',
 );
 
 ?>

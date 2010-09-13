@@ -44,6 +44,10 @@ class PluginNotification_ModuleUser_EntityUser extends PluginNotification_Inheri
 		return $this->_aData['user_settings_notice_new_user_blogs_subscribe'];
 	}
 	
+	public function getSettingsNoticeRequestLast() {
+		return $this->_aData['user_settings_notice_request_last'];
+	}
+	
 	public function setSettingsNoticeNewTopicCommented($data) {
 		return $this->_aData['user_settings_notice_new_topic_commented'] = $data;
 	}

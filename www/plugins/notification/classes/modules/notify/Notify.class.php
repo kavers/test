@@ -27,8 +27,6 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 	const FREQUENCY_DAILY = 2;
 	const FREQUENCY_WEEKLY = 3;
 	
-	protected $accessModuleAvailable = null;
-	
 	/**
 	* Возвращает номер типа переодичности по мнемоническому имени
 	* 
@@ -160,7 +158,7 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 		);
 	}
 	
-		/**
+	/**
 	 * Отправляет уведомление при новом личном сообщении
 	 *
 	 * @param ModuleUser_EntityUser $oUserTo
@@ -290,7 +288,7 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 		
 		$aRecipientId = array();
 		foreach($aCommentator as $oUser) {
-			if($this->isAccessModuleAvailable()) {
+			if(PluginLib_Plugin::IsModuleAvailable('accesstotopic')) {
 				if(!$this->PluginAccesstotopic_Access_CheckUserAccess($oUser, $oTopic, 'read')) {
 					continue;
 				}
@@ -327,7 +325,7 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 			return null;
 		}
 		
-		if($this->isAccessModuleAvailable()) {
+		if(PluginLib_Plugin::IsModuleAvailable('accesstotopic')) {
 			if(!$this->PluginAccesstotopic_Access_CheckUserAccess($oCommentatorParent, $oTopic, 'read')) {
 				return null;
 			}
@@ -401,7 +399,7 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 		
 		$aRecipientId = array();
 		foreach($aSubscriber as $oSubscriber) {
-			if($this->isAccessModuleAvailable()) {
+			if(PluginLib_Plugin::IsModuleAvailable('accesstotopic')) {
 				if(!$this->PluginAccesstotopic_Access_CheckUserAccess($oSubscriber, $oTopic, 'read')) {
 					continue;
 				}
@@ -569,7 +567,13 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 	* @return	boolean		результат отправки
 	*/
 	protected function sendNotifyRequestToUser($oUserTo, $oUserFrom) {
-		if(!$oUserTo->getSettingsNoticeRequest()) {
+		if(
+			(
+				!$oUserTo->getSettingsNoticeRequest() || 
+				(time() - $oUserTo->getSettingsNoticeRequestLast() < Config::Get('plugin.notification.requestPeriod'))
+			) &&
+			!$oUserFrom->isAdministrator()
+		) {
 			return false;
 		}
 		$this->Send($oUserTo, 'notification.request.tpl', $this->Lang_Get('notification_subject_request'),
@@ -580,6 +584,9 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 			PLUGIN_NOTIFICATION_NAME
 		);
 		
+		$this->oMapper->UpdateRequestTime($oUserTo);
+		$this->Cache_Clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG,array('user_update'));
+		$this->Cache_Delete("user_{$oUserTo->getId()}");
 		return true;
 	}
 	
@@ -689,7 +696,7 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 	protected function sendNotifyToParentCommentator($oUserTo, $oTopic, $oComment, $oUserComment) {
 		if(!$oUserTo->getSettingsNoticeNewCommentCommented()) {
 			if(isset($oUserComment)) {
-				if(!$oUserComment->isAdministartor()) {
+				if(!$oUserComment->isAdministrator()) {
 					return false;
 				}
 			} else {
@@ -782,21 +789,6 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 		);
 		
 		return true;
-	}
-
-	
-	/**
-	* Проверяем установку плагина AccessToTopic для проверки прав доступа
-	* 
-	* @return	boolean
-	*/
-	protected function isAccessModuleAvailable() {
-		if($this->accessModuleAvailable === null) {
-			$aActivePlugin = $this->Plugin_GetActivePlugins();
-			$this->accessModuleAvailable = in_array('accesstotopic', $aActivePlugin);
-		}
-		
-		return $this->accessModuleAvailable;
 	}
 }
 ?>

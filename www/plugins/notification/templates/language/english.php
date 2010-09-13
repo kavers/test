@@ -49,7 +49,15 @@ return array(
 	'notification_frequency_notice' => 'Notifications frequency',
 	'notification_frequency_at_once' => 'At once',
 	'notification_frequency_daily' => 'Daily',
-	'notification_frequency_weekly' => 'Weekly'
+	'notification_frequency_weekly' => 'Weekly',
+	'notification_send_request' => 'Wake up!',
+	'notification_request_msgTitle_error' => 'Can\'t do it',
+	'notification_request_msg_anonim' => 'Service not available for anonimous',
+	'notification_request_msg_user_not_found' => 'User not found',
+	'notification_request_msg_request_denied' => 'User disabled this function',
+	'notification_request_msg_request_not_accept' => 'Message was sent today already',
+	'notification_request_msgTitle_success' => 'Success',
+	'notification_request_msg_request_success' => 'Notification had sent to user',
 );
 
 ?>

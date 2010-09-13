@@ -44,6 +44,7 @@ class PluginNotification extends Plugin {
 		array('field' => 'user_settings_notice_new_topic_commented', 'table' => 'user', 'file' => 'topic_comment.sql'),
 		array('field' => 'user_settings_notice_friend_news', 'table' => 'user', 'file' => 'friend_news.sql'),
 		array('field' => 'user_settings_notice_request', 'table' => 'user', 'file' => 'request.sql'),
+		array('field' => 'user_settings_notice_request1', 'table' => 'user', 'file' => 'req.sql'),
 		array('field' => 'user_settings_notice_new_topic_subscribe', 'table' => 'blog_user', 'file' => 'blog_topic_subscriber.sql'),
 		array('field' => 'user_settings_notice_new_comment_subscribe', 'table' => 'blog_user', 'file' => 'blog_comment_subscriber.sql'),
 		array('field' => 'user_settings_notice_new_comment_blogs_subscribe', 'table' => 'user', 'file' => 'user_blog_comment_subscriber.sql'),
@@ -53,8 +54,8 @@ class PluginNotification extends Plugin {
 		array('field' => 'user_settings_notice_new_user_blogs_subscribe', 'table' => 'user', 'file' => 'user_blog_new_user_subscriber.sql')
 	);
 	/**
-	 * Активация плагина Доступ к Топику.
-	 * Создание дополнительной колонки в таблицe _topic в базе.
+	 * Активация плагина Дополнительные уведомления.
+	 * Создание дополнительных колонок в таблицах.
 	 */
 	public function Activate() {
 		/*
@@ -71,6 +72,8 @@ class PluginNotification extends Plugin {
 	 * Инициализация плагина Дополнительные уведомления
 	 */
 	public function Init() {
+		//Подключаем скрипт для отправки запроса "Потыкать палочкой"
+		$this->Viewer_AppendScript($this->GetTemplateWebPath(__CLASS__) . 'js/notify.js');
 	}
 	
 	protected function exportSqlIfNeed($aConf = array()) {

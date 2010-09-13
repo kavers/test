@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+	<name>
+		<lang name="default">Livestreet Send To Friend plugin</lang>
+	</name>
+	<author>
+		<lang name="default">Alexander Bezroukov for 1in.kz</lang>
+	</author>
+	<homepage>http://1in.kz/</homepage>
+	<version>0.0.1</version>
+	<requires>
+		<livestreet>0.4.2</livestreet>
+		<plugins>
+
+		</plugins>
+	</requires>
+	<description>
+		<lang name="default">Allow users to send link to topic to any email.</lang>
+		<lang name="russian">Повзоляет пользователю отправлять ссылки на записи на произвольный email.</lang>
+	</description>
+</plugin>

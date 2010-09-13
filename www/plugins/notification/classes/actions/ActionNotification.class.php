@@ -23,12 +23,7 @@ class PluginNotification_ActionNotification extends ActionPlugin {
 	/**
 	 * Инициализация 
 	 */
-	public function Init() {	
-		if (!$this->User_IsAuthorization()) {
-			$this->Message_AddErrorSingle($this->Lang_Get('not_access'));
-			return Router::Action('error'); 
-		}
-
+	public function Init() {
 		$this->oUserCurrent=$this->User_GetUserCurrent();
 		
 		$this->SetDefaultEvent('request');
@@ -43,18 +38,37 @@ class PluginNotification_ActionNotification extends ActionPlugin {
 	* и рапортуем о результате
 	*/
 	protected function EventAjaxRequest() {
-		$this->Viewer_SetResponseAjax();
+		$this->Viewer_SetResponseAjax('json');
+		
+		if(!$this->User_IsAuthorization()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('notification_request_msg_anonim'), $this->Lang_Get('notification_request_msgTitle_error'));
+			
+			return;
+		}
 		
 		$sUserId = getRequest('userId');
 		$oUser = $sUserId ? $this->User_GetUserById($sUserId) : null;
-		$bNotificationResult = false;
-		if($oUser) {
-			$bNotificationResult = $this->Notify_SendRequestToUser($oUser, $this->oUserCurrent, array($this->oUserCurrent->getId()));
+		
+		if(!$oUser) {
+			$this->Message_AddErrorSingle($this->Lang_Get('notification_request_msg_user_not_found'), $this->Lang_Get('notification_request_msgTitle_error'));
+			
+			return;
 		}
 		
-		$oViewerLocal=$this->Viewer_GetLocalViewer();
-		$oViewerLocal->Assign('bRequestResult',$bNotificationResult);
-		$oViewerLocal->Assign('sDebug',$sDebug);
-		$this->Viewer_AssignAjax('sRequestResultText',$oViewerLocal->Fetch($this->getTemplatePathPlugin()."/actions/ActionNotification/ajax/request_result.tpl", 'notification'));
+		if(!$oUser->getSettingsNoticeRequest()) {
+			$this->Message_AddNoticeSingle($this->Lang_Get('notification_request_msg_request_denied'), $this->Lang_Get('notification_request_msgTitle_error'));
+			
+			return;
+		}
+		
+		$bNotificationResult = $this->Notify_SendRequestToUser($oUser, $this->oUserCurrent, array($this->oUserCurrent->getId()));
+		
+		if(!$bNotificationResult) {
+			$this->Message_AddNoticeSingle($this->Lang_Get('notification_request_msg_request_not_accept'), $this->Lang_Get('notification_request_msgTitle_error'));
+			
+			return;
+		}
+		
+		$this->Message_AddNoticeSingle($this->Lang_Get('notification_request_msg_request_success'),  $this->Lang_Get('notification_request_msgTitle_success'));
 	}
 }

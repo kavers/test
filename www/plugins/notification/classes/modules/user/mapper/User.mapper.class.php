@@ -38,8 +38,8 @@ class PluginNotification_ModuleUser_MapperUser extends  PluginNotification_Inher
 				user_profile_icq = ? , 
 				user_profile_about = ? ,
 				user_profile_date = ? ,
-				user_profile_avatar = ?	,
-				user_profile_foto = ? ,	
+				user_profile_avatar = ? ,
+				user_profile_foto = ? ,
 				user_settings_notice_new_topic = ? ,
 				user_settings_notice_new_comment = ? ,
 				user_settings_notice_new_talk = ? ,
@@ -48,9 +48,9 @@ class PluginNotification_ModuleUser_MapperUser extends  PluginNotification_Inher
 				user_settings_notice_new_topic_commented = ? ,
 				user_settings_notice_friend_news = ? ,
 				user_settings_notice_request = ? ,
-				user_settings_notice_new_comment_blogs_subscribe = ?,
-				user_settings_notice_new_gift = ?,
-				user_settings_notice_frequency = ?,
+				user_settings_notice_new_comment_blogs_subscribe = ? ,
+				user_settings_notice_new_gift = ? ,
+				user_settings_notice_frequency = ? ,
 				user_settings_notice_new_user_blogs_subscribe = ?
 			WHERE user_id = ?
 		";

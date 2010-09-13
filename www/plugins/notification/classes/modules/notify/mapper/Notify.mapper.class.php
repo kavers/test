@@ -306,6 +306,27 @@ class PluginNotification_ModuleNotify_MapperNotify extends  PluginNotification_I
 		return $this->oDb->query($sql);
 	}
 	
+	/**
+	* Обновить время отправки последнего запроса для пользователя
+	* 
+	* @param	oUser
+	*/
+	public function UpdateRequestTime($oUser) {
+		$sql = '
+			UPDATE '.Config::Get('db.table.user').'
+			SET
+				user_settings_notice_request_last = ?d
+			WHERE
+				user_id = ?d
+		';
+		
+		if($this->oDb->query($sql, time(), $oUser->getId())) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	protected function getUserSubscribersFromDB($sUserId, $bTo = true) {
 		$sUserDirection = $bTo ? 'from' : 'to';
 		$sSubscribersDirection = $bTo ? 'to' : 'from';
