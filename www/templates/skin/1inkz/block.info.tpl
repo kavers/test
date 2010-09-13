@@ -7,6 +7,10 @@
     {assign var="oUserOwner" value=$oBlog->getOwner()}
     {/if}
 {/if}
+{if $oUserOwner and $oUserCurrent}
+   {* Это удача, что из сущности можно вызывать методы модулей*}
+   {assign var="oUserFriend" value=$oUserOwner->User_GetFriend($oUserCurrent->getId(), $oUserOwner->getId())}
+{/if}
 {if $oUserOwner}
 <!--  Блок Сведения о новости -->
      <li id="about_news" class="block green">
@@ -43,15 +47,16 @@
               <a href="{$oUserOwner->getUserWebPath()}"><img src="{$oUserOwner->getProfileAvatarPath(48)}" width="47" height="44" alt="avatar" title="avatar" /></a>
               <a href="{$oUserOwner->getUserWebPath()}">{$oUserOwner->getLogin()}</a>
               <span>{date_format date=$oTopic->getDateAdd()}</span>
-                 {if $oUserOwner->getId() != $oUserCurrent->getId()}
+                  {if $oUserCurrent and ($oUserOwner->getId() != $oUserCurrent->getId())}
                  <div class="user_info hidden">
-                 {if $oUserFriend and ($oUserFriend->getFriendStatus()==$USER_FRIEND_ACCEPT+$USER_FRIEND_OFFER or $oUserFriend->getFriendStatus()==$USER_FRIEND_ACCEPT+$USER_FRIEND_ACCEPT) }
+                 {* Magic numbers, ага. Не знаю, как корректно получать значения констант из шаблона. *}
+                 {if $oUserFriend and ($oUserFriend->getFriendStatus()== 3 or $oUserFriend->getFriendStatus()== 4) }
                     <a href="#"  title="{$aLang.user_friend_del}" onclick="ajaxDeleteUserFriendFromInfo(this,{$oUserOwner->getId()},'del'); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
+                    <a href="#" title="{$aLang.notification_send_request}" onclick="ajaxSendRequestToUser(this,{$oUserOwner->getId()}); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico7.png" width="24" height="23" alt="" title=""/></a>
                  {elseif !$oUserFriend}	
                     <a href="#"  title="{$aLang.user_friend_add}" onclick="ajaxAddUserFriendFromInfo(this,{$oUserOwner->getId()},'add'); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
                  {/if}
                  {*<a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico6.png" width="24" height="23" alt="" title=""/></a>*}
-                 {*<a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico7.png" width="24" height="23" alt="" title=""/></a>*}
                  </div>
                  {/if}
            </li>

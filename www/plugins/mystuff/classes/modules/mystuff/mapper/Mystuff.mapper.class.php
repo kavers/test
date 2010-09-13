@@ -12,10 +12,10 @@
 		/***
 		*  Mark the neccessary table for update
 		***/
-		public function MarkTopicWithTimestamp($oTopic) {        
+		public function MarkTopicWithTimestamp($oTopic) {
 			$sql = "UPDATE ".Config::Get('db.table.topic')."
 						SET
-							topic_last_update = ?            
+							topic_last_update = ?
 						WHERE
 							topic_id = ?d
 					";
@@ -52,7 +52,7 @@
 				//making the entry here
 				if(!$this->oDb->query($sql, $oUser->getId(), $oTopic->getId())) {
 					return true;
-				}                
+				}
 			}
 			
 			return false;
