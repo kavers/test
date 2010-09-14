@@ -36,25 +36,25 @@ class PluginMystuff_ModuleTopic_MapperTopic extends ModuleTopic_MapperTopic {
 		/* -- end core fix   -- */
 	
 		$sql = "SELECT 
-					t.topic_id							
+					t.topic_id
 				FROM 
-					".Config::Get('db.table.topic')." as t,	
-					".Config::Get('db.table.blog')." as b			
+					".Config::Get('db.table.topic')." as t,
+					".Config::Get('db.table.blog')." as b
 				WHERE 
-					1=1					
+					1=1
 					".$sWhere."
 					AND
-					t.blog_id=b.blog_id										
-				ORDER BY ".implode(', ', $aFilter['order']);		
+					t.blog_id=b.blog_id
+				ORDER BY ".implode(', ', $aFilter['order']);
 				
 		$aTopics=array();
-		if ($aRows=$this->oDb->select($sql)) {			
+		if ($aRows=$this->oDb->select($sql)) {
 			foreach ($aRows as $aTopic) {
 				$aTopics[]=$aTopic['topic_id'];
 			}
-		}		
+		}
 
-		return $aTopics;		
+		return $aTopics;
 	}
 	
 	

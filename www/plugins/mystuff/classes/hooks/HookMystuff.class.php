@@ -13,8 +13,7 @@
          * Suck on the hooks for comment creation and topic creation
          ***/
         public function RegisterHook() {            
-            $this->AddHook('topic_add_after', 'AddLastUpdate', __CLASS__);             
-            $this->AddHook('comment_add_after', 'UpdatedComment', __CLASS__);         
+            $this->AddHook('topic_add_after', 'AddLastUpdate', __CLASS__);
             
             //$this->AddHook('template_userbar_item','Menu');
             if($oUserCurrent=$this->User_GetUserCurrent()){
@@ -34,17 +33,6 @@
             return $this->updateTopic($oTopic);
         }
         
-        
-        /***
-         * Mark the topic last_modified_date when a comment is created for that topic
-         * @param $aVars -- All the cool stuff passed to the hook such as the topic et cetera
-         ***/
-        public function UpdatedComment($aVars) {
-            $oTopic = $this->getTopic();             
-            $oTopic->setId($aVars['oTopic']->getId()); //set the topic id
-            $oTopic->setLastUpdate($aVars['oCommentNew']->getDate()); //get the date from the comment and push it to the topic
-            return $this->updateTopic($oTopic);
-        }
         
         
         /***

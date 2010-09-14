@@ -26,21 +26,12 @@ class PluginMystuff_ActionMy extends PluginMystuff_Inherit_ActionMy {
 	
 	//Проверка пользователя и вызов соответсвующего action mystuff
 	protected function EventMyStuff() {
-		if(!$this->User_IsAuthorization()) {
-			return parent::EventNotFound();
-		}
-		
 		$sUserLogin = $this->sCurrentEvent;
-		$oUserCurrent = $this->User_GetUserCurrent();
-		if($oUserCurrent->getLogin() != $sUserLogin) {
-			return parent::EventNotFound();
-		}
-		
 		if( strtolower($this->GetParam(1, 'noth')) == 'new') {
-			return Router::Action('mine', 'new');
+			return Router::Action('mine', 'new', array($sUserLogin, 'friends'));
 		}
 		
-		return Router::Action('mine', 'index');
+		return Router::Action('mine', 'index', array($sUserLogin, 'friends'));
 	}
 }
 
