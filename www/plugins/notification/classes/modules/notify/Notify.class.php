@@ -485,7 +485,7 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 		} else {
 			$sMail=$oUserTo;
 			$sName='';
-			$oUserTo = Engine::GetEntity('User', array('user_settings_notice_frequency' => self::FREQUENCY_ATONCE));
+			$oUserTo = Engine::GetEntity('User', array('settings_notice_frequency' => self::FREQUENCY_ATONCE));
 		}
 		/**
 		 * Передаём в шаблон переменные
