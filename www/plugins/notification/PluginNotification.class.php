@@ -44,7 +44,6 @@ class PluginNotification extends Plugin {
 		array('field' => 'user_settings_notice_new_topic_commented', 'table' => 'user', 'file' => 'topic_comment.sql'),
 		array('field' => 'user_settings_notice_friend_news', 'table' => 'user', 'file' => 'friend_news.sql'),
 		array('field' => 'user_settings_notice_request', 'table' => 'user', 'file' => 'request.sql'),
-		//array('field' => 'user_settings_notice_request1', 'table' => 'user', 'file' => 'req.sql'),
 		array('field' => 'user_settings_notice_new_topic_subscribe', 'table' => 'blog_user', 'file' => 'blog_topic_subscriber.sql'),
 		array('field' => 'user_settings_notice_new_comment_subscribe', 'table' => 'blog_user', 'file' => 'blog_comment_subscriber.sql'),
 		array('field' => 'user_settings_notice_new_comment_blogs_subscribe', 'table' => 'user', 'file' => 'user_blog_comment_subscriber.sql'),

@@ -28,11 +28,11 @@ class PluginBlogosphere_ModuleTopic_MapperTopic extends PluginBlogosphere_Inheri
 	* @param	bool		доступен ли плагин для проверки на доступ к топикам
 	* @return	array		массив id
 	*/
-	public function GetTopicsForBlogosphereByFilter($aFilter) {
+	public function GetTopicsForBlogosphereByFilter($aFilter,$accessModuleAvailable = false) {
 		$sWhere=$this->buildFilterForBlogosphere($aFilter);
 		
 		//фильтрация по уровню доступа к топикам
-		if(PluginLib_ModulePlugin::IsPluginAvailable('accesstotopic') && !$aFilter['oUser']->isAdministrator()) {
+		if($accessModuleAvailable && !$aFilter['oUser']->isAdministrator()) {
 			$sWhere .= ' AND ' . PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($aFilter['oUser']->getId());
 		}
 		

@@ -1,7 +1,7 @@
 {include file='header.tpl' menu='talk' showUpdateButton=true}
 
 {assign var="oUser" value=$oTalk->getUser()}
-<li id="video_player" class="block2 orange">
+<li id="video_player" class="block2 green">
     <div class="title">
         <a href="#" class="link"><h1>{$oTalk->getTitle()|escape:'html'}</h1></a>
         <p class="cl"></p>

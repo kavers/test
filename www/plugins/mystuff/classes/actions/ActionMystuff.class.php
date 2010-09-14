@@ -13,7 +13,7 @@ class PluginMystuff_ActionMystuff extends ActionPlugin {
 	/***
 	*  Le constructor
 	***/
-	public function Init() {
+	public function Init() {    
 		$this->SetDefaultEvent('index'); 
 		$this->Viewer_AddHtmlTitle($this->Lang_Get('my_stuff'));
 	}
@@ -32,35 +32,21 @@ class PluginMystuff_ActionMystuff extends ActionPlugin {
 	*  Default Event
 	***/
 	protected function EventIndex($newOnly=false) {
-		//visible to logged in users only or anonim if he use path through "my" action.
-		if (!$this->User_IsAuthorization() && $this->GetParam(1, '') != 'friends') {
+		//visible to logged in users only
+		if (!$this->User_GetUserCurrent()) {			
 			return $this->EventNotFound();
 		}
-
-		if($this->GetParam(1, '') != 'friends') {
-			//It's our stuff (uri /mine)
-			$oUserOwner = $this->User_GetUserCurrent();
-		} else {
-			//uri /my/username/friends
-			$sUserLogin = $this->GetParam(0, '');
-			$oUserOwner = $this->User_GetUserByLogin($sUserLogin);
-		}
-		
-		if(!$oUserOwner) {
-			return $this->EventNotFound();
-		}
-		
+	
 		$this->SetTemplateAction('index');
 		
 		//load data from db
-		$aResult = $this->PluginMystuff_ModuleMystuff_GetTopicsByFriend(false, $newOnly, $oUserOwner);
+		$aResult = $this->PluginMystuff_ModuleMystuff_GetTopicsByFriend(false, $newOnly);
 		$aTopics = $aResult['collection'];
 		
 		//pass it to smarty
 		$this->Viewer_Assign('aTopics',$aTopics);
 		$this->Viewer_Assign('menu', 'mystuff');
-		$this->Viewer_Assign('oUserProfile', $oUserOwner);
-		$this->Viewer_Assign('oUserOwner', $oUserOwner);
+		$this->Viewer_Assign('oUserProfile', $this->User_GetUserCurrent());
 	}
 	
 	

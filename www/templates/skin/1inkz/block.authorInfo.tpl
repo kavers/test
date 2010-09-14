@@ -5,10 +5,6 @@
     {assign var="oUserOwner" value=$oBlog->getOwner()}
     {/if}
 {/if}
-{if $oUserOwner and $oUserCurrent}
-   {* Это удача, что из сущности можно вызывать методы модулей*}
-   {assign var="oUserFriend" value=$oUserOwner->User_GetFriend($oUserCurrent->getId(), $oUserOwner->getId())}
-{/if}
 <!--  Блок Сведения о новости -->
      <li id="about_news" class="block green">
         <div class="title"><a href="#" class="link"><h1>Об авторе</h1></a><a href="#" class="close_block"><img src="{cfg name='path.static.skin'}/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
@@ -43,15 +39,14 @@
               <a href="{$oUserOwner->getUserWebPath()}" class="user_avatar"><img src="{$oUserOwner->getProfileAvatarPath(100)}" alt="avatar" title="avatar" /></a>
               <div class="user_info">
                  <a href="{$oUserOwner->getUserWebPath()}" class="username">{$oUserOwner->getProfileName()}</a>
-                 {if $oUserCurrent and ($oUserOwner->getId() != $oUserCurrent->getId())}
-                 {* Magic numbers, ага. Не знаю, как корректно получать значения констант из шаблона. *}
-                 {if $oUserFriend and ($oUserFriend->getFriendStatus()== 3 or $oUserFriend->getFriendStatus()== 4) }
+                 {if $oUserOwner->getId() != $oUserCurrent->getId()}
+                 {if $oUserFriend and ($oUserFriend->getFriendStatus()==$USER_FRIEND_ACCEPT+$USER_FRIEND_OFFER or $oUserFriend->getFriendStatus()==$USER_FRIEND_ACCEPT+$USER_FRIEND_ACCEPT) }
                     <a href="#"  title="{$aLang.user_friend_del}" onclick="ajaxDeleteUserFriendFromInfo(this,{$oUserOwner->getId()},'del'); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
-                    <a href="#" title="{$aLang.notification_send_request}" onclick="ajaxSendRequestToUser(this,{$oUserOwner->getId()}); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico7.png" width="24" height="23" alt="" title=""/></a>
-                 {elseif !$oUserFriend}
+                 {elseif !$oUserFriend}	
                     <a href="#"  title="{$aLang.user_friend_add}" onclick="ajaxAddUserFriendFromInfo(this,{$oUserOwner->getId()},'add'); return false;"><img src="{cfg name='path.static.skin'}/img/comment_ico5.png" width="24" height="23" alt="" title=""/></a>
                  {/if}
                  {*<a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico6.png" width="24" height="23" alt="" title=""/></a>*}
+                 {*<a href="#"><img src="{cfg name='path.static.skin'}/img/comment_ico7.png" width="24" height="23" alt="" title=""/></a>*}
                  {/if}
                 </div>
            </li>

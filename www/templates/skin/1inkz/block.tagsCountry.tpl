@@ -1,5 +1,5 @@
 {if $aCountryList && count($aCountryList)>0}
-    <li id="about_author" class="block pine_green">
+    <li id="about_author" class="block green">
         <div class="title"><a href="#111" class="link"><h1>{$aLang.block_country_tags}</h1></a><a href="#" class="close_block"><img src="/img/minus.gif" width="18" height="18" alt="Свернуть блок" title="Свернуть блок"/></a></div>
         <div class="block_content block tags">
         <ul class="descriptions">

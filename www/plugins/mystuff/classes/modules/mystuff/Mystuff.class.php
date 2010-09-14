@@ -42,12 +42,9 @@ class PluginMystuff_ModuleMystuff extends Module {
 	*  Get a list of topics that my frieds commented on
 	*  and order them in the order of the latest comment added
 	***/
-	public function GetTopicsByFriend($countOnly=false, $newOnly=false, $oUserOwner = null) {
-		if(!$oUserOwner) {
-			$oUserOwner = $this->oUserCurrent;
-		}
+	public function GetTopicsByFriend($countOnly=false, $newOnly=false) {
 		//these are the topics relevant for MyStuff list
-		$myStuffTopics = $this->oMapper->getTopicIDsForMyStuff($oUserOwner);
+		$myStuffTopics = $this->oMapper->getTopicIDsForMyStuff($this->oUserCurrent, $this->isAccessModuleAvailable());
 		
 		//I need to filter this list to show only topics that have something NEW in them
 		$reply = $this->PluginMystuff_ModuleTopic_GetOnlyUnreadTopicsFromList($myStuffTopics);
@@ -56,6 +53,8 @@ class PluginMystuff_ModuleMystuff extends Module {
 		if($newOnly){
 			$myStuffTopics = $reply['topics'];
 		}
+		
+		
 		
 		//build the filter (cache works based on the filter as key)
 		$aFilter=array(
@@ -69,6 +68,11 @@ class PluginMystuff_ModuleMystuff extends Module {
 			'topic_id'      => $myStuffTopics,
 			'order'         => 't.topic_last_update desc'
 		);
+
+		/*if($this->oUserCurrent) {
+			$aOpenBlogs = $this->Blog_GetAccessibleBlogsByUser($this->oUserCurrent);
+			if(count($aOpenBlogs)) $aFilter['blog_type']['close'] = $aOpenBlogs;
+		}*/
 
 		if($countOnly){
 			return $this->PluginMystuff_ModuleTopic_GetCountTopicsByFilter($aFilter);
@@ -85,14 +89,27 @@ class PluginMystuff_ModuleMystuff extends Module {
 		//$topicsWrittenByFriends = $this->GetTopicsByFriend(true);
 		//return $topicsWrittenByFriends;
 	}
-
-	/***
+    
+    /**
+	* Проверяем установку плагина AccessToTopic для проверки прав доступа
+	* 
+	* @return	boolean
+	*/
+	protected function isAccessModuleAvailable() {
+		if($this->accessModuleAvailable === null) {
+			$aActivePlugin = $this->Plugin_GetActivePlugins();
+			$this->accessModuleAvailable = in_array('accesstotopic', $aActivePlugin);
+		}
+		return $this->accessModuleAvailable;
+	}
+    
+    /***
 	*  Get a list of topics that my frieds commented on
 	*  and order them in the order of the latest comment added
 	***/
 	public function GetTopicsForBlogosphere($aFilter) {
 		//these are the topics relevant for MyStuff list
-		$myStuffTopics = $this->oMapper->getTopicIDsForMyStuff($this->oUserCurrent, $aFilter);
+		$myStuffTopics = $this->oMapper->getTopicIDsForMyStuff($this->oUserCurrent, $this->isAccessModuleAvailable(), $aFilter);
 		
 		//build the filter (cache works based on the filter as key)
 		$aFilter=array(
@@ -106,8 +123,8 @@ class PluginMystuff_ModuleMystuff extends Module {
 			'topic_id'      => $myStuffTopics,
 			'order'         => 't.topic_last_update desc'
 		);
-		$aResult = $this->PluginMystuff_ModuleTopic_GetTopicsByFilter($aFilter);
-		return $aResult['collection'];
+        $aResult = $this->PluginMystuff_ModuleTopic_GetTopicsByFilter($aFilter);
+        return $aResult['collection'];
     }
 
 }
