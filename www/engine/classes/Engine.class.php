@@ -527,12 +527,11 @@ function __autoload($sClassName) {
 	/**
 	 * Если класс подходит под шаблон класса сущности то загружаем его
 	 */
-	echo('Try to load ' . $sFileClass . '<br />');
+	echo('Try to load ' . $sClassName . '<br />');
 	if (preg_match("/^Module(\w+)\_Entity(\w+)$/i",$sClassName,$aMatch)) {			
 		$tm1=microtime(true);	
 		
 		$sFileClass=Config::get('path.root.server').'/classes/modules/'.strtolower($aMatch[1]).'/entity/'.$aMatch[2].'.entity.class.php';
-			
 		if (file_exists($sFileClass)) {
 			echo('Load ' . $sFileClass . '<br />');
 			require_once($sFileClass);
