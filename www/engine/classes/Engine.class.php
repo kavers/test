@@ -527,12 +527,14 @@ function __autoload($sClassName) {
 	/**
 	 * Если класс подходит под шаблон класса сущности то загружаем его
 	 */
+	echo('Try to load ' . $sFileClass . '<br />');
 	if (preg_match("/^Module(\w+)\_Entity(\w+)$/i",$sClassName,$aMatch)) {			
 		$tm1=microtime(true);	
 		
 		$sFileClass=Config::get('path.root.server').'/classes/modules/'.strtolower($aMatch[1]).'/entity/'.$aMatch[2].'.entity.class.php';
 			
 		if (file_exists($sFileClass)) {
+			echo('Load ' . $sFileClass . '<br />');
 			require_once($sFileClass);
 			$tm2=microtime(true);			
 			dump($sClassName." - \t\t".($tm2-$tm1));
@@ -548,6 +550,7 @@ function __autoload($sClassName) {
 		$sFileClass= Config::get('path.root.server').'/plugins/'.strtolower($aMatch[1]).'/classes/modules/'.strtolower($aMatch[2]).'/entity/'.$aMatch[3].'.entity.class.php';
 		
 		if (file_exists($sFileClass)) {
+			echo('Load ' . $sFileClass . '<br />');
 			require_once($sFileClass);
 			$tm2=microtime(true);			
 			dump($sClassName." - \t\t".($tm2-$tm1));
@@ -562,9 +565,11 @@ function __autoload($sClassName) {
 		$sFileClass= Config::get('path.root.server').'/classes/modules/'.strtolower($sName).'/'.$sName.'.class.php';	
 			
 		if (file_exists($sFileClass)) {
+			echo('Load ' . $sFileClass . '<br />');
 			require_once($sFileClass);
 		} else {
 			$sFileClass = str_replace('/classes/modules/','/engine/modules/',$sFileClass);
+			echo('Load ' . $sFileClass . '<br />');
 			if(file_exists($sFileClass)) require_once($sFileClass);
 		}
 	}
@@ -575,7 +580,8 @@ function __autoload($sClassName) {
 	if (preg_match("/^Module(\w+)\_Mapper(\w+)$/i",$sClassName,$aMatch)) {
 		$sFileClass=Config::get('path.root.server').'/classes/modules/'.strtolower($aMatch[1]).'/mapper/'.$aMatch[2].'.mapper.class.php';		
 		if (file_exists($sFileClass)) {
-			require_once($sFileClass);			
+			echo('Load ' . $sFileClass . '<br />');
+			require_once($sFileClass);
 		}
 	}
 	
@@ -585,6 +591,7 @@ function __autoload($sClassName) {
 	if (preg_match("/^Plugin(\w+)\_Module(\w+)\_Mapper(\w+)$/i",$sClassName,$aMatch)) {
 		$sFileClass=Config::get('path.root.server').'/plugins/'.strtolower($aMatch[1]).'/classes/modules/'.strtolower($aMatch[2]).'/mapper/'.$aMatch[3].'.mapper.class.php';		
 		if (file_exists($sFileClass)) {
+			echo('Load ' . $sFileClass . '<br />');
 			require_once($sFileClass);			
 		}
 	}
@@ -595,6 +602,7 @@ function __autoload($sClassName) {
 	if (preg_match("/^Plugin(\w+)\_Module(\w+)$/i",$sClassName,$aMatch)) {
 		$sFileClass=Config::get('path.root.server').'/plugins/'.strtolower($aMatch[1]).'/classes/modules/'.strtolower($aMatch[2]).'/'.$aMatch[2].'.class.php';		
 		if (file_exists($sFileClass)) {
+			echo('Load ' . $sFileClass . '<br />');
 			require_once($sFileClass);			
 		}
 	}
@@ -616,6 +624,7 @@ function __autoload($sClassName) {
 	if (preg_match("/^Action(\w+)$/i",$sClassName,$aMatch)) {
 		$sFileClass=Config::get('path.root.server').'/classes/actions/'.$sClassName.'.class.php';		
 		if (file_exists($sFileClass)) {
+			echo('Load ' . $sFileClass . '<br />');
 			require_once($sFileClass);			
 		}
 	}
@@ -626,6 +635,7 @@ function __autoload($sClassName) {
 	if (preg_match("/^Plugin(\w+)\_Action(\w+)$/i",$sClassName,$aMatch)) {
 		$sFileClass=Config::get('path.root.server').'/plugins/'.strtolower($aMatch[1]).'/classes/actions/Action'.$aMatch[2].'.class.php';		
 		if (file_exists($sFileClass)) {
+			echo('Load ' . $sFileClass . '<br />');
 			require_once($sFileClass);			
 		}
 	}
