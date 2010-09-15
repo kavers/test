@@ -423,7 +423,7 @@ if (!function_exists('array_intersect_key')) {
 
 if (!function_exists('class_alias')) {
     function class_alias($original, $alias) {
-		echo('abstract class ' . $alias . ' extends ' . $original . ' {}' . chr(10) . chr(13));
+		echo('abstract class ' . $alias . ' extends ' . $original . ' {} <br />');
         eval('abstract class ' . $alias . ' extends ' . $original . ' {}');
     }
 }
