@@ -423,7 +423,7 @@ if (!function_exists('array_intersect_key')) {
 
 if (!function_exists('class_alias')) {
     function class_alias($original, $alias) {
-		//file_put_contents('err.txt', 'alias ' . $alias . ' extends ' . $original . ' \n', FILE_APPEND);
+		echo('abstract class ' . $alias . ' extends ' . $original . ' {}' . chr(10) . chr(13));
         eval('abstract class ' . $alias . ' extends ' . $original . ' {}');
     }
 }
