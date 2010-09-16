@@ -398,7 +398,13 @@ class ModulePlugin extends Module {
 					echo($nVal);
 				} else {
 					foreach($nVal as $skey=>$val) {
-						echo("{$skey} => {$val} <br />");
+						if(!is_array($val)) {
+							echo("{$skey} => {$val}");
+						} else {
+							foreach($val as $sbkey=>$sbval) {
+								echo("{$sbkey} => {$sbval} <br />");
+							}
+						}
 					}
 				}
 				echo('</td></tr></table>');
