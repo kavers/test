@@ -24,7 +24,7 @@ if (!class_exists('Plugin')) {
 
 class PluginLib extends Plugin {
 	protected $aInherits=array(
-		'entity'  =>array('ModuleUser_EntityUser'=>'_ModuleUser_EntityUser'),
+		'entity'  =>array('ModuleUser_EntityUser' => '_ModuleUser_EntityUser'),
 	);
 	
 	/**

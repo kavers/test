@@ -389,7 +389,22 @@ class ModulePlugin extends Module {
 	 * @param unknown_type $sFrom
 	 * @return unknown
 	 */
-	public function GetParentInherit($sFrom) {		
+	public function GetParentInherit($sFrom) {
+		foreach($this->aInherits as $sClassName=>$aVal) {
+			echo("<table><tr><td>{$sClassName}</td><td>");
+			foreach($aVal as $key=>$nVal) {
+				echo("<table><tr><td>{$key}</td><td>");
+				if(!is_array($nVal)) {
+					echo($nVal);
+				} else {
+					foreach($nVal as $skey=>$val) {
+						echo("{$skey} => {$val} <br />");
+					}
+				}
+				echo('</td></tr></table>');
+			}
+			echo('</td></tr></table>');
+		}
 		if (!isset($this->aInherits[$sFrom]['items']) or count($this->aInherits[$sFrom]['items'])<=1 or $this->aInherits[$sFrom]['position']<1) {
 			return $sFrom;
 		}
