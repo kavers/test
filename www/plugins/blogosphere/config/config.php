@@ -22,7 +22,7 @@ $config['filters'] = array(
 	//array('titleIndex' => 'blogosphere_filter_celebrity', 'type' => 'celebrity'),
 	array('titleIndex' => 'blogosphere_filter_community', 'type' => 'community'),
 	//array('titleIndex' => 'blogosphere_filter_recommended', 'type' => 'recommended'),
-	array('titleIndex' => 'my_stuff', 'type' => 'friends', 'function' => 'PluginMystuff_ModuleMystuff_GetTopicsForBlogosphere'),
+	array('titleIndex' => 'my_stuff', 'type' => 'friends', 'function' => 'PluginMystuff_ModuleMystuff_GetTopicsForBlogosphere', 'forRegistered' => 1),
 );
 
 Config::Set('router.page.blogosphere', 'PluginBlogosphere_ActionBlogosphere');

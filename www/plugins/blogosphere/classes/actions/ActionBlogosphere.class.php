@@ -27,9 +27,10 @@ class PluginBlogosphere_ActionBlogosphere extends ActionPlugin {
 	}
 	
 	/**
-	 * Конвертирует входной массив в json
+	 * Подготавливаем массив выходных данных
 	 *
-	 * @return json
+	 * @param		array
+	 * @return		array
 	 */
 	protected function prepareData($aResult) {
 		foreach($aResult as $key=>$val) {
