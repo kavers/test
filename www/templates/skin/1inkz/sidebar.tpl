@@ -7,6 +7,7 @@
         <!--<a href="#"><img src="{cfg name='path.static.skin'}/img/mail_banner.jpg" width="302" height="252" alt="Почта" title="Почта" /></a> -->
      </li>
 <!-- Баннер почтового сервиса-->
+{if $aDecors.sidebartop}{$aDecors.sidebartop->getDecDescription()}{/if}
     {if isset($aBlocks.right)}
         {foreach from=$aBlocks.right item=aBlock}
             {if $aBlock.type=='block'}
@@ -16,19 +17,19 @@
                 {include file=`$aBlock.name` params=`$aBlock.params`}
             {/if}	
         {/foreach}
-    {/if}
-    {if $sAction=="people"}
+    {/if}	
+	{if $sAction=="people"}
         {hook run='html_pluginUsercats_catalog'}
-    {/if}
-    {if $sAction=="blogs"}
+    {/if}	
+	{if $sAction=="blogs"}
         {hook run='html_pluginCommunitycats_catalog'}
     {/if}
+{if $aDecors.sidebarfoot}{$aDecors.sidebarfoot->getDecDescription()}{/if}
   </ul>
   
   <div>
   {*include file=header_nav.tpl*}
   </div>
-  <p class="cl"></p>
-
+  <p class="cl"></p> 
 		<!-- /Sidebar -->
 

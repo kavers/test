@@ -299,6 +299,81 @@ return array(
         'Для тех, кто в благородном порыве желает материально поощрить автора плагина,
         сообщаю реквизиты для добровольных пожертвований: кошельки
         WebMoney <b>Z178319650868</b> или <b>R312496642374</b>, счет Яндекс.Деньги <b>41001176375531</b>.',
+
+
+
+
+    /**
+     * Названия категорий шаблонов
+     */
+    'tpl_category_nature' => 'Природа',
+    'tpl_category_techno' => 'Технические',
+
+    /**
+     * Названия категорий виджетов
+     */
+    'wid_category_nature' => 'Природа',
+    'wid_category_techno' => 'Технические',
+
+    /**
+     * Названия категорий украшений
+     */
+    'dec_category_nature' => 'Природа',
+    'dec_category_techno' => 'Технические',
+
+    /*
+     * Позиции для украшений
+     */
+    'dec_position_bodytop' => 'Основная колонка, сверху',
+    'dec_position_bodyfoot' => 'Основная колонка, снизу',
+    'dec_position_sidebartop' => 'Сайдбар, сверху',
+    'dec_position_sidebarfoot' => 'Сайдбар, снизу',
+
+
+
+
+    'adm_tpl_delete_success' => 'Шаблон успешно удален',
+    'adm_tpl_add_success' => 'Шаблон успешно добавлен',
+    'adm_tpl_update_success' => 'Шаблон успешно обновлен',
+    'adm_tpl_check_error_price' => 'Не указана  или указана неверно цена шаблона',
+    'adm_tpl_check_error_title' => 'Неверно указано название шаблона.',
+    'adm_tpl_check_error_name' => 'Неверно указано внутреннее название шаблона',
+    'adm_tpl_check_error_desc' => 'Описание шаблона содержит недопустимые символы',
+    'adm_tpl_check_error_cat' => 'Не указана или неверно указана категория шаблона',
+    'adm_choose_template'=>'Выбор оформления блога',
+
+    'adm_wid_delete_success' => 'Виджет успешно удален',
+    'adm_wid_add_success' => 'Виджет успешно добавлен',
+    'adm_wid_update_success'=> 'Виджет успешно обновлен',
+    'adm_wid_check_error_price' => 'Не указана  или указана неверно цена виджета',
+    'adm_wid_check_error_title' => 'Неверно указано название виджета.',
+    'adm_wid_check_error_name' => 'Неверно указано внутреннее название виджета',
+    'adm_wid_check_error_desc' => 'Описание виджета содержит недопустимые символы',
+    'adm_wid_check_error_cat' => 'Не указана или неверно указана категория виджета',
+
+    'adm_choose_widget'=>'Выбор виджетов',
+
+    'adm_choose_decor'=>'Выбор украшений',
+
+
+
+    'adm_dec_delete_success' => 'Украшение успешно удалено',
+    'adm_dec_add_success' => 'Украшение успешно добавлено',
+    'adm_dec_update_success' => 'Украшение успешно обновлено',
+    'adm_dec_check_error_price' => 'Не указана  или указана неверно цена украшения',
+    'adm_dec_check_error_title' => 'Неверно указано название украшения.',
+    'adm_dec_check_error_name' => 'Неверно указано внутреннее название украшения',
+    'adm_dec_check_error_desc' => 'Описание украшения содержит недопустимые символы',
+    'adm_dec_check_error_cat' => 'Не указана или неверно указана категория украшения',
+    'adm_dec_check_error_position' => 'Не указана или неверно указана позиция украшения',
+    'adm_choose_template'=>'Выбор оформления блога',
+
+
+    'settings_menu_templates' => 'Шаблоны',
+    'settings_menu_widgets' => 'Виджеты',
+    'settings_menu_decor' => 'Украшения',
+
+
 );
 
 // EOF

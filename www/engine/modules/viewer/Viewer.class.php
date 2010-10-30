@@ -421,8 +421,7 @@ class ModuleViewer extends Module {
 		 */
 		if(!isset($aParams['dir']) and isset($aParams['plugin'])) {
 			$aParams['dir'] = Plugin::GetTemplatePath($aParams['plugin']);
-		}
-		
+		}	
 		/**
 		 * Если смогли определить тип блока то добавляем его
 		 */
@@ -1128,7 +1127,7 @@ class ModuleViewer extends Module {
 	 * @param array(name=>value) $aGetParamsList
 	 * @return array()
 	 */
-	public function MakePaging($iCount,$iCurrentPage,$iCountPerPage,$iCountPageLine,$sBaseUrl,$aGetParamsList=array()) {
+	public function MakePaging($iCount,$iCurrentPage,$iCountPerPage,$iCountPageLine,$sBaseUrl,$aGetParamsList=array()) {		
 		if ($iCount==0) {
 			return false;
 		}

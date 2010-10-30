@@ -60,10 +60,14 @@ class ActionSettings extends Action {
 		$this->Viewer_AddHtmlTitle($this->Lang_Get('settings_menu'));
 	}
 	
-	protected function RegisterEvent() {
-		$this->AddEvent('profile','EventProfile');
-		$this->AddEvent('invite','EventInvite');
+	protected function RegisterEvent() {		
+		$this->AddEvent('profile','EventProfile');		
+		$this->AddEvent('invite','EventInvite');	
 		$this->AddEvent('tuning','EventTuning');
+
+                $this->AddEvent('template','EventTemplate');
+                $this->AddEvent('widgets','EventWidgets');
+                $this->AddEvent('decor','EventDecor');
 	}
 		
 	
@@ -71,6 +75,249 @@ class ActionSettings extends Action {
 	 ************************ РЕАЛИЗАЦИЯ ЭКШЕНА ***************************************
 	 **********************************************************************************
 	 */
+
+	protected function EventTemplate() {
+		$this->sMenuItemSelect='settings';
+		$this->sMenuSubItemSelect='template';
+
+                $this->Viewer_AddHtmlTitle($this->Lang_Get('adm_choose_template'));
+
+                $oTplActive=$this->PluginAceadminpanel_Templates_GetTplActiveByTargetTypeAndTargetId($this->oUserCurrent->getId(),'personal');
+
+
+
+                if (getRequest('choose') && $oTpl=$this->PluginAceAdminPanel_Templates_GetTplById(getRequest('choose'))) {
+
+                    if ($oTplActive) {
+                        $this->PluginAceadminpanel_Templates_DeleteTemplate('personal',$this->oUserCurrent->getId(),$oTplActive->getTplId());
+                    }
+                    $this->PluginAceadminpanel_Templates_SetTemplate('personal',$this->oUserCurrent->getId(),getRequest('choose'));
+                    $this->Message_AddNoticeSingle('шаблон выбран');
+                }
+
+
+
+
+                if (getRequest('delete') && $oTpl=$this->PluginAceAdminPanel_Templates_GetTplById(getRequest('delete')) && $oTplActive && $oTplActive->getTplId()==getRequest('delete')) {
+
+                    $this->PluginAceadminpanel_Templates_DeleteTemplate('personal',$this->oUserCurrent->getId(),getRequest('delete'));
+                    $this->Message_AddNoticeSingle('шаблон удален');
+                }
+
+                if (getRequest('setfav') && $oTpl=$this->PluginAceAdminPanel_Templates_GetTplById(getRequest('setfav')) && !$this->PluginAceAdminPanel_Templates_GetFavByIdAndUserId('personal',$this->oUserCurrent->getId(),getRequest('setfav'))) {
+
+                    $this->PluginAceadminpanel_Templates_SetFavTemplate('personal',$this->oUserCurrent->getId(),getRequest('setfav'));
+                    $this->Message_AddNoticeSingle('шаблон добавлен в избранное');
+                }
+
+
+
+
+                if (getRequest('delfav') && $oTpl=$this->PluginAceAdminPanel_Templates_GetTplById(getRequest('delfav')) && $this->PluginAceAdminPanel_Templates_GetFavByIdAndUserId('personal',$this->oUserCurrent->getId(),getRequest('delfav'))) {
+
+                    $this->PluginAceadminpanel_Templates_DeleteFavTemplate('personal',$this->oUserCurrent->getId(),getRequest('delfav'));
+                    $this->Message_AddNoticeSingle('шаблон удален из избранного');
+                }
+
+
+               $aFilter=array();
+                if($this->GetParam(0)=='all') {
+                    if (getRequest('category') && in_array(getRequest('category'),Config::Get('plugin.aceadminpanel.tplcats'))) {
+                        $aFilter['category']=getRequest('category');
+                        $this->Viewer_Assign('aLangCategory', $this->Lang_Get('tpl_category_'.getRequest('category')));
+                    }
+                    $aTemplates=$this->PluginAceadminpanel_Templates_GetTemplates($aFilter);
+                    $this->SetTemplateAction('templatesall');
+
+                    $this->Viewer_AddBlock('right','block.tplcats.tpl',array(),153);
+                } else {
+                    $aFilter['type']='personal';
+                    $aFilter['user_id']=$this->oUserCurrent->getId();
+                    $aTemplates=$this->PluginAceadminpanel_Templates_GetFavTemplates($aFilter);
+                }
+
+                $this->Viewer_Assign('aTemplates', $aTemplates);
+
+
+                $oTplActiveNew=$this->PluginAceadminpanel_Templates_GetTplActiveByTargetTypeAndTargetId($this->oUserCurrent->getId(),'personal');
+                $this->Viewer_Assign('oTplActive', $oTplActiveNew);
+
+                $this->Viewer_AddBlock('right','block.settings.tpl',array(),157);
+
+
+        }
+
+
+        protected function EventWidgets() {
+		$this->sMenuItemSelect='settings';
+		$this->sMenuSubItemSelect='widgets';
+
+                $this->Viewer_AddHtmlTitle($this->Lang_Get('adm_choose_widget'));
+
+                //$oWidActive=$this->PluginAceadminpanel_Widgets_GetWidActiveByTargetTypeAndTargetId($this->oUserCurrent->getId(),'personal');
+
+
+                if (getRequest('choose') && $oWid=$this->PluginAceAdminPanel_Widgets_GetWidById(getRequest('choose')) && !$this->PluginAceadminpanel_Widgets_GetWidActiveByTargetTypeAndTargetId($this->oUserCurrent->getId(),'personal',getRequest('choose'))) {
+
+                    /*if ($oWidActive) {
+                        $this->PluginAceadminpanel_Widgets_DeleteWidget('personal',$this->oUserCurrent->getId(),$oWidActive->getWidId());
+                    }*/
+                    $this->PluginAceadminpanel_Widgets_SetWidget('personal',$this->oUserCurrent->getId(),getRequest('choose'));
+                    $this->Message_AddNoticeSingle('виджет выбран');
+                }
+
+
+
+
+                if (getRequest('delete') && $oWid=$this->PluginAceAdminPanel_Widgets_GetWidById(getRequest('delete')) /*&& $oWidActive && $oWidActive->getWidId()==getRequest('delete')*/) {
+
+                    $this->PluginAceadminpanel_Widgets_DeleteWidget('personal',$this->oUserCurrent->getId(),getRequest('delete'));
+                    $this->Message_AddNoticeSingle('виджет удален');
+                }
+
+                if (getRequest('setfav') && $oWid=$this->PluginAceAdminPanel_Widgets_GetWidById(getRequest('setfav')) && !$this->PluginAceAdminPanel_Widgets_GetFavByIdAndUserId('personal',$this->oUserCurrent->getId(),getRequest('setfav'))) {
+                    $aFilter['type']='personal';
+                    $aFilter['user_id']=$this->oUserCurrent->getId();
+                    $iPriority=$this->PluginAceadminpanel_Widgets_GetMaxSortByPid($aFilter);
+                    $iPriority++;
+                    $this->PluginAceadminpanel_Widgets_SetFavWidget('personal',$this->oUserCurrent->getId(),getRequest('setfav'),$iPriority);
+                    $this->Message_AddNoticeSingle('виджет добавлен в избранное');
+                }
+
+
+
+
+                if (getRequest('delfav') && $oWid=$this->PluginAceAdminPanel_Widgets_GetWidById(getRequest('delfav')) && $this->PluginAceAdminPanel_Widgets_GetFavByIdAndUserId('personal',$this->oUserCurrent->getId(),getRequest('delfav'))) {
+
+                    $this->PluginAceadminpanel_Widgets_DeleteFavWidget('personal',$this->oUserCurrent->getId(),getRequest('delfav'));
+                    $this->Message_AddNoticeSingle('виджет удален из избранного');
+                }
+
+                 /**
+		 * Обработка изменения сортировки страницы
+		 */
+		if (getRequest('sort') and $oWidget=$this->PluginAceadminpanel_Widgets_GetFavWidgets(array('type'=>'personal','user_id'=>$this->oUserCurrent->getId(),'wid_id'=>getRequest('sort')))) {
+			//$this->Security_ValidateSendForm();
+			$oWidget=$oWidget[0];
+                        $sWay=getRequest('sorttype')=='down' ? 'down' : 'up';
+			$iSortOld=$oWidget->getWidPriority();
+
+                        $aFilter['type']='personal';
+                        $aFilter['user_id']=$this->oUserCurrent->getId();
+
+			if ($oWidPrev=$this->PluginAceadminpanel_Widgets_GetNextWidBySort($iSortOld,$aFilter,$sWay)) {
+				$iSortNew=$oWidPrev->getWidPriority();
+				$oWidPrev->setWidPriority($iSortOld);
+				$this->PluginAceadminpanel_Widgets_UpdateFavWid($oWidPrev,$aFilter);
+			} else {
+				$iSortNew=$iSortOld;
+			}
+			/**
+			 * Меняем значения сортировки местами
+			 */
+			$oWidget->setWidPriority($iSortNew);
+			$this->PluginAceadminpanel_Widgets_UpdateFavWid($oWidget,$aFilter);
+		}
+
+
+               $aFilter=array();
+                if($this->GetParam(0)=='all') {
+                    if (getRequest('category') && in_array(getRequest('category'),Config::Get('plugin.aceadminpanel.tplcats'))) {
+                        $aFilter['category']=getRequest('category');
+                        $this->Viewer_Assign('aLangCategory', $this->Lang_Get('tpl_category_'.getRequest('category')));
+                    }
+                    $aWidgets=$this->PluginAceadminpanel_Widgets_GetWidgets($aFilter);
+                    $this->SetTemplateAction('widgetsall');
+
+                    $this->Viewer_AddBlock('right','block.widcats.tpl',array(),159);
+                } else {
+                    $aFilter['type']='personal';
+                    $aFilter['user_id']=$this->oUserCurrent->getId();
+                    $aWidgets=$this->PluginAceadminpanel_Widgets_GetFavWidgets($aFilter);
+                }
+
+
+
+                $this->Viewer_Assign('aWidgets', $aWidgets);
+/*
+
+                $oWidActiveNew=$this->PluginAceadminpanel_Widgets_GetWidActiveByTargetTypeAndTargetId($this->oUserCurrent->getId(),'personal');
+                $this->Viewer_Assign('oWidActive', $oWidActiveNew);*/
+
+                $this->Viewer_AddBlock('right','block.settings.tpl',array(),157);
+
+
+        }
+
+        protected function EventDecor() {
+		$this->sMenuItemSelect='settings';
+		$this->sMenuSubItemSelect='decor';
+
+                $this->Viewer_AddHtmlTitle($this->Lang_Get('adm_choose_decor'));
+
+                $oDecActive=$this->PluginAceadminpanel_Decor_GetDecActiveByTargetTypeAndTargetId($this->oUserCurrent->getId(),'personal');
+
+
+
+                if (getRequest('choose') && $oDec=$this->PluginAceAdminPanel_Decor_GetDecById(getRequest('choose'))) {
+
+                    if ($oDecActive) {
+                        $this->PluginAceadminpanel_Decor_DeleteDecor('personal',$this->oUserCurrent->getId(),$oDecActive->getDecId());
+                    }
+                    $this->PluginAceadminpanel_Decor_SetDecor('personal',$this->oUserCurrent->getId(),getRequest('choose'));
+                    $this->Message_AddNoticeSingle('шаблон выбран');
+                }
+
+
+
+
+                if (getRequest('delete') && $oDec=$this->PluginAceAdminPanel_Decor_GetDecById(getRequest('delete')) && $oDecActive && $oDecActive->getDecId()==getRequest('delete')) {
+
+                    $this->PluginAceadminpanel_Decor_DeleteDecor('personal',$this->oUserCurrent->getId(),getRequest('delete'));
+                    $this->Message_AddNoticeSingle('шаблон удален');
+                }
+
+                if (getRequest('setfav') && $oDec=$this->PluginAceAdminPanel_Decor_GetDecById(getRequest('setfav')) && !$this->PluginAceAdminPanel_Decor_GetFavByIdAndUserId('personal',$this->oUserCurrent->getId(),getRequest('setfav'))) {
+
+                    $this->PluginAceadminpanel_Decor_SetFavDecor('personal',$this->oUserCurrent->getId(),getRequest('setfav'));
+                    $this->Message_AddNoticeSingle('шаблон добавлен в избранное');
+                }
+
+
+
+
+                if (getRequest('delfav') && $oDec=$this->PluginAceAdminPanel_Decor_GetDecById(getRequest('delfav')) && $this->PluginAceAdminPanel_Decor_GetFavByIdAndUserId('personal',$this->oUserCurrent->getId(),getRequest('delfav'))) {
+
+                    $this->PluginAceadminpanel_Decor_DeleteFavDecor('personal',$this->oUserCurrent->getId(),getRequest('delfav'));
+                    $this->Message_AddNoticeSingle('шаблон удален из избранного');
+                }
+
+
+               $aFilter=array();
+                if($this->GetParam(0)=='all') {
+                    if (getRequest('category') && in_array(getRequest('category'),Config::Get('plugin.aceadminpanel.deccats'))) {
+                        $aFilter['category']=getRequest('category');
+                        $this->Viewer_Assign('aLangCategory', $this->Lang_Get('dec_category_'.getRequest('category')));
+                    }
+                    $aDecors=$this->PluginAceadminpanel_Decor_GetDecors($aFilter);
+                    $this->SetTemplateAction('decorall');
+
+                    $this->Viewer_AddBlock('right','block.deccats.tpl',array(),159);
+                } else {
+                    $aFilter['type']='personal';
+                    $aFilter['user_id']=$this->oUserCurrent->getId();
+                    $aDecors=$this->PluginAceadminpanel_Decor_GetFavDecors($aFilter);
+                }
+
+                $this->Viewer_Assign('aDecors', $aDecors);
+
+
+                $oDecActiveNew=$this->PluginAceadminpanel_Decor_GetDecActiveByTargetTypeAndTargetId($this->oUserCurrent->getId(),'personal');
+                $this->Viewer_Assign('oDecActive', $oDecActiveNew);
+
+                $this->Viewer_AddBlock('right','block.settings.tpl',array(),157);
+
+        }
 	
 	protected function EventTuning() {
 		$this->sMenuItemSelect='settings';
@@ -143,8 +390,8 @@ class ActionSettings extends Action {
 		 */
 		if (isPost('submit_profile_edit')) {
 			$this->Security_ValidateSendForm();
-			
-			$bError=false;
+						
+			$bError=false;			
 			/**
 		 	* Заполняем профиль из полей формы
 		 	*/

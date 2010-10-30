@@ -26,7 +26,6 @@
         <div class="block_bottom3"></div>
         </div>
      </li>
-	 {include file='block.settings.tpl'}
 <!-- Редактирование записи -->
 {*
 			<h1>{$aLang.settings_tuning}</h1>

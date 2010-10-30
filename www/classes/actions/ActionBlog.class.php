@@ -121,6 +121,10 @@ class ActionBlog extends Action {
 		$this->AddEvent('delete','EventDeleteBlog');
 		$this->AddEvent('admin','EventAdminBlog');
 		$this->AddEvent('invite','EventInviteBlog');
+
+                $this->AddEvent('template','EventTemplateBlog');
+                $this->AddEvent('widgets','EventWidgetsBlog');
+                $this->AddEvent('decor','EventDecorBlog');
 		
 		$this->AddEvent('ajaxaddcomment','AjaxAddComment');
 		$this->AddEvent('ajaxaddbloginvite', 'AjaxAddBlogInvite');
@@ -131,7 +135,7 @@ class ActionBlog extends Action {
 				
 		$this->AddEventPreg('/^[\w\-\_]+$/i','/^(page(\d+))?$/i','EventShowBlog');
 		$this->AddEventPreg('/^[\w\-\_]+$/i','/^bad$/i','/^(page(\d+))?$/i','EventShowBlog');
-		$this->AddEventPreg('/^[\w\-\_]+$/i','/^new$/i','/^(page(\d+))?$/i','EventShowBlog');
+		$this->AddEventPreg('/^[\w\-\_]+$/i','/^new$/i','/^(page(\d+))?$/i','EventShowBlog');			
 	}
 		
 	
@@ -323,7 +327,7 @@ class ActionBlog extends Action {
 			$_REQUEST['blog_limit_rating_topic']=$oBlog->getLimitRatingTopic();
 			$_REQUEST['blog_id']=$oBlog->getId();
 		}
-		
+		 $this->Viewer_AddBlock('right','block.blogsettings.tpl',array(),157);
 		
 	}
 	/**
@@ -437,6 +441,318 @@ class ActionBlog extends Action {
 			$this->Viewer_Assign('aBlogUsersInvited',$aBlogUsersInvited);
 			$this->Viewer_AddBlock('right','actions/ActionBlog/invited.tpl');
 		}
+
+                $this->Viewer_AddBlock('right','block.blogsettings.tpl',array(),157);
+	}
+
+                /**
+	 * Управление пользователями блога
+	 *
+	 * @return unknown
+	 */
+	protected function EventTemplateBlog() {
+		/**
+		 * Меню
+		 */
+		$this->sMenuItemSelect='template';
+		$this->sMenuSubItemSelect='';
+		/**
+		 * Проверяем передан ли в УРЛе номер блога
+		 */
+		$sBlogId=$this->GetParam(0);
+		if (!$oBlog=$this->Blog_GetBlogById($sBlogId)) {
+			return parent::EventNotFound();
+		}
+		/**
+		 * Проверям авторизован ли пользователь
+		 */
+		if (!$this->User_IsAuthorization()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('not_access'),$this->Lang_Get('error'));
+			return Router::Action('error');
+		}
+		/**
+		 * Явлется ли авторизованный пользователь хозяином блога, либо его администратором
+		 */
+		$oBlogUser=$this->Blog_GetBlogUserByBlogIdAndUserId($oBlog->getId(),$this->oUserCurrent->getId());
+		$bIsAdministratorBlog=$oBlogUser ? $oBlogUser->getIsAdministrator() : false;
+		if ($oBlog->getOwnerId()!=$this->oUserCurrent->getId()  and !$this->oUserCurrent->isAdministrator() and !$bIsAdministratorBlog) {
+			return parent::EventNotFound();
+		}
+
+                $oTplActive=$this->PluginAceadminpanel_Templates_GetTplActiveByTargetTypeAndTargetId($sBlogId,'collective');
+
+
+                if (getRequest('choose') && $oTpl=$this->PluginAceAdminPanel_Templates_GetTplById(getRequest('choose'))) {
+
+                    if ($oTplActive) {
+                        $this->PluginAceadminpanel_Templates_DeleteTemplate('collective',$sBlogId,$oTplActive->getTplId());
+                    }
+                    $this->PluginAceadminpanel_Templates_SetTemplate('collective',$sBlogId,getRequest('choose'));
+                    $this->Message_AddNoticeSingle('шаблон выбран');
+                }
+
+                if (getRequest('delete') && $oTpl=$this->PluginAceAdminPanel_Templates_GetTplById(getRequest('delete')) && $oTplActive && $oTplActive->getTplId()==getRequest('delete')) {
+
+                    $this->PluginAceadminpanel_Templates_DeleteTemplate('collective',$sBlogId,getRequest('delete'));
+                    $this->Message_AddNoticeSingle('шаблон удален');
+                }
+
+                if (getRequest('setfav') && $oTpl=$this->PluginAceAdminPanel_Templates_GetTplById(getRequest('setfav')) && !$this->PluginAceAdminPanel_Templates_GetFavByIdAndUserId('collective',$sBlogId,getRequest('setfav'))) {
+
+                    $this->PluginAceadminpanel_Templates_SetFavTemplate('collective',$sBlogId,getRequest('setfav'));
+                    $this->Message_AddNoticeSingle('шаблон добавлен в избранное');
+                }
+
+
+
+
+                if (getRequest('delfav') && $oTpl=$this->PluginAceAdminPanel_Templates_GetTplById(getRequest('delfav')) && $this->PluginAceAdminPanel_Templates_GetFavByIdAndUserId('collective',$sBlogId,getRequest('delfav'))) {
+
+                    $this->PluginAceadminpanel_Templates_DeleteFavTemplate('collective',$sBlogId,getRequest('delfav'));
+                    $this->Message_AddNoticeSingle('шаблон удален из избранного');
+                }
+
+                $aFilter=array();
+                if($this->GetParam(1)=='all') {
+                    if (getRequest('category') && in_array(getRequest('category'),Config::Get('plugin.aceadminpanel.tplcats'))) {
+                        $aFilter['category']=getRequest('category');
+                        $this->Viewer_Assign('aLangCategory', $this->Lang_Get('tpl_category_'.getRequest('category')));
+                    }
+                    $aTemplates=$this->PluginAceadminpanel_Templates_GetTemplates($aFilter);
+                    $this->SetTemplateAction('templatesall');
+
+                    $this->Viewer_AddBlock('right','block.tplcats.tpl',array(),153);
+                } else {
+                    $aFilter['type']='collective';
+                    $aFilter['user_id']=$sBlogId;
+                    $aTemplates=$this->PluginAceadminpanel_Templates_GetFavTemplates($aFilter);
+                }
+
+                $this->Viewer_Assign('aTemplates', $aTemplates);
+
+                $oTplActiveNew=$this->PluginAceadminpanel_Templates_GetTplActiveByTargetTypeAndTargetId($sBlogId,'collective');
+                $this->Viewer_Assign('oTplActive', $oTplActiveNew);
+
+                $this->Viewer_Assign('oBlog', $oBlog);
+
+                $this->Viewer_AddBlock('right','block.blogsettings.tpl',array(),157);
+	}
+
+
+
+
+        protected function EventWidgetsBlog() {
+		/**
+		 * Меню
+		 */
+		$this->sMenuItemSelect='widgets';
+		$this->sMenuSubItemSelect='';
+
+                /**
+		 * Проверяем передан ли в УРЛе номер блога
+		 */
+		$sBlogId=$this->GetParam(0);
+		if (!$oBlog=$this->Blog_GetBlogById($sBlogId)) {
+			return parent::EventNotFound();
+		}
+		/**
+		 * Проверям авторизован ли пользователь
+		 */
+		if (!$this->User_IsAuthorization()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('not_access'),$this->Lang_Get('error'));
+			return Router::Action('error');
+		}
+		/**
+		 * Явлется ли авторизованный пользователь хозяином блога, либо его администратором
+		 */
+		$oBlogUser=$this->Blog_GetBlogUserByBlogIdAndUserId($oBlog->getId(),$this->oUserCurrent->getId());
+		$bIsAdministratorBlog=$oBlogUser ? $oBlogUser->getIsAdministrator() : false;
+		if ($oBlog->getOwnerId()!=$this->oUserCurrent->getId()  and !$this->oUserCurrent->isAdministrator() and !$bIsAdministratorBlog) {
+			return parent::EventNotFound();
+		}
+
+                if (getRequest('choose') && $oWid=$this->PluginAceAdminPanel_Widgets_GetWidById(getRequest('choose')) && !$this->PluginAceadminpanel_Widgets_GetWidActiveByTargetTypeAndTargetId($sBlogId,'personal',getRequest('choose'))) {
+
+                    /*if ($oWidActive) {
+                        $this->PluginAceadminpanel_Widgets_DeleteWidget('personal',$sBlogId,$oWidActive->getWidId());
+                    }*/
+                    $this->PluginAceadminpanel_Widgets_SetWidget('collective',$sBlogId,getRequest('choose'));
+                    $this->Message_AddNoticeSingle('виджет выбран');
+                }
+
+
+
+
+                if (getRequest('delete') && $oWid=$this->PluginAceAdminPanel_Widgets_GetWidById(getRequest('delete')) /*&& $oWidActive && $oWidActive->getWidId()==getRequest('delete')*/) {
+
+                    $this->PluginAceadminpanel_Widgets_DeleteWidget('collective',$sBlogId,getRequest('delete'));
+                    $this->Message_AddNoticeSingle('виджет удален');
+                }
+
+                if (getRequest('setfav') && $oWid=$this->PluginAceAdminPanel_Widgets_GetWidById(getRequest('setfav')) && !$this->PluginAceAdminPanel_Widgets_GetFavByIdAndUserId('collective',$sBlogId,getRequest('setfav'))) {
+                    $aFilter['type']='collective';
+                    $aFilter['user_id']=$sBlogId;
+                    $iPriority=$this->PluginAceadminpanel_Widgets_GetMaxSortByPid($aFilter);
+                    $iPriority++;
+                    $this->PluginAceadminpanel_Widgets_SetFavWidget('collective',$sBlogId,getRequest('setfav'),$iPriority);
+                    $this->Message_AddNoticeSingle('виджет добавлен в избранное');
+                }
+
+
+
+
+                if (getRequest('delfav') && $oWid=$this->PluginAceAdminPanel_Widgets_GetWidById(getRequest('delfav')) && $this->PluginAceAdminPanel_Widgets_GetFavByIdAndUserId('collective',$sBlogId,getRequest('delfav'))) {
+
+                    $this->PluginAceadminpanel_Widgets_DeleteFavWidget('collective',$sBlogId,getRequest('delfav'));
+                    $this->Message_AddNoticeSingle('виджет удален из избранного');
+                }
+
+                 /**
+		 * Обработка изменения сортировки страницы
+		 */
+		if (getRequest('sort') and $oWidget=$this->PluginAceadminpanel_Widgets_GetFavWidgets(array('type'=>'collective','user_id'=>$sBlogId,'wid_id'=>getRequest('sort')))) {
+			//$this->Security_ValidateSendForm();
+			$oWidget=$oWidget[0];
+                        $sWay=getRequest('sorttype')=='down' ? 'down' : 'up';
+			$iSortOld=$oWidget->getWidPriority();
+
+                        $aFilter['type']='collective';
+                        $aFilter['user_id']=$sBlogId;
+
+			if ($oWidPrev=$this->PluginAceadminpanel_Widgets_GetNextWidBySort($iSortOld,$aFilter,$sWay)) {
+				$iSortNew=$oWidPrev->getWidPriority();
+				$oWidPrev->setWidPriority($iSortOld);
+				$this->PluginAceadminpanel_Widgets_UpdateFavWid($oWidPrev,$aFilter);
+			} else {
+				$iSortNew=$iSortOld;
+			}
+			/**
+			 * Меняем значения сортировки местами
+			 */
+			$oWidget->setWidPriority($iSortNew);
+			$this->PluginAceadminpanel_Widgets_UpdateFavWid($oWidget,$aFilter);
+		}
+
+
+               $aFilter=array();
+                if($this->GetParam(1)=='all') {
+                    if (getRequest('category') && in_array(getRequest('category'),Config::Get('plugin.aceadminpanel.widcats'))) {
+                        $aFilter['category']=getRequest('category');
+                        $this->Viewer_Assign('aLangCategory', $this->Lang_Get('wid_category_'.getRequest('category')));
+                    }
+                    $aWidgets=$this->PluginAceadminpanel_Widgets_GetWidgets($aFilter);
+                    $this->SetTemplateAction('widgetsall');
+
+                    $this->Viewer_AddBlock('right','block.widcats.tpl',array(),153);
+                } else {
+                    $aFilter['type']='collective';
+                    $aFilter['user_id']=$sBlogId;
+                    $aWidgets=$this->PluginAceadminpanel_Widgets_GetFavWidgets($aFilter);
+                }
+
+
+
+                $this->Viewer_Assign('aWidgets', $aWidgets);
+
+                $this->Viewer_Assign('oBlog', $oBlog);
+/*
+
+                $oWidActiveNew=$this->PluginAceadminpanel_Widgets_GetWidActiveByTargetTypeAndTargetId($sBlogId,'collective');
+                $this->Viewer_Assign('oWidActive', $oWidActiveNew);*/
+
+                $this->Viewer_AddBlock('right','block.blogsettings.tpl',array(),157);
+
+
+
+
+        }
+
+	protected function EventDecorBlog() {
+		/**
+		 * Меню
+		 */
+		$this->sMenuItemSelect='decor';
+		$this->sMenuSubItemSelect='';
+		/**
+		 * Проверяем передан ли в УРЛе номер блога
+		 */
+		$sBlogId=$this->GetParam(0);
+		if (!$oBlog=$this->Blog_GetBlogById($sBlogId)) {
+			return parent::EventNotFound();
+		}
+		/**
+		 * Проверям авторизован ли пользователь
+		 */
+		if (!$this->User_IsAuthorization()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('not_access'),$this->Lang_Get('error'));
+			return Router::Action('error');
+		}
+		/**
+		 * Явлется ли авторизованный пользователь хозяином блога, либо его администратором
+		 */
+		$oBlogUser=$this->Blog_GetBlogUserByBlogIdAndUserId($oBlog->getId(),$this->oUserCurrent->getId());
+		$bIsAdministratorBlog=$oBlogUser ? $oBlogUser->getIsAdministrator() : false;
+		if ($oBlog->getOwnerId()!=$this->oUserCurrent->getId()  and !$this->oUserCurrent->isAdministrator() and !$bIsAdministratorBlog) {
+			return parent::EventNotFound();
+		}
+
+                $oDecActive=$this->PluginAceadminpanel_Decor_GetDecActiveByTargetTypeAndTargetId($sBlogId,'collective');
+
+
+                if (getRequest('choose') && $oDec=$this->PluginAceAdminPanel_Decor_GetDecById(getRequest('choose'))) {
+
+                    if ($oDecActive) {
+                        $this->PluginAceadminpanel_Decor_DeleteDecor('collective',$sBlogId,$oDecActive->getDecId());
+                    }
+                    $this->PluginAceadminpanel_Decor_SetDecor('collective',$sBlogId,getRequest('choose'));
+                    $this->Message_AddNoticeSingle('украшение выбрано');
+                }
+
+                if (getRequest('delete') && $oDec=$this->PluginAceAdminPanel_Decor_GetDecById(getRequest('delete')) && $oDecActive && $oDecActive->getDecId()==getRequest('delete')) {
+
+                    $this->PluginAceadminpanel_Decor_DeleteDecor('collective',$sBlogId,getRequest('delete'));
+                    $this->Message_AddNoticeSingle('украшение удалено');
+                }
+
+                if (getRequest('setfav') && $oDec=$this->PluginAceAdminPanel_Decor_GetDecById(getRequest('setfav')) && !$this->PluginAceAdminPanel_Decor_GetFavByIdAndUserId('collective',$sBlogId,getRequest('setfav'))) {
+
+                    $this->PluginAceadminpanel_Decor_SetFavDecor('collective',$sBlogId,getRequest('setfav'));
+                    $this->Message_AddNoticeSingle('украшение добавлено в избранное');
+                }
+
+
+
+
+                if (getRequest('delfav') && $oDec=$this->PluginAceAdminPanel_Decor_GetDecById(getRequest('delfav')) && $this->PluginAceAdminPanel_Decor_GetFavByIdAndUserId('collective',$sBlogId,getRequest('delfav'))) {
+
+                    $this->PluginAceadminpanel_Decor_DeleteFavDecor('collective',$sBlogId,getRequest('delfav'));
+                    $this->Message_AddNoticeSingle('украшение удалено из избранного');
+                }
+
+                $aFilter=array();
+                if($this->GetParam(1)=='all') {
+                    if (getRequest('category') && in_array(getRequest('category'),Config::Get('plugin.aceadminpanel.deccats'))) {
+                        $aFilter['category']=getRequest('category');
+                        $this->Viewer_Assign('aLangCategory', $this->Lang_Get('dec_category_'.getRequest('category')));
+                    }
+                    $aDecors=$this->PluginAceadminpanel_Decor_GetDecors($aFilter);
+                    $this->SetTemplateAction('decorall');
+
+                    $this->Viewer_AddBlock('right','block.deccats.tpl',array(),156);
+                } else {
+                    $aFilter['type']='collective';
+                    $aFilter['user_id']=$sBlogId;
+                    $aDecors=$this->PluginAceadminpanel_Decor_GetFavDecors($aFilter);
+                }
+
+                $this->Viewer_Assign('aDecors', $aDecors);
+
+                $oDecActiveNew=$this->PluginAceadminpanel_Decor_GetDecActiveByTargetTypeAndTargetId($sBlogId,'collective');
+                $this->Viewer_Assign('oDecActive', $oDecActiveNew);
+
+                $this->Viewer_Assign('oBlog', $oBlog);
+
+                $this->Viewer_AddBlock('right','block.blogsettings.tpl',array(),157);
 	}
 	
 	/**
@@ -516,7 +832,7 @@ class ActionBlog extends Action {
 		}
 		/**
 		 * Преобразуем ограничение по рейтингу в число 
-		 */
+		 */				
 		if (!func_check(getRequest('blog_limit_rating_topic'),'float')) {
 			$this->Message_AddError($this->Lang_Get('blog_create_rating_error'),$this->Lang_Get('error'));
 			$bOk=false;
@@ -566,7 +882,7 @@ class ActionBlog extends Action {
 		 * Устанавливаем шаблон вывода
 		 */
 		$this->SetTemplateAction('index');
-	}
+	}	
 	/**
 	 * Показ топика
 	 *
@@ -675,7 +991,7 @@ class ActionBlog extends Action {
 		/**
 		 * Вызов хуков
 		 */
-		$this->Hook_Run('topic_show',array("oTopic"=>$oTopic));
+		$this->Hook_Run('topic_show',array("oTopic"=>$oTopic));		
 		/**
 		 * Выставляем SEO данные
 		 */
@@ -726,7 +1042,7 @@ class ActionBlog extends Action {
 		 * Меню
 		 */
 		$this->sMenuSubItemSelect=$sShowType;
-		$this->sMenuSubBlogUrl=$oBlog->getUrlFull();
+		$this->sMenuSubBlogUrl=$oBlog->getUrlFull();		
 		/**
 		 * Передан ли номер страницы
 		 */

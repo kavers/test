@@ -1,12 +1,10 @@
 {include file='header.tpl' showWhiteBack=true menu='people'}
-{hook run='html_pluginUsercats_catalog'}
-<li id="vip_blogs" class="block2 pine_green">
+<li id="vip_blogs" class="block2 green">
         {*<div class="title"><a href="/" class="link"><h1>{$aLang.user_list} <span>({$aStat.count_all})</span></h1></a>*}
         <div class="title">
             <a href="/" class="link"><h1>Блоги</h1></a>
             <img src="{cfg name='path.static.skin'}/img/arrow.gif" width="7" height="12" alt="arrow" title="arrow" class="arrow"/>
             <a href="{router page='people'}" class="link"><h1>Личные блоги <span>({$aStat.count_all})</span></h1></a>
-			{hook run='html_pluginUsercats_bread_crumbs'}
         </div>
          <ul class="gradient">
             <li {if $sEvent=='good'}class="first2"{/if}><strong></strong><a href="{router page='people'}good/">{$aLang.user_good}</a></li>

@@ -29,15 +29,15 @@
 			<p>{$aLang.blog_create_url}:<br />
 			<input type="text" id="blog_url" name="blog_url" value="{$_aRequest.blog_url}" class="line" {if $_aRequest.blog_id}disabled{/if} /><br />
 			<strong>{$aLang.blog_create_url_notice}</strong></p>
-			
-			{hook run='html_pluginCommunitycats_form'}
-			
+						
 			<p>{$aLang.blog_create_type}:<br />
 			<select name="blog_type" id="blog_type" onChange="">
 				<option value="open" {if $_aRequest.blog_type=='open'}selected{/if}>{$aLang.blog_create_type_open}</option>
 				<option value="close" {if $_aRequest.blog_type=='close'}selected{/if}>{$aLang.blog_create_type_close}</option>
 			</select><br />
 			<strong>{$aLang.blog_create_type_open_notice}</strong></p>
+			
+			{hook run='html_pluginCommunitycats_form'}
 
 			<p>{$aLang.blog_create_description}:<br />
 			<textarea name="blog_description" id="blog_description" rows="20" style="width:100%" class="area">{$_aRequest.blog_description}</textarea><br />

@@ -89,6 +89,629 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
         $this->AddEvent('topics', 'EventTopics');
         $this->AddEvent('users', 'EventUsers');
         $this->AddEvent('tools', 'EventTools');
+
+        $this->AddEvent('templates', 'EventTemplates');
+        $this->AddEvent('widgets', 'EventWidgets');
+        $this->AddEvent('decor', 'EventDecor');
+    }
+
+    protected function EventTemplates() {
+        if($this->GetParam(0)=='add') {
+            $this->EventAddTemplate();
+        }elseif($this->GetParam(0)=='edit') {
+            $this->EventEditTemplate();
+        } else {
+            $this->EventShowTemplates();
+        }
+    }
+
+    protected function EventShowTemplates() {
+        $aFilter=array();
+        if (getRequest('category') && in_array(getRequest('category'),Config::Get('plugin.aceadminpanel.tplcats'))) {
+            $aFilter['category']=getRequest('category');
+            $this->Viewer_Assign('aLangCategory', $this->Lang_Get('tpl_category_'.getRequest('category')));
+        }
+        $aTemplates=$this->PluginAceadminpanel_Templates_GetTemplates($aFilter);
+        $this->Viewer_Assign('aTemplates', $aTemplates);
+
+        $this->Viewer_AddBlock('right','block.tplcats.tpl',array(),153);
+
+        if (getRequest('delete') && $this->PluginAceAdminPanel_Templates_GetTplById(getRequest('delete'))) {
+             $this->PluginAceadminpanel_Templates_AdminDeleteTemplate(getRequest('delete'));
+             $this->Message_AddNotice($this->Lang_Get('adm_tpl_delete_success'),$this->Lang_Get('attention'));
+        }
+    }
+
+
+
+
+
+    protected function EventAddTemplate() {
+        $this->SetTemplateAction('addtemplate');
+
+        if (isPost('submit_template')) {
+            /**
+             * Проверка корректности полей формы
+             */
+            if (!$this->checkTplFields()) {
+                    return false;
+            }
+
+            /**
+             * Если всё ок то пытаемся создать блог
+             */
+            $oTpl=Engine::GetEntity('PluginAceadminpanel_Templates_Templates');
+
+            /**
+             * Парсим текст на предмет разных ХТМЛ тегов
+             */
+            $sText=$this->Text_Parser(getRequest('tpl_description'));
+            $oTpl->setTplDescription($sText);
+            $oTpl->setTplTitle(getRequest('tpl_title'));
+            $oTpl->setTplName(getRequest('tpl_name'));
+            $oTpl->setTplCategory(getRequest('tpl_category'));
+            $oTpl->setTplDateAdd(date("Y-m-d H:i:s"));
+            $oTpl->setTplPrice(getRequest('tpl_price'));
+            //$oTpl->setUrl(getRequest('blog_url'));
+            /**
+            * Загрузка аватара, делаем ресайзы
+            */
+            if (isset($_FILES['avatar']) and is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+                    if ($sPath=$this->UploadAvatarFile($_FILES['avatar'],'template')) {
+                            $oTpl->setTplAvatar($sPath);
+                    } else {
+                            $this->Message_AddError($this->Lang_Get('blog_create_avatar_error'),$this->Lang_Get('error'));
+                            return false;
+                    }
+            }
+
+            if ($this->PluginAceadminpanel_Templates_AddTemplate($oTpl)) {
+
+                   func_header_location(Router::GetPath('admin').'templates');
+                   $this->Message_AddNotice($this->Lang_Get('adm_tpl_add_success'),$this->Lang_Get('attention'));
+            } else {
+                    $this->Message_AddError($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+            }
+
+
+        }
+    }
+
+    public function UploadAvatarFile($aFile,$type) {
+		if(!isset($aFile['tmp_name'])) {
+			return false;
+		}
+
+		$sFileTmp=Config::Get('sys.cache.dir').func_generator();
+		if (!move_uploaded_file($aFile['tmp_name'],$sFileTmp)) {
+			return false;
+		}
+		$sDirUpload=Config::Get('path.uploads.root')."/{$type}/avatars";
+		$aParams=$this->Image_BuildParams('topic');
+
+                $iWidth=140;
+                if($type=='widget') {
+                    $iWidth=600;
+                }
+
+		if ($sFileImage=$this->Image_Resize($sFileTmp,$sDirUpload,func_generator(6),3000,3000,$iWidth,null,true,$aParams)) {
+			@unlink($sFileTmp);
+			return $this->Image_GetWebPath($sFileImage);
+		}
+		@unlink($sFileTmp);
+		return false;
+	}
+
+    protected function EventEditTemplate() {
+        $this->SetTemplateAction('addtemplate');
+
+        $iTplId=$this->GetParam(1);
+
+        if(!$iTplId) {
+           func_header_location(Router::GetPath('admin').'templates');
+	}
+
+        $oTpl=$this->PluginAceAdminPanel_Templates_GetTplById($iTplId);
+
+        if (isPost('submit_template') && $oTpl) {
+            /**
+             * Проверка корректности полей формы
+             */
+            if (!$this->checkTplFields()) {
+                    return false;
+            }
+            $sText=$this->Text_Parser(getRequest('tpl_description'));
+            $oTpl->setTplDescription($sText);
+            $oTpl->setTplTitle(getRequest('tpl_title'));
+            $oTpl->setTplName(getRequest('tpl_name'));
+            $oTpl->setTplCategory(getRequest('tpl_category'));
+            $oTpl->setTplPrice(getRequest('tpl_price'));
+            $oTpl->setTplDateEdit(date("Y-m-d H:i:s"));
+
+            /**
+            * Загрузка аватара, делаем ресайзы
+            */
+            if (isset($_FILES['avatar']) and is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+                    if ($sPath=$this->UploadAvatarFile($_FILES['avatar'],'template')) {
+                            $oTpl->setTplAvatar($sPath);
+                    } else {
+                            $this->Message_AddError($this->Lang_Get('blog_create_avatar_error'),$this->Lang_Get('error'));
+                            return false;
+                    }
+            }
+
+            /**
+             * Удалить аватар
+             */
+            if (isset($_REQUEST['avatar_delete'])) {
+                   // @unlink($this->Image_GetServerPath($oTpl->getTplAvatar($iSize)));
+
+                    $oTpl->setTplAvatar('');
+            }
+
+
+
+            if ($this->PluginAceadminpanel_Templates_UpdateTemplate($oTpl)) {
+
+                   func_header_location(Router::GetPath('admin').'templates');
+                   $this->Message_AddNotice($this->Lang_Get('adm_tpl_update_success'),$this->Lang_Get('attention'));
+            } else {
+                    $this->Message_AddError($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+            }
+        }
+
+        /**
+        * Заполняем поля формы для редактирования
+        * Только перед отправкой формы!
+        */
+        $_REQUEST['tpl_id']=$oTpl->getTplId();
+        $_REQUEST['tpl_title']=$oTpl->getTplTitle();
+        $_REQUEST['tpl_description']=$oTpl->getTplDescription();
+        $_REQUEST['tpl_name']=$oTpl->getTplName();
+        $_REQUEST['tpl_category']=$oTpl->getTplCategory();
+        $_REQUEST['tpl_avatar']=$oTpl->getTplAvatar();
+        $_REQUEST['tpl_price']=$oTpl->getTplPrice();
+    }
+
+    /**
+     * Проверка полей формы
+     *
+     * @return unknown
+     */
+    protected function checkTplFields() {
+            $this->Security_ValidateSendForm();
+
+            $bOk=true;
+
+            if (!func_check(getRequest('tpl_price',null,'post'),'float')) {
+                    $this->Message_AddError($this->Lang_Get('adm_tpl_check_error_price'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+            if (!func_check(getRequest('tpl_title',null,'post'),'text',2,200)) {
+                    $this->Message_AddError($this->Lang_Get('adm_tpl_check_error_title'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+            if (!func_check(getRequest('tpl_name',null,'post'),'text',1,200)) {
+                    $this->Message_AddError($this->Lang_Get('adm_tpl_check_error_name'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+
+            if (!func_check(getRequest('tpl_description',null,'post'),'text',2,1000)) {
+                    $this->Message_AddError($this->Lang_Get('adm_tpl_check_error_desc'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+            if (!getRequest('tpl_category',null,'post') || !in_array(getRequest('tpl_category',null,'post'),Config::Get('plugin.aceadminpanel.tplcats'))) {
+                    $this->Message_AddError($this->Lang_Get('adm_tpl_check_error_cat'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+
+            return $bOk;
+    }
+
+
+
+    protected function EventWidgets() {
+        if($this->GetParam(0)=='add') {
+            $this->EventAddWidget();
+        }elseif($this->GetParam(0)=='edit') {
+            $this->EventEditWidget();
+        } else {
+            $this->EventShowWidgets();
+        }
+    }
+
+    protected function EventShowWidgets() {
+        $aFilter=array();
+        if (getRequest('category') && in_array(getRequest('category'),Config::Get('plugin.aceadminpanel.widcats'))) {
+            $aFilter['category']=getRequest('category');
+            $this->Viewer_Assign('aLangCategory', $this->Lang_Get('wid_category_'.getRequest('category')));
+        }
+        $aWidgets=$this->PluginAceadminpanel_Widgets_GetWidgets($aFilter);
+        $this->Viewer_Assign('aWidgets', $aWidgets);
+
+        $this->Viewer_AddBlock('right','block.widcats.tpl',array(),153);
+
+        if (getRequest('delete') && $this->PluginAceAdminPanel_Widgets_GetWidById(getRequest('delete'))) {
+             $this->PluginAceadminpanel_Widgets_AdminDeleteWidget(getRequest('delete'));
+             $this->Message_AddNotice($this->Lang_Get('adm_wid_delete_success'),$this->Lang_Get('attention'));
+        }
+    }
+
+
+
+
+
+    protected function EventAddWidget() {
+        $this->SetTemplateAction('addwidget');
+
+        /*$aWidgetsProducers=$this->PluginAceadminpanel_Widgets_GetWidgetsProducers();
+        $this->Viewer_Assign('aWidgetsProducers', $aWidgetsProducers);*/
+
+        $this->Viewer_Assign('hash', func_encrypt(date("Y-m-d H:i:s")));
+
+        if (isPost('submit_widget')) {
+
+            /*$oProducerNew='';
+            if (getRequest('wid_new') && !$oProducerNew=$this->PluginAceadminpanel_Widgets_GetWidgetProducerByName(getRequest('wid_new'))) {
+                $oProducerNew=$this->PluginAceadminpanel_Widgets_AddWidgetProducer(getRequest('wid_new'));
+            }*/
+            //$oProducerNew=$this->PluginAceadminpanel_Widgets_GetWidgetProducerByName(getRequest('wid_new'));
+            /**
+             * Проверка корректности полей формы
+             */
+            if (!$this->checkWidFields()) {
+                    return false;
+            }
+
+            /**
+             * Если всё ок то пытаемся создать блог
+             */
+            $oWid=Engine::GetEntity('PluginAceadminpanel_Widgets_Widgets');
+
+            /**
+             * Парсим текст на предмет разных ХТМЛ тегов
+             */
+            //$sText=$this->Text_Parser(getRequest('wid_description'));
+            $oWid->setWidDescription(getRequest('wid_description'));
+            $oWid->setWidTitle(getRequest('wid_title'));
+            $oWid->setWidName(getRequest('wid_name'));
+            $oWid->setWidCategory(getRequest('wid_category'));
+            $oWid->setWidDateAdd(date("Y-m-d H:i:s"));
+            $oWid->setWidPrice(getRequest('wid_price'));
+            //$oWid->setUrl(getRequest('blog_url'));
+            /**
+            * Загрузка аватара, делаем ресайзы
+            */
+            if (isset($_FILES['avatar']) and is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+                    if ($sPath=$this->UploadAvatarFile($_FILES['avatar'],'widget')) {
+                            $oWid->setWidAvatar($sPath);
+                    } else {
+                            $this->Message_AddError($this->Lang_Get('blog_create_avatar_error'),$this->Lang_Get('error'));
+                            return false;
+                    }
+            }
+
+            if ($this->PluginAceadminpanel_Widgets_AddWidget($oWid)) {
+
+                   func_header_location(Router::GetPath('admin').'widgets');
+                   $this->Message_AddNotice($this->Lang_Get('adm_wid_add_success'),$this->Lang_Get('attention'));
+            } else {
+                    $this->Message_AddError($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+            }
+
+
+        }
+    }
+
+    protected function EventEditWidget() {
+        $this->SetTemplateAction('addwidget');
+
+       /* $aWidgetsProducers=$this->PluginAceadminpanel_Widgets_GetWidgetsProducers();
+        $this->Viewer_Assign('aWidgetsProducers', $aWidgetsProducers);*/
+
+
+        $iWidId=$this->GetParam(1);
+
+        if(!$iWidId) {
+           func_header_location(Router::GetPath('admin').'widgets');
+	}
+
+        $oWid=$this->PluginAceAdminPanel_Widgets_GetWidById($iWidId);
+
+        if (isPost('submit_widget') && $oWid) {
+
+            /*$oProducerNew='';
+            if (getRequest('wid_new') && !$oProducerNew=$this->PluginAceadminpanel_Widgets_GetWidgetProducerByName(getRequest('wid_new'))) {
+                $oProducerNew=$this->PluginAceadminpanel_Widgets_AddWidgetProducer(getRequest('wid_new'));
+            }*/
+            /**
+             * Проверка корректности полей формы
+             */
+            if (!$this->checkWidFields(false)) {
+                    return false;
+            }
+            $oWid->setWidDescription(getRequest('wid_description'));
+            $oWid->setWidTitle(getRequest('wid_title'));
+            $oWid->setWidName(getRequest('wid_name'));
+            $oWid->setWidCategory(getRequest('wid_category'));
+            $oWid->setWidPrice(getRequest('wid_price'));
+            $oWid->setWidDateEdit(date("Y-m-d H:i:s"));
+
+            /**
+            * Загрузка аватара, делаем ресайзы
+            */
+            if (isset($_FILES['avatar']) and is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+                    if ($sPath=$this->UploadAvatarFile($_FILES['avatar'],'widget')) {
+                            $oWid->setWidAvatar($sPath);
+                    } else {
+                            $this->Message_AddError($this->Lang_Get('blog_create_avatar_error'),$this->Lang_Get('error'));
+                            return false;
+                    }
+            }
+
+            /**
+             * Удалить аватар
+             */
+            if (isset($_REQUEST['avatar_delete'])) {
+                   // @unlink($this->Image_GetServerPath($oWid->getWidAvatar($iSize)));
+
+                    $oWid->setWidAvatar('');
+            }
+
+
+
+            if ($this->PluginAceadminpanel_Widgets_UpdateWidget($oWid)) {
+
+                   func_header_location(Router::GetPath('admin').'widgets');
+                   $this->Message_AddNotice($this->Lang_Get('adm_wid_update_success'),$this->Lang_Get('attention'));
+            } else {
+                    $this->Message_AddError($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+            }
+        }
+
+        /**
+        * Заполняем поля формы для редактирования
+        * Только перед отправкой формы!
+        */
+        $_REQUEST['wid_id']=$oWid->getWidId();
+        $_REQUEST['wid_title']=$oWid->getWidTitle();
+        $_REQUEST['wid_description']=$oWid->getWidDescription();
+        $_REQUEST['wid_name']=$oWid->getWidName();
+        $_REQUEST['wid_category']=$oWid->getWidCategory();
+        $_REQUEST['wid_avatar']=$oWid->getWidAvatar();
+        $_REQUEST['wid_price']=$oWid->getWidPrice();
+    }
+
+    /**
+     * Проверка полей формы
+     *
+     * @return unknown
+     */
+    protected function checkWidFields() {
+            $this->Security_ValidateSendForm();
+
+            $bOk=true;
+
+            if (!func_check(getRequest('wid_price',null,'post'),'float')) {
+                    $this->Message_AddError($this->Lang_Get('adm_wid_check_error_price'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+            if (!func_check(getRequest('wid_title',null,'post'),'text',2,200)) {
+                    $this->Message_AddError($this->Lang_Get('adm_wid_check_error_title'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+            if (!func_check(getRequest('wid_name',null,'post'),'md5',1,200)) {
+                    $this->Message_AddError($this->Lang_Get('adm_wid_check_error_name'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+
+            if (!func_check(getRequest('wid_description',null,'post'),'text',2,1000)) {
+                    $this->Message_AddError($this->Lang_Get('adm_wid_check_error_desc'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+            if (!getRequest('wid_category',null,'post') || !in_array(getRequest('wid_category',null,'post'),Config::Get('plugin.aceadminpanel.widcats'))) {
+                    $this->Message_AddError($this->Lang_Get('adm_wid_check_error_cat'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+
+            return $bOk;
+    }
+
+
+    protected function EventDecor() {
+        if($this->GetParam(0)=='add') {
+            $this->EventAddDecor();
+        }elseif($this->GetParam(0)=='edit') {
+            $this->EventEditDecor();
+        } else {
+            $this->EventShowDecors();
+        }
+    }
+
+    protected function EventShowDecors() {
+        $aFilter=array();
+        if (getRequest('category') && in_array(getRequest('category'),Config::Get('plugin.aceadminpanel.deccats'))) {
+            $aFilter['category']=getRequest('category');
+            $this->Viewer_Assign('aLangCategory', $this->Lang_Get('dec_category_'.getRequest('category')));
+        }
+        $aDecors=$this->PluginAceadminpanel_Decor_GetDecors($aFilter);
+        $this->Viewer_Assign('aDecors', $aDecors);
+
+        $this->Viewer_AddBlock('right','block.deccats.tpl',array(),155);
+
+        if (getRequest('delete') && $this->PluginAceAdminPanel_Decor_GetDecById(getRequest('delete'))) {
+             $this->PluginAceadminpanel_Decor_AdminDeleteDecor(getRequest('delete'));
+             $this->Message_AddNotice($this->Lang_Get('adm_dec_delete_success'),$this->Lang_Get('attention'));
+        }
+    }
+
+
+
+
+
+    protected function EventAddDecor() {
+        $this->SetTemplateAction('adddecor');
+
+        if (isPost('submit_decor')) {
+            /**
+             * Проверка корректности полей формы
+             */
+            if (!$this->checkDecFields()) {
+                    return false;
+            }
+
+            /**
+             * Если всё ок то пытаемся создать блог
+             */
+            $oDec=Engine::GetEntity('PluginAceadminpanel_Decor_Decor');
+
+            /**
+             * Парсим текст на предмет разных ХТМЛ тегов
+             */
+            $sText=$this->Text_Parser(getRequest('dec_description'));
+            $oDec->setDecDescription($sText);
+            $oDec->setDecTitle(getRequest('dec_title'));
+            $oDec->setDecName(getRequest('dec_name'));
+            $oDec->setDecCategory(getRequest('dec_category'));
+            $oDec->setDecPosition(getRequest('dec_position'));
+            $oDec->setDecDateAdd(date("Y-m-d H:i:s"));
+            $oDec->setDecPrice(getRequest('dec_price'));
+            //$oDec->setUrl(getRequest('blog_url'));
+            /**
+            * Загрузка аватара, делаем ресайзы
+            */
+            if (isset($_FILES['avatar']) and is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+                    if ($sPath=$this->UploadAvatarFile($_FILES['avatar'],'decor')) {
+                            $oDec->setDecAvatar($sPath);
+                    } else {
+                            $this->Message_AddError($this->Lang_Get('blog_create_avatar_error'),$this->Lang_Get('error'));
+                            return false;
+                    }
+            }
+
+            if ($this->PluginAceadminpanel_Decor_AddDecor($oDec)) {
+
+                   func_header_location(Router::GetPath('admin').'decor');
+                   $this->Message_AddNotice($this->Lang_Get('adm_dec_add_success'),$this->Lang_Get('attention'));
+            } else {
+                    $this->Message_AddError($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+            }
+
+
+        }
+    }
+
+    protected function EventEditDecor() {
+        $this->SetTemplateAction('adddecor');
+
+        $iDecId=$this->GetParam(1);
+
+        if(!$iDecId) {
+           func_header_location(Router::GetPath('admin').'decor');
+	}
+
+        $oDec=$this->PluginAceAdminPanel_Decor_GetDecById($iDecId);
+
+        if (isPost('submit_decor') && $oDec) {
+            /**
+             * Проверка корректности полей формы
+             */
+            if (!$this->checkDecFields()) {
+                    return false;
+            }
+            //$sText=$this->Text_Parser(getRequest('dec_description'));
+            $oDec->setDecDescription(getRequest('dec_description'));
+            $oDec->setDecTitle(getRequest('dec_title'));
+           // $oDec->setDecName(getRequest('dec_name'));
+            $oDec->setDecPosition(getRequest('dec_position'));
+            $oDec->setDecCategory(getRequest('dec_category'));
+            $oDec->setDecPrice(getRequest('dec_price'));
+            $oDec->setDecDateEdit(date("Y-m-d H:i:s"));
+
+            /**
+            * Загрузка аватара, делаем ресайзы
+            */
+            if (isset($_FILES['avatar']) and is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+                    if ($sPath=$this->UploadAvatarFile($_FILES['avatar'],'decor')) {
+                            $oDec->setDecAvatar($sPath);
+                    } else {
+                            $this->Message_AddError($this->Lang_Get('blog_create_avatar_error'),$this->Lang_Get('error'));
+                            return false;
+                    }
+            }
+
+            /**
+             * Удалить аватар
+             */
+            if (isset($_REQUEST['avatar_delete'])) {
+                   // @unlink($this->Image_GetServerPath($oDec->getDecAvatar($iSize)));
+
+                    $oDec->setDecAvatar('');
+            }
+
+
+
+            if ($this->PluginAceadminpanel_Decor_UpdateDecor($oDec)) {
+
+                   func_header_location(Router::GetPath('admin').'decor');
+                   $this->Message_AddNotice($this->Lang_Get('adm_dec_update_success'),$this->Lang_Get('attention'));
+            } else {
+                    $this->Message_AddError($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+            }
+        }
+
+        /**
+        * Заполняем поля формы для редактирования
+        * Только перед отправкой формы!
+        */
+        $_REQUEST['dec_id']=$oDec->getDecId();
+        $_REQUEST['dec_title']=$oDec->getDecTitle();
+        $_REQUEST['dec_description']=$oDec->getDecDescription();
+        $_REQUEST['dec_position']=$oDec->getDecPosition();
+        $_REQUEST['dec_name']=$oDec->getDecName();
+        $_REQUEST['dec_category']=$oDec->getDecCategory();
+        $_REQUEST['dec_avatar']=$oDec->getDecAvatar();
+        $_REQUEST['dec_price']=$oDec->getDecPrice();
+    }
+
+    /**
+     * Проверка полей формы
+     *
+     * @return unknown
+     */
+    protected function checkDecFields() {
+            $this->Security_ValidateSendForm();
+
+            $bOk=true;
+
+            if (!func_check(getRequest('dec_price',null,'post'),'float')) {
+                    $this->Message_AddError($this->Lang_Get('adm_dec_check_error_price'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+            if (!func_check(getRequest('dec_title',null,'post'),'text',2,200)) {
+                    $this->Message_AddError($this->Lang_Get('adm_dec_check_error_title'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+            /*if (!func_check(getRequest('dec_name',null,'post'),'text',1,200)) {
+                    $this->Message_AddError($this->Lang_Get('adm_dec_check_error_name'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }*/
+
+            if (!func_check(getRequest('dec_description',null,'post'),'text',2,1000)) {
+                    $this->Message_AddError($this->Lang_Get('adm_dec_check_error_desc'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+            if (!getRequest('dec_category',null,'post') || !in_array(getRequest('dec_category',null,'post'),Config::Get('plugin.aceadminpanel.deccats'))) {
+                    $this->Message_AddError($this->Lang_Get('adm_dec_check_error_cat'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+
+            if (!getRequest('dec_position',null,'post') || !in_array(getRequest('dec_position',null,'post'),Config::Get('plugin.aceadminpanel.decpositions'))) {
+                    $this->Message_AddError($this->Lang_Get('adm_dec_check_error_position'),$this->Lang_Get('error'));
+                    $bOk=false;
+            }
+
+            return $bOk;
     }
 
     protected function InitParams() {
@@ -102,14 +725,14 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
                 'path_languages'=>Config::Get('path.root.server').'/templates/language',
                 'check_password'=>1,
         );
-        $sReserverdUrls=$this->PluginAceadminpanel_Admin_GetValue('param_reserved_urls');
+        $sReserverdUrls=$this->PluginAceAdminPanel_Admin_GetValue('param_reserved_urls');
         if ($sReserverdUrls)
             $this->aConfig['reserverd_urls']=array_unique(array_merge($this->aConfig['reserverd_urls'], explode(',', $sReserverdUrls)));
 
-        $this->aConfig['items_per_page']=$this->PluginAceadminpanel_Admin_GetValue('param_items_per_page', $this->aConfig['items_per_page']);
-        $this->aConfig['votes_per_page']=$this->PluginAceadminpanel_Admin_GetValue('param_votes_per_page', $this->aConfig['votes_per_page']);
-        $this->aConfig['edit_footer_text']=$this->PluginAceadminpanel_Admin_GetValue('param_edit_footer', $this->aConfig['edit_footer_text']);
-        $this->aConfig['vote_value']=$this->PluginAceadminpanel_Admin_GetValue('param_vote_value', $this->aConfig['vote_value']);
+        $this->aConfig['items_per_page']=$this->PluginAceAdminPanel_Admin_GetValue('param_items_per_page', $this->aConfig['items_per_page']);
+        $this->aConfig['votes_per_page']=$this->PluginAceAdminPanel_Admin_GetValue('param_votes_per_page', $this->aConfig['votes_per_page']);
+        $this->aConfig['edit_footer_text']=$this->PluginAceAdminPanel_Admin_GetValue('param_edit_footer', $this->aConfig['edit_footer_text']);
+        $this->aConfig['vote_value']=$this->PluginAceAdminPanel_Admin_GetValue('param_vote_value', $this->aConfig['vote_value']);
 
         //$this->bParamSiteClosed=defined('adm_SITE_CLOSED')?ADMIN_SITE_CLOSED:false;
         //$this->sParamSiteClosedPage=$this->Admin_GetValue('param_site_closed_page', $this->sParamSiteClosedPage);
@@ -119,7 +742,7 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
         //$this->sParamPathThemes=Config::Get('path.root.server').'/templates/skin';
         //$this->sParamPathLanguages=Config::Get('path.root.server').'/templates/language';
 
-        $this->aConfig['check_password']=$this->PluginAceadminpanel_Admin_GetValue('param_check_password', $this->aConfig['check_password']);
+        $this->aConfig['check_password']=$this->PluginAceAdminPanel_Admin_GetValue('param_check_password', $this->aConfig['check_password']);
 
         $oLang=$this->Lang_Dictionary();
         $this->Viewer_Assign('oLang', $oLang);
@@ -315,7 +938,7 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
             //$this->SetTemplate(HelperPlugin::GetTemplateActionPath('info_about.tpl'));
         }
 
-        $aSiteStat = $this->PluginAceadminpanel_Admin_GetSiteStat();
+        $aSiteStat = $this->PluginAceAdminPanel_Admin_GetSiteStat();
 
         $this->PluginAddBlock('right', 'admin_info');
 
@@ -409,23 +1032,23 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
             }
             $this->aConfig['reserverd_urls']=$aNewReservedUrls;
             $sReservedUrls=implode(',', $aNewReservedUrls);
-            $result=$this->PluginAceadminpanel_Admin_SetValue('param_reserved_urls', $sReservedUrls);
+            $result=$this->PluginAceAdminPanel_Admin_SetValue('param_reserved_urls', $sReservedUrls);
             $bOk=$bOk && $result['result'];
         }
         if (isset($_POST['param_items_per_page'])) {
-            $result=$this->PluginAceadminpanel_Admin_SetValue('param_items_per_page', intVal(getRequest('param_items_per_page')));
+            $result=$this->PluginAceAdminPanel_Admin_SetValue('param_items_per_page', intVal(getRequest('param_items_per_page')));
             $bOk=$bOk && $result['result'];
         }
         if (isset($_POST['param_votes_per_page'])) {
-            $result=$this->PluginAceadminpanel_Admin_SetValue('param_votes_per_page', intVal(getRequest('param_votes_per_page')));
+            $result=$this->PluginAceAdminPanel_Admin_SetValue('param_votes_per_page', intVal(getRequest('param_votes_per_page')));
             $bOk=$bOk && $result['result'];
         }
         if (isset($_POST['param_edit_footer'])) {
-            $result=$this->PluginAceadminpanel_Admin_SetValue('param_edit_footer', getRequest('param_edit_footer'));
+            $result=$this->PluginAceAdminPanel_Admin_SetValue('param_edit_footer', getRequest('param_edit_footer'));
             $bOk=$bOk && $result['result'];
         }
         if (isset($_POST['param_vote_value'])) {
-            $result=$this->PluginAceadminpanel_Admin_SetValue('param_vote_value', intVal(getRequest('param_vote_value')));
+            $result=$this->PluginAceAdminPanel_Admin_SetValue('param_vote_value', intVal(getRequest('param_vote_value')));
             $bOk=$bOk && $result['result'];
         }
         if (isset($_POST['param_check_password'])) {
@@ -433,7 +1056,7 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
         } else {
             $param = 0;
         }
-        $result=$this->PluginAceadminpanel_Admin_SetValue('param_check_password', $param);
+        $result=$this->PluginAceAdminPanel_Admin_SetValue('param_check_password', $param);
         $bOk=$bOk && $result['result'];
         if ($bOk) $this->InitParams();
 

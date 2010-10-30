@@ -70,8 +70,7 @@ class ModuleUser_MapperUser extends Mapper {
 				user_settings_notice_reply_comment = ? ,
 				user_settings_notice_new_friend = ? 		
 			WHERE user_id = ?
-		";
-
+		";			
 		if ($this->oDb->query($sql,$oUser->getPassword(),
 								   $oUser->getMail(),								   
 								   $oUser->getSkill(),								   
@@ -100,7 +99,7 @@ class ModuleUser_MapperUser extends Mapper {
 								   $oUser->getSettingsNoticeNewFriend(),			   
 								   $oUser->getId())) {
 			return true;
-		}
+		}		
 		return false;
 	}
 	

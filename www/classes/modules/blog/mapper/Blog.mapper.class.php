@@ -27,7 +27,7 @@ class ModuleBlog_MapperBlog extends Mapper {
 			(user_owner_id,
 			blog_title,
 			blog_description,
-			blog_type,
+			blog_type,			
 			blog_date_add,
 			blog_limit_rating_topic,
 			blog_url,
@@ -148,9 +148,9 @@ class ModuleBlog_MapperBlog extends Mapper {
 				FROM 
 					".Config::Get('db.table.blog_user')." as bu
 				WHERE 
-					".$sWhere."
+					".$sWhere." 					
 				;
-					";
+					";		
 		$aBlogUsers=array();
 		if ($aRows=$this->oDb->select($sql)) {
 			foreach ($aRows as $aUser) {
@@ -219,9 +219,9 @@ class ModuleBlog_MapperBlog extends Mapper {
 	
 	public function GetBlogsByOwnerId($sUserId) {
 		$sql = "SELECT 
-			b.blog_id 
+			b.blog_id			 
 			FROM 
-				".Config::Get('db.table.blog')." as b
+				".Config::Get('db.table.blog')." as b				
 			WHERE 
 				b.user_owner_id = ? 
 				AND
@@ -253,15 +253,15 @@ class ModuleBlog_MapperBlog extends Mapper {
 		return $aBlogs;
 	}
 		
-	public function GetBlogsRating(&$iCount,$iCurrPage,$iPerPage) {
+	public function GetBlogsRating(&$iCount,$iCurrPage,$iPerPage) {		
 		$sql = "SELECT 
-					b.blog_id
+					b.blog_id													
 				FROM 
-					".Config::Get('db.table.blog')." as b
-				WHERE
-					b.blog_type<>'personal'
+					".Config::Get('db.table.blog')." as b 									 
+				WHERE 									
+					b.blog_type<>'personal'									
 				ORDER by b.blog_rating desc
-				LIMIT ?d, ?d 	";
+				LIMIT ?d, ?d 	";		
 		$aReturn=array();
 		if ($aRows=$this->oDb->selectPage($iCount,$sql,($iCurrPage-1)*$iPerPage, $iPerPage)) {
 			foreach ($aRows as $aRow) {
@@ -271,15 +271,15 @@ class ModuleBlog_MapperBlog extends Mapper {
 		return $aReturn;
 	}
     
-	public function GetBlogsCountUser(&$iCount,$iCurrPage,$iPerPage) {
+	public function GetBlogsCountUser(&$iCount,$iCurrPage,$iPerPage) {		
 		$sql = "SELECT 
-					b.blog_id
+					b.blog_id													
 				FROM 
-					".Config::Get('db.table.blog')." as b
-				WHERE
-					b.blog_type='open'
+					".Config::Get('db.table.blog')." as b 									 
+				WHERE 									
+					b.blog_type='open'									
 				ORDER by b.blog_count_user desc
-				LIMIT ?d, ?d 	";
+				LIMIT ?d, ?d 	";		
 		$aReturn=array();
 		if ($aRows=$this->oDb->selectPage($iCount,$sql,($iCurrPage-1)*$iPerPage, $iPerPage)) {
 			foreach ($aRows as $aRow) {
@@ -289,22 +289,22 @@ class ModuleBlog_MapperBlog extends Mapper {
 		return $aReturn;
 	}
 	
-	public function GetBlogsRatingJoin($sUserId,$iLimit) {
+	public function GetBlogsRatingJoin($sUserId,$iLimit) {		
 		$sql = "SELECT 
-					b.*
+					b.*													
 				FROM 
 					".Config::Get('db.table.blog_user')." as bu,
-					".Config::Get('db.table.blog')." as b
-				WHERE 
+					".Config::Get('db.table.blog')." as b	
+				WHERE 	
 					bu.user_id = ?d
 					AND
 					bu.blog_id = b.blog_id
-					AND
-					b.blog_type<>'personal'
+					AND				
+					b.blog_type<>'personal'							
 				ORDER by b.blog_rating desc
 				LIMIT 0, ?d 
 				;	
-					";
+					";		
 		$aReturn=array();
 		if ($aRows=$this->oDb->select($sql,$sUserId,$iLimit)) {
 			foreach ($aRows as $aRow) {

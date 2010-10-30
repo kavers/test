@@ -46,6 +46,54 @@ Config::Set('db.table.adminips', '___db.table.prefix___adminips');
 
 define('ROUTE_PAGE_ADMIN', 'admin');
 
+//таблицы шаблонов
+Config::Set('db.table.templates', '___db.table.prefix___templates');
+Config::Set('db.table.tplusers', '___db.table.prefix___tplusers');
+Config::Set('db.table.tplfav', '___db.table.prefix___tplfav');
+//таблицы виджетов
+Config::Set('db.table.widgets', '___db.table.prefix___widgets');
+Config::Set('db.table.widusers', '___db.table.prefix___widusers');
+Config::Set('db.table.widfav', '___db.table.prefix___widfav');
+Config::Set('db.table.widproducers', '___db.table.prefix___widproducers');
+//таблицы украшений
+Config::Set('db.table.decor', '___db.table.prefix___decor');
+Config::Set('db.table.decusers', '___db.table.prefix___decusers');
+Config::Set('db.table.decfav', '___db.table.prefix___decfav');
+
+/**
+ * Категории шаблонов (текстовые данные редактируются в lang файле плагина админпанели)
+ */
+$config['tplcats']=array(
+    'nature',
+    'techno'
+);
+
+/**
+ * категории виджетов (текстовые данные редактируются в lang файле плагина админпанели)
+ */
+$config['widcats']=array(
+    'nature',
+    'techno'
+);
+
+/**
+ * категории украшений (текстовые данные редактируются в lang файле плагина админпанели)
+ */
+$config['deccats']=array(
+    'nature',
+    'techno'
+);
+
+/**
+ * категории украшений (текстовые данные редактируются в lang файле плагина админпанели)
+ */
+$config['decpositions']=array(
+    'bodytop',
+    'bodyfoot',
+    'sidebartop',
+    'sidebarfoot'
+);
+
 /***
  * Поддержка старого именования классов
  */

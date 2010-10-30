@@ -25,6 +25,7 @@ document.addEvent('domready', function() {
 });
 </script>
 {/literal}
+</ul>
 <!-- Редактирование записи -->
      <li id="video_player" class="block2 green">
         <div class="title"><a href="#111" class="link"><h1>{$aLang.settings_profile_edit}</h1></a></div>
@@ -109,12 +110,10 @@ document.addEvent('domready', function() {
 				</p>
 				
 				{if $oUserCurrent->getProfileAvatar()}
-				<p>
 					<img src="{$oUserCurrent->getProfileAvatarPath(100)}" border="0">
-					{* <img src="{$oUserCurrent->getProfileAvatarPath(64)}" border="0">
-					<img src="{$oUserCurrent->getProfileAvatarPath(24)}" border="0"> *}
+					<img src="{$oUserCurrent->getProfileAvatarPath(64)}" border="0">
+					<img src="{$oUserCurrent->getProfileAvatarPath(24)}" border="0">
 					<input type="checkbox" id="avatar_delete" name="avatar_delete" value="on"> &mdash; <label for="avatar_delete"><span class="form">{$aLang.settings_profile_avatar_delete}</span></label><br /><br>
-				</p>
 				{/if}
 				<p>
                     {$aLang.settings_profile_avatar}:
@@ -140,8 +139,10 @@ document.addEvent('domready', function() {
         <div class="block_bottom3"></div>
         </div>
      </li>
-	 {include file='block.settings.tpl' menu='settings' showWhiteBack=true}
 <!-- Редактирование записи -->
+
+<ul id="column3" class="column right_colomn" id="column3">
+{include file='block.settings.tpl'}
 
 {*
 

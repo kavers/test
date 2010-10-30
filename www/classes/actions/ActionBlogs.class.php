@@ -19,7 +19,7 @@
  * Класс обработки УРЛа вида /comments/
  *
  */
-class ActionBlogs extends Action {
+class ActionBlogs extends Action {	
 	
 	/**
 	 * Главное меню
@@ -28,11 +28,11 @@ class ActionBlogs extends Action {
 	 */
 	protected $sMenuHeadItemSelect='blog';
 	
-	public function Init() {
+	public function Init() {		
 	}
 	
-	protected function RegisterEvent() {
-		$this->AddEventPreg('/^(page(\d+))?$/i','EventShowBlogs');
+	protected function RegisterEvent() {	
+		$this->AddEventPreg('/^(page(\d+))?$/i','EventShowBlogs');								
 	}
 		
 	
@@ -42,7 +42,7 @@ class ActionBlogs extends Action {
 	 */	
 	
 	
-	protected function EventShowBlogs() {
+	protected function EventShowBlogs() {		
 		/**
 		 * Передан ли номер страницы
 		 */			
@@ -50,29 +50,29 @@ class ActionBlogs extends Action {
 		/**
 		 * Получаем список блогов
 		 */
-		$aResult=$this->Blog_GetBlogsRating($iPage,Config::Get('module.blog.per_page'));
-		$aBlogs=$aResult['collection'];
+		$aResult=$this->Blog_GetBlogsRating($iPage,Config::Get('module.blog.per_page'));	
+		$aBlogs=$aResult['collection'];				
 		/**
 		 * Формируем постраничность
 		 */		
 		$aPaging=$this->Viewer_MakePaging($aResult['count'],$iPage,Config::Get('module.blog.per_page'),4,Router::GetPath('blogs'));	
 		/**
 		 * Загружаем переменные в шаблон
-		 */
-		$this->Viewer_Assign('aPaging',$aPaging);
-		$this->Viewer_Assign('aBlogs',$aBlogs);
+		 */					
+		$this->Viewer_Assign('aPaging',$aPaging);					
+		$this->Viewer_Assign("aBlogs",$aBlogs);
 		$this->Viewer_AddHtmlTitle($this->Lang_Get('blog_menu_all_list'));
 		/**
 		 * Устанавливаем шаблон вывода
 		 */
-		$this->SetTemplateAction('index');
+		$this->SetTemplateAction('index');				
 	}
 	
 	/**
 	 * Выполняется при завершении работы экшена
 	 *
 	 */
-	public function EventShutdown() {
+	public function EventShutdown() {		
 		/**
 		 * Загружаем в шаблон необходимые переменные
 		 */

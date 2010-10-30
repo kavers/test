@@ -623,6 +623,7 @@ class DbSimple_Generic_Database extends DbSimple_Generic_LastError
                     }
                 }
             }
+    
             // Transform resulting rows.
             $result = $this->_transformResult($rows);
 

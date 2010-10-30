@@ -1,9 +1,8 @@
-     {hook run='html_pluginCommunitycats_catalog'}
-	 <li id="vip_blogs" class="block2 dark_green">
+
+	 <li id="vip_blogs" class="block2 green">
         <div class="title"><a href="/" class="link"><h1>Блоги</h1></a>
         <img src="{cfg name='path.static.skin'}/img/arrow.gif" width="7" height="12" alt="arrow" title="arrow" class="arrow"/>
         <a href="{router page='blogs'}" class="link"><h1>Сообщества</h1></a>
-		{hook run='html_pluginCommunitycats_bread_cumbers'}
         </div>
          <ul class="gradient">
            <li class="first2"><a href="">Последние</a></li>
