@@ -16,7 +16,7 @@
 */
 
 /**
- * English language file of Profiler plug-in
+ * English language file of Accesstotopic plug-in
  */
 return array(
 	'accesstotopic_choose_access_levels' => 'Who will be saw topic',

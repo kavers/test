@@ -233,8 +233,8 @@ class PluginNotification_ModuleNotify_MapperNotify extends  PluginNotification_I
 				notify_subject = ?,
 				notify_text = ?,
 				date_created = ?,
-				notify_task_status = ?,
-				notify_freq_type = ?
+				notify_task_status = ?d,
+				notify_freq_type = ?d
 			WHERE
 				notify_task_id = ?d
 		';
@@ -249,7 +249,7 @@ class PluginNotification_ModuleNotify_MapperNotify extends  PluginNotification_I
 			$oNotifyTask->getTaskStatus(),
 			$oNotifyTask->getNotifyFreqType(),
 			$oNotifyTask->getTaskId()
-		)===0) {
+		) !== null) {
 			return true;
 		}
 		return false;

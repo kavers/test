@@ -288,7 +288,7 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 		
 		$aRecipientId = array();
 		foreach($aCommentator as $oUser) {
-			if(PluginLib_Plugin::IsModuleAvailable('accesstotopic')) {
+			if(PluginLib_ModulePlugin::IsPluginAvailable('accesstotopic')) {
 				if(!$this->PluginAccesstotopic_Access_CheckUserAccess($oUser, $oTopic, 'read')) {
 					continue;
 				}
@@ -325,7 +325,7 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 			return null;
 		}
 		
-		if(PluginLib_Plugin::IsModuleAvailable('accesstotopic')) {
+		if(PluginLib_ModulePlugin::IsPluginAvailable('accesstotopic')) {
 			if(!$this->PluginAccesstotopic_Access_CheckUserAccess($oCommentatorParent, $oTopic, 'read')) {
 				return null;
 			}
@@ -399,7 +399,7 @@ class PluginNotification_ModuleNotify extends PluginNotification_Inherit_ModuleN
 		
 		$aRecipientId = array();
 		foreach($aSubscriber as $oSubscriber) {
-			if(PluginLib_Plugin::IsModuleAvailable('accesstotopic')) {
+			if(PluginLib_ModulePlugin::IsPluginAvailable('accesstotopic')) {
 				if(!$this->PluginAccesstotopic_Access_CheckUserAccess($oSubscriber, $oTopic, 'read')) {
 					continue;
 				}

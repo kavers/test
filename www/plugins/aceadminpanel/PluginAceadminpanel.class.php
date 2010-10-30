@@ -13,7 +13,7 @@
 *----------------------------------------------------------------------------
 */
 
-class PluginAceAdminPanel extends Plugin {
+class PluginAceadminpanel extends Plugin {
     private $sPlugin = 'aceadminpanel';
 
     /* */
@@ -31,6 +31,7 @@ class PluginAceAdminPanel extends Plugin {
             'module' => array(
                             'Lang'=>'_ModuleLanguage',
                             'Vote'=>'_ModuleVote'),
+            'entity'=>array('ModuleUser_EntityUser'=>'_ModuleAdmin_EntityUser'),
     );
 
     /**
@@ -61,9 +62,9 @@ class PluginAceAdminPanel extends Plugin {
     public function Init() {
         HelperPlugin::InitPlugin($this);
 
-        $sDataFile = $this->PluginAceAdminPanel_Admin_GetCustomConfigFile();
+        $sDataFile = $this->PluginAceadminpanel_Admin_GetCustomConfigFile();
         if (!file_exists($sDataFile)) {
-            $aConfigSet = $this->PluginAceAdminPanel_Admin_GetValueArrayByPrefix('config.all.');
+            $aConfigSet = $this->PluginAceadminpanel_Admin_GetValueArrayByPrefix('config.all.');
             @file_put_contents($sDataFile, serialize($aConfigSet));
         }
 

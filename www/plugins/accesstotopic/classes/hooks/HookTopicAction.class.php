@@ -29,22 +29,27 @@ class PluginAccesstotopic_HookTopicAction extends Hook {
 	}
 
 	public function AddAccessLevelToTopic($data) {
-		$accessLevelName = strtoupper(substr(getRequest('access_level'), 0, 20));
-		if($data['oBlog']->getType() != 'personal') {
-			$accessLevelNum = Config::Get('plugin.accesstotopic.collectiveBlog.accessLevels.'. $accessLevelName) ? 
-				Config::Get('plugin.accesstotopic.collectiveBlog.accessLevels.'. $accessLevelName) : 
-				Config::Get('plugin.accesstotopic.collectiveBlog.accessLevels.FOR_ALL');
-		} else {
-			$accessLevelNum = Config::Get('plugin.accesstotopic.personalBlog.accessLevels.'. $accessLevelName) ?
-				Config::Get('plugin.accesstotopic.personalBlog.accessLevels.'. $accessLevelName) :
-				Config::Get('plugin.accesstotopic.personalBlog.accessLevels.FOR_ALL');
+		if(getRequest('access_level', null) !== null) {
+			$sAccessLevelName = strtoupper(substr(getRequest('access_level'), 0, 20));
+			if($data['oBlog']->getType() == 'personal') {
+				$aAccessLevel = PluginAccesstotopic_ModuleAccess::GetPersonalTopicAccessLevels();
+				$iAccessLevelNum = $aAccessLevel[$sAccessLevelName] ? 
+					$aAccessLevel[$sAccessLevelName] : 
+					$aAccessLevel['FOR_ALL'];
+			} else {
+				$aAccessLevel = PluginAccesstotopic_ModuleAccess::GetCollectiveTopicAccessLevels();
+				$iAccessLevelNum = $aAccessLevel[$sAccessLevelName] ? 
+					$aAccessLevel[$sAccessLevelName] : 
+					$aAccessLevel['FOR_ALL'];
+			}
 		}
-		
-		$data['oTopic']->setAccessLevel($accessLevelNum);
+		$data['oTopic']->setAccessLevel($iAccessLevelNum);
 	}
 	
 	public function AddAccessLevelToShowForm($data) {
-		$this->Viewer_Assign('access_level',$data['oTopic']->getAccessLevelName());
+		if(getRequest('access_level', null) === null) {
+			$_REQUEST['access_level'] = $data['oTopic']->getAccessLevelName();
+		}
 	}
 }
 ?>

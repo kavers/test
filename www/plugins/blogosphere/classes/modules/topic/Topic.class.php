@@ -116,8 +116,12 @@ class PluginBlogosphere_ModuleTopic extends PluginBlogosphere_Inherit_ModuleTopi
 	* @return	array		Массив с новыми параметрами фильтра
 	*/
 	protected function prepareStandartFilterCommunity($aFilter) {
-		$aAccessibleBlogId = $this->Blog_GetAccessibleBlogsByUser($aFilter['oUser']);
-		$aFilter['in']['blog_id'] = $aAccessibleBlogId;
+		$aAllCommunityId = $this->Blog_GetBlogs(true);
+		$aNotAccessibleCommunityId = $this->Blog_GetInaccessibleBlogsByUser($aFilter['oUser']->isAnonim() ? null : $aFilter['oUser']);
+		$aAccessibleBlogId = array_diff($aAllCommunityId, $aNotAccessibleCommunityId);
+		if($aAccessibleBlogId) {
+			$aFilter['in']['blog_id'] = $aAccessibleBlogId;
+		}
 		return $aFilter;
 	}
 }

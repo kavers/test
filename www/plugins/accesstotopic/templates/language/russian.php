@@ -16,7 +16,7 @@
 */
 
 /**
- * Русский языковой файл плагина Profiler
+ * Русский языковой файл плагина Accesstotopic
  */
 return array(
 	'accesstotopic_choose_access_levels' => 'Кто будет видеть топик',

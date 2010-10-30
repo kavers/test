@@ -23,6 +23,8 @@ class PluginLib_ModuleUser extends Module {
 	//Константы анонимного пользователя
 	const ANONIM_USER_ID = 0;
 	
+	static protected $oUserCurrent = null;
+	
 	public function Init() { }
 	
 	/**
@@ -32,18 +34,20 @@ class PluginLib_ModuleUser extends Module {
 	* @return	oUser		Результат проверки
 	*/
 	static public function GetUserCurrent() {
-		$oEngine = Engine::getInstance();
-		list($oModuleUser, $sModuleName, $sMethod) = $oEngine->GetModule('User_IsAuthorization');
+		if(!self::$oUserCurrent) {
+			$oEngine = Engine::getInstance();
+			list($oModuleUser, $sModuleName, $sMethod) = $oEngine->GetModule('User_IsAuthorization');
 
-		//Проверяем является находистя ли пользователь в системе
-		if(!$oModuleUser->IsAuthorization()) {
-			//Создаём анонима
-			$oUserCurrent = Engine::GetEntity('User_User', array('user_id' => self::ANONIM_USER_ID, 'user_is_administrator' => false));
-		} else {
-			$oUserCurrent = $oModuleUser->GetUserCurrent();
+			//Проверяем является находистя ли пользователь в системе
+			if(!$oModuleUser->IsAuthorization()) {
+				//Создаём анонима
+				self::$oUserCurrent = Engine::GetEntity('User_User', array('user_id' => self::ANONIM_USER_ID, 'user_is_administrator' => false));
+			} else {
+				self::$oUserCurrent = $oModuleUser->GetUserCurrent();
+			}
 		}
 		
-		return $oUserCurrent;
+		return self::$oUserCurrent;
 	}
 }
 

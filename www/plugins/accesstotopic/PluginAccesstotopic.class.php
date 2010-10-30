@@ -34,12 +34,15 @@ class PluginAccesstotopic extends Plugin {
 	 * Создание дополнительной колонки в таблицe _topic в базе.
 	 */
 	public function Activate() {
-		$alreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
-			WHERE COLUMN_NAME="access_level" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
-			AND TABLE_NAME = "'.Config::Get('db.table.prefix').'topic";
-');
-
-		if(!$alreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql.sql');
+		if(!PluginLib_ModulePlugin::IsDBObjectExist(Config::Get('db.table.topic'), 'access_level')) {
+			$this->ExportSQL(dirname(__FILE__).'/sql.sql');
+		}
+		$this->Cache_Clean();
+		return true;
+	}
+	
+	public function Deactivate() {
+		$this->Cache_Clean();
 		return true;
 	}
 	
@@ -47,6 +50,7 @@ class PluginAccesstotopic extends Plugin {
 	 * Инициализация плагина Доступ к Топику
 	 */
 	public function Init() {
+		$this->Viewer_AppendScript($this->GetTemplateWebPath(__CLASS__) . 'js/accesstotopic.js');
 	}
 }
 ?>

@@ -102,14 +102,14 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
                 'path_languages'=>Config::Get('path.root.server').'/templates/language',
                 'check_password'=>1,
         );
-        $sReserverdUrls=$this->PluginAceAdminPanel_Admin_GetValue('param_reserved_urls');
+        $sReserverdUrls=$this->PluginAceadminpanel_Admin_GetValue('param_reserved_urls');
         if ($sReserverdUrls)
             $this->aConfig['reserverd_urls']=array_unique(array_merge($this->aConfig['reserverd_urls'], explode(',', $sReserverdUrls)));
 
-        $this->aConfig['items_per_page']=$this->PluginAceAdminPanel_Admin_GetValue('param_items_per_page', $this->aConfig['items_per_page']);
-        $this->aConfig['votes_per_page']=$this->PluginAceAdminPanel_Admin_GetValue('param_votes_per_page', $this->aConfig['votes_per_page']);
-        $this->aConfig['edit_footer_text']=$this->PluginAceAdminPanel_Admin_GetValue('param_edit_footer', $this->aConfig['edit_footer_text']);
-        $this->aConfig['vote_value']=$this->PluginAceAdminPanel_Admin_GetValue('param_vote_value', $this->aConfig['vote_value']);
+        $this->aConfig['items_per_page']=$this->PluginAceadminpanel_Admin_GetValue('param_items_per_page', $this->aConfig['items_per_page']);
+        $this->aConfig['votes_per_page']=$this->PluginAceadminpanel_Admin_GetValue('param_votes_per_page', $this->aConfig['votes_per_page']);
+        $this->aConfig['edit_footer_text']=$this->PluginAceadminpanel_Admin_GetValue('param_edit_footer', $this->aConfig['edit_footer_text']);
+        $this->aConfig['vote_value']=$this->PluginAceadminpanel_Admin_GetValue('param_vote_value', $this->aConfig['vote_value']);
 
         //$this->bParamSiteClosed=defined('adm_SITE_CLOSED')?ADMIN_SITE_CLOSED:false;
         //$this->sParamSiteClosedPage=$this->Admin_GetValue('param_site_closed_page', $this->sParamSiteClosedPage);
@@ -119,7 +119,7 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
         //$this->sParamPathThemes=Config::Get('path.root.server').'/templates/skin';
         //$this->sParamPathLanguages=Config::Get('path.root.server').'/templates/language';
 
-        $this->aConfig['check_password']=$this->PluginAceAdminPanel_Admin_GetValue('param_check_password', $this->aConfig['check_password']);
+        $this->aConfig['check_password']=$this->PluginAceadminpanel_Admin_GetValue('param_check_password', $this->aConfig['check_password']);
 
         $oLang=$this->Lang_Dictionary();
         $this->Viewer_Assign('oLang', $oLang);
@@ -315,7 +315,7 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
             //$this->SetTemplate(HelperPlugin::GetTemplateActionPath('info_about.tpl'));
         }
 
-        $aSiteStat = $this->PluginAceAdminPanel_Admin_GetSiteStat();
+        $aSiteStat = $this->PluginAceadminpanel_Admin_GetSiteStat();
 
         $this->PluginAddBlock('right', 'admin_info');
 
@@ -409,23 +409,23 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
             }
             $this->aConfig['reserverd_urls']=$aNewReservedUrls;
             $sReservedUrls=implode(',', $aNewReservedUrls);
-            $result=$this->PluginAceAdminPanel_Admin_SetValue('param_reserved_urls', $sReservedUrls);
+            $result=$this->PluginAceadminpanel_Admin_SetValue('param_reserved_urls', $sReservedUrls);
             $bOk=$bOk && $result['result'];
         }
         if (isset($_POST['param_items_per_page'])) {
-            $result=$this->PluginAceAdminPanel_Admin_SetValue('param_items_per_page', intVal(getRequest('param_items_per_page')));
+            $result=$this->PluginAceadminpanel_Admin_SetValue('param_items_per_page', intVal(getRequest('param_items_per_page')));
             $bOk=$bOk && $result['result'];
         }
         if (isset($_POST['param_votes_per_page'])) {
-            $result=$this->PluginAceAdminPanel_Admin_SetValue('param_votes_per_page', intVal(getRequest('param_votes_per_page')));
+            $result=$this->PluginAceadminpanel_Admin_SetValue('param_votes_per_page', intVal(getRequest('param_votes_per_page')));
             $bOk=$bOk && $result['result'];
         }
         if (isset($_POST['param_edit_footer'])) {
-            $result=$this->PluginAceAdminPanel_Admin_SetValue('param_edit_footer', getRequest('param_edit_footer'));
+            $result=$this->PluginAceadminpanel_Admin_SetValue('param_edit_footer', getRequest('param_edit_footer'));
             $bOk=$bOk && $result['result'];
         }
         if (isset($_POST['param_vote_value'])) {
-            $result=$this->PluginAceAdminPanel_Admin_SetValue('param_vote_value', intVal(getRequest('param_vote_value')));
+            $result=$this->PluginAceadminpanel_Admin_SetValue('param_vote_value', intVal(getRequest('param_vote_value')));
             $bOk=$bOk && $result['result'];
         }
         if (isset($_POST['param_check_password'])) {
@@ -433,7 +433,7 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
         } else {
             $param = 0;
         }
-        $result=$this->PluginAceAdminPanel_Admin_SetValue('param_check_password', $param);
+        $result=$this->PluginAceadminpanel_Admin_SetValue('param_check_password', $param);
         $bOk=$bOk && $result['result'];
         if ($bOk) $this->InitParams();
 
@@ -1241,7 +1241,6 @@ class PluginAceadminpanel_ActionAdmin extends PluginAceadminpanel_Inherits_Actio
         if (!$oUserProfile) {
             return parent::EventNotFound();
         }
-
         $this->sMenuSubItemSelect='profile';
         $sMode=$this->GetParam(2);
         $aUserVoteStat=$this->PluginAceadminpanel_Admin_GetUserVoteStat($oUserProfile->getId());

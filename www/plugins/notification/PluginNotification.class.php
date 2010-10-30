@@ -40,30 +40,76 @@ class PluginNotification extends Plugin {
 		'action' => array('ActionSettings' => '_ActionSettings')
 	);
 	
-	protected $aSqlConfig = array(
-		array('field' => 'user_settings_notice_new_topic_commented', 'table' => 'user', 'file' => 'topic_comment.sql'),
-		array('field' => 'user_settings_notice_friend_news', 'table' => 'user', 'file' => 'friend_news.sql'),
-		array('field' => 'user_settings_notice_request', 'table' => 'user', 'file' => 'request.sql'),
-		array('field' => 'user_settings_notice_new_topic_subscribe', 'table' => 'blog_user', 'file' => 'blog_topic_subscriber.sql'),
-		array('field' => 'user_settings_notice_new_comment_subscribe', 'table' => 'blog_user', 'file' => 'blog_comment_subscriber.sql'),
-		array('field' => 'user_settings_notice_new_comment_blogs_subscribe', 'table' => 'user', 'file' => 'user_blog_comment_subscriber.sql'),
-		array('field' => 'user_settings_notice_new_gift', 'table' => 'user', 'file' => 'new_gift.sql'),
-		array('field' => 'user_settings_notice_frequency', 'table' => 'user', 'file' => 'notice_frequency.sql'),
-		array('field' => 'notify_freq_type', 'table' => 'notify_task', 'file' => 'notify_task_frequency.sql'),
-		array('field' => 'user_settings_notice_new_user_blogs_subscribe', 'table' => 'user', 'file' => 'user_blog_new_user_subscriber.sql')
-	);
+
 	/**
 	 * Активация плагина Дополнительные уведомления.
 	 * Создание дополнительных колонок в таблицах.
 	 */
 	public function Activate() {
+		$aSqlConfig = array(
+			array(
+				'field' => 'user_settings_notice_new_topic_commented',
+				'table' => Config::Get('db.table.user'),
+				'file' => dirname(__FILE__) . '/sql/topic_comment.sql'
+			),
+			array(
+				'field' => 'user_settings_notice_friend_news',
+				'table' => Config::Get('db.table.user'),
+				'file' => dirname(__FILE__) . '/sql/friend_news.sql'
+			),
+			array(
+				'field' => 'user_settings_notice_request',
+				'table' => Config::Get('db.table.user'),
+				'file' => dirname(__FILE__) . '/sql/request.sql'
+			),
+			array(
+				'field' => 'user_settings_notice_new_topic_subscribe',
+				'table' => Config::Get('db.table.blog_user'),
+				'file' => dirname(__FILE__) . '/sql/blog_topic_subscriber.sql'
+			),
+			array(
+				'field' => 'user_settings_notice_new_comment_subscribe',
+				'table' => Config::Get('db.table.blog_user'), 
+				'file' => dirname(__FILE__) . '/sql/blog_comment_subscriber.sql'
+			),
+			array(
+				'field' => 'user_settings_notice_new_comment_blogs_subscribe', 
+				'table' => Config::Get('db.table.user'), 
+				'file' => dirname(__FILE__) . '/sql/user_blog_comment_subscriber.sql'
+			),
+			array(
+				'field' => 'user_settings_notice_new_gift',
+				'table' => Config::Get('db.table.user'),
+				'file' => dirname(__FILE__) . '/sql/new_gift.sql'
+			),
+			array(
+				'field' => 'user_settings_notice_frequency',
+				'table' => Config::Get('db.table.user'),
+				'file' => dirname(__FILE__) . '/sql/notice_frequency.sql'
+			),
+			array(
+				'field' => 'notify_freq_type',
+				'table' => Config::Get('db.table.notify_task'),
+				'file' => dirname(__FILE__) . '/sql/notify_task_frequency.sql'
+			),
+			array(
+				'field' => 'user_settings_notice_new_user_blogs_subscribe',
+				'table' => Config::Get('db.table.user'),
+				'file' => dirname(__FILE__) . '/sql/user_blog_new_user_subscriber.sql'
+			)
+		);
 		/*
 			Выделять для каждого вида подписки отдельное поле в базе не очень красиво и удобно с 
 			точки зрения расширяемости,
 			но такой вариант выбрали авторы LiveStreet, так что не выделываюсь и следую ему.
 		*/
-		$this->exportSqlIfNeed($this->aSqlConfig);
-		
+		$this->exportSQLIfNeed($this->aSqlConfig);
+		$this->Cache_Clean();
+		return true;
+	}
+	
+	public function Deactivate() {
+		$this->Cache_Clean();
 		return true;
 	}
 	
@@ -75,12 +121,11 @@ class PluginNotification extends Plugin {
 		$this->Viewer_AppendScript($this->GetTemplateWebPath(__CLASS__) . 'js/notify.js');
 	}
 	
-	protected function exportSqlIfNeed($aConf = array()) {
-		foreach($aConf as $aSqlConf) {
-			$fieldAlreadyInstall=$this->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
-			WHERE COLUMN_NAME="'. $aSqlConf['field'] .'" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
-			AND TABLE_NAME = "'.Config::Get('db.table.prefix'). $aSqlConf['table'] .'";');
-			if(!$fieldAlreadyInstall) $this->ExportSQL(dirname(__FILE__).'/sql/'.$aSqlConf['file']);
+	protected function exportSQLIfNeed($aConf = array()) {
+		foreach($aConf as $aSQLConf) {
+			if(!PluginLib_ModulePlugin::IsDBObjectExist($aSQLConf['table'], $aSQLConf['field'])) {
+				$this->ExportSQL($aSQLConf['file']);
+			}
 		}
 	}
 }

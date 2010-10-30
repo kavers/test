@@ -34,6 +34,12 @@ class PluginBlogosphere extends Plugin {
 	 * Активация плагина.
 	 */
 	public function Activate() {
+		$this->Cache_Clean();
+		return true;
+	}
+	
+	public function Deactivate() {
+		$this->Cache_Clean();
 		return true;
 	}
 	

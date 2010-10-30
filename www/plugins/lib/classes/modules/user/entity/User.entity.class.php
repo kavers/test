@@ -16,8 +16,8 @@
 */
 
 class PluginLib_ModuleUser_EntityUser extends PluginLib_Inherit_ModuleUser_EntityUser {
-	public function IsAnonim() {
-		return $this->getId() == PluginLib_ModulePlugin::ANONIM_USER_ID;
+	public function isAnonim() {
+		return $this->getId() == PluginLib_ModuleUser::ANONIM_USER_ID;
 	}
 }
 ?>

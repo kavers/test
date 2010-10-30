@@ -27,6 +27,7 @@ pluginBlogosphere.prototype = {
 	//Шаблон карточки топика
 	itemTemplate: null,
 	itemWidth: 270,
+	itemHeight: 80,
 	//Временные рамки (timestamp)
 	timeStart: 0,
 	timeEnd: 0,
@@ -101,7 +102,7 @@ pluginBlogosphere.prototype = {
 					.after(" " + topic.strDate);
 				
 				var mLeft = Math.ceil(oBlogosphere.stepByTime * (topic.date - oBlogosphere.timeStart));
-				var mTop = Math.ceil(oBlogosphere.stepByViews * (topic.viewCount - oBlogosphere.minViews));
+				var mTop = oBlogosphere.windowObject.height() - oBlogosphere.itemHeight - Math.ceil(oBlogosphere.stepByViews * (topic.viewCount - oBlogosphere.minViews));
 				var zIndex = Math.ceil(oBlogosphere.stepByRating * (topic.rating - oBlogosphere.minRating)) + 1;
 				itemObject
 					.css("margin-left", mLeft.toString() + "px")
@@ -153,7 +154,7 @@ pluginBlogosphere.prototype = {
 			}
 			//К просмотрам
 			if(maxViews - minViews) {
-				this.stepByViews = (this.windowObject.height() - this.itemTemplate.height()) / (maxViews - minViews);
+				this.stepByViews = (this.windowObject.height() - this.itemHeight) / (maxViews - minViews);
 			} else {
 				this.stepByViews = 0;
 			}

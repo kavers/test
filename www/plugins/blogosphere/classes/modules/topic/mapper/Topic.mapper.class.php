@@ -29,7 +29,7 @@ class PluginBlogosphere_ModuleTopic_MapperTopic extends PluginBlogosphere_Inheri
 	* @return	array		массив id
 	*/
 	public function GetTopicsForBlogosphereByFilter($aFilter) {
-		$sWhere=$this->buildFilterForBlogosphere($aFilter);
+		$sWhere = PluginLib_ModuleMapper::BuildFilter($aFilter, 't');
 		
 		//фильтрация по уровню доступа к топикам
 		if(PluginLib_ModulePlugin::IsPluginAvailable('accesstotopic') && !$aFilter['oUser']->isAdministrator()) {
@@ -41,7 +41,7 @@ class PluginBlogosphere_ModuleTopic_MapperTopic extends PluginBlogosphere_Inheri
 					FROM 
 						'.Config::Get('db.table.topic').' as t
 					WHERE 
-						1=1
+						1 = 1
 						'.$sWhere;
 		$aTopics=array();
 		if ($aRows=$this->oDb->select($sql)) {
@@ -51,27 +51,6 @@ class PluginBlogosphere_ModuleTopic_MapperTopic extends PluginBlogosphere_Inheri
 		}
 		
 		return $aTopics;
-	}
-	
-	/**
-	* Преобразуем парметры фильтрации в where statment
-	* 
-	* @param	array		Параметры фильтрации
-	* @return	string		where statment
-	*/
-	protected function buildFilterForBlogosphere($aFilter) {
-		$sWhere = '';
-		foreach($aFilter['more'] as $sFieldName => $sValue) {
-			$sWhere.=" AND t.{$sFieldName} >= \"" . mysql_real_escape_string($sValue) . '"';
-		}
-		foreach($aFilter['less'] as $sFieldName => $sValue) {
-			$sWhere.=" AND t.{$sFieldName} <= \"" . mysql_real_escape_string($sValue) . '"';
-		}
-		foreach($aFilter['in'] as $sFieldName => $aValue) {
-				$sIn=implode(',',$aValue);
-				$sWhere.=" AND t.{$sFieldName} IN (" . mysql_real_escape_string($sIn) . ')';
-		}
-		return $sWhere;
 	}
 }
 ?>

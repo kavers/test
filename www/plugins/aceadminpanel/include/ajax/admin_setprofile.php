@@ -33,6 +33,25 @@ if (($oUser=$oEngine->User_GetUserById($sUserId))) {
     if (isset($_REQUEST['profile_site'])) $oUser->setProfileSite(getRequest('profile_site'));
     if (isset($_REQUEST['profile_site_name'])) $oUser->setProfileSiteName(getRequest('profile_site_name'));
     if (isset($_REQUEST['profile_email'])) $oUser->setMail(getRequest('profile_email'));
+    if (isset($_REQUEST['profile_user_cat'])) {
+        $sCatName = $_REQUEST['profile_user_cat'];
+        $sCatName = strtoupper(substr(trim($sCatName), 0, 20));
+        if($sFullCatName = $oEngine->PluginUsercats_ModuleCategory_GetFullCategoryName($sCatName)) {
+            $oUser->setCategory($sFullCatName);
+        }
+    }
+    if (isset($_REQUEST['profile_blog_cat'])) {
+        if($oBlog = $oEngine->Blog_GetPersonalBlogByUserId($oUser->getId())) {
+            $sCatName = $_REQUEST['profile_blog_cat'];
+            $sCatName = strtoupper(substr(trim($sCatName), 0, 20));
+            if($sFullCatName = $oEngine->PluginCommunitycats_ModuleCategory_GetFullCategoryName($sCatName)) {
+                $oBlog->setCategory($sFullCatName);
+            }
+            
+            $oEngine->Blog_UpdateBlog($oBlog);
+        }
+    }
+    
     if ($oEngine->User_Update($oUser)!==false) {
         $bStateError=false;
         $sTitle='aceAdminPanel';

@@ -143,7 +143,7 @@ class PluginAceadminpanel_ModuleAdmin_MapperAdmin extends Mapper {
         $aReturn=array();
 
         $sFieldList =
-                "u.user_id, user_login, user_date_register, user_skill,
+                "u.user_id, user_cat, user_login, user_date_register, user_skill,
             user_rating, user_activate, user_date_activate, user_date_comment_last,
             user_ip_register, user_profile_avatar, 
             IF(ua.user_id IS NULL,0,1) as user_is_administrator,
@@ -170,7 +170,7 @@ class PluginAceadminpanel_ModuleAdmin_MapperAdmin extends Mapper {
 
         if ($aRows) {
             foreach ($aRows as $aRow) {
-                $aReturn[]=new PluginAceadminpanel_ModuleAdmin_EntityUser($aRow);
+                $aReturn[]= Engine::GetEntity('User', $aRow);
             }
         }
         return $aReturn;
@@ -202,7 +202,7 @@ class PluginAceadminpanel_ModuleAdmin_MapperAdmin extends Mapper {
             WHERE
                 u.user_id = ? ";
         if (($aRow=@$this->oDb->selectRow($sql, $nUserId))) {
-            $aRow['tpoics_count']=$this->GetCountTopicsByUserId($nUserId);
+            $aRow['topics_count']=$this->GetCountTopicsByUserId($nUserId);
             $aRow['comments_count']=$this->GetCountCommentsByUserId($nUserId);
             $sql=
                     "SELECT id FROM ".Config::Get('db.table.adminips')."
@@ -212,7 +212,8 @@ class PluginAceadminpanel_ModuleAdmin_MapperAdmin extends Mapper {
             } else {
                 $aRow['ban_ip']=0;
             }
-            return new PluginAceadminpanel_ModuleAdmin_EntityUser($aRow);
+            
+            return Engine::GetEntity('User', $aRow);
         }
         return null;
     }

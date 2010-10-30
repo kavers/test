@@ -24,7 +24,7 @@ class PluginAccesstotopic_HookTopicTpl extends Hook {
 		/**
 		* Хук для вставки HTML кода
 		*/
-		$this->AddHook('template_form_add_topic_topic_end', 'AddSelectToChangeAccessLevel');
+		$this->AddHook('template_html_pluginAccesstotopic', 'AddSelectToChangeAccessLevel');
 	}
 
 	/**
@@ -32,6 +32,8 @@ class PluginAccesstotopic_HookTopicTpl extends Hook {
 	*
 	*/
 	public function AddSelectToChangeAccessLevel() {
+		$this->Viewer_Assign('personalAccessLevels', PluginAccesstotopic_ModuleAccess::GetPersonalTopicAccessLevels());
+		$this->Viewer_Assign('collectiveAccessLevels', PluginAccesstotopic_ModuleAccess::GetCollectiveTopicAccessLevels());
 		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'SelectToChangeAccessLevel.tpl');
 	}
 }

@@ -24,7 +24,7 @@ if (!class_exists('Plugin')) {
 
 class PluginLib extends Plugin {
 	protected $aInherits=array(
-		'entity'  =>array('ModuleUser_EntityUser' => '_ModuleUser_EntityUser'),
+		'entity'  =>array('ModuleUser_EntityUser'=>'_ModuleUser_EntityUser'),
 	);
 	
 	/**
@@ -32,6 +32,12 @@ class PluginLib extends Plugin {
 	 * Создание дополнительной колонки в таблицe _topic в базе.
 	 */
 	public function Activate() {
+		$this->Cache_Clean();
+		return true;
+	}
+	
+	public function Deactivate() {
+		$this->Cache_Clean();
 		return true;
 	}
 	

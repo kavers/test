@@ -17,26 +17,25 @@
 
 class PluginNotification_ModuleBlog_MapperBlog extends  PluginNotification_Inherit_ModuleBlog_MapperBlog {
 	public function UpdateRelationBlogUser(ModuleBlog_EntityBlogUser $oBlogUser) {
-		$sql = "UPDATE ".Config::Get('db.table.blog_user')." 
+		$sql = 'UPDATE '.Config::Get('db.table.blog_user').' 
 			SET 
-				user_role = ?d,
 				user_settings_notice_new_topic_subscribe = ?d,
 				user_settings_notice_new_comment_subscribe = ?d
 			WHERE
 				blog_id = ?d 
 				AND
 				user_id = ?d
-		";
+		';
 
 		if ($this->oDb->query(
 				$sql,
-				$oBlogUser->getUserRole(),
 				$oBlogUser->getUserSettingsNoticeNewTopicSubscribe(),
 				$oBlogUser->getUserSettingsNoticeNewCommentSubscribe(),
 				$oBlogUser->getBlogId(),
-				$oBlogUser->getUserId())
+				$oBlogUser->getUserId()
+			) !== null
 		) {
-			return true;
+			return parent::UpdateRelationBlogUser($oBlogUser);
 		}
 		return false;
 	}

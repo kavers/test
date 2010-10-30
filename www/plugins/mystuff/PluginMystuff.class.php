@@ -18,7 +18,8 @@ class PluginMystuff extends Plugin {
 	/***
 	*  Activating the Plugin
 	***/
-	public function Activate() {
+	public function Activate() {#
+		$this->Cache_Clean();
 		//this will add a last_modified field to every topic
 		$this->ExportSQL(dirname(__FILE__).'/dump.sql');
 		return true;
@@ -37,6 +38,7 @@ class PluginMystuff extends Plugin {
 	* Remove the additional column from the database, this is neccesary
 	***/
 	public function Deactivate() {
+		$this->Cache_Clean();
 		$this->ExportSQL(dirname(__FILE__).'/remove.sql');
 		return true;
 	}

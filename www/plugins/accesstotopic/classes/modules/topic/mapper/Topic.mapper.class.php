@@ -20,22 +20,21 @@
 * согласно уровню доступа пользовател€.
 */
 class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_Inherit_ModuleTopic_MapperTopic {
-	public function GetTopicsRatingByDate($sDate,$iLimit,$aExcludeBlog=array(), $currentUserId = -1) {
-		//≈сли метод вызывалс€ в стандартном режим, то возвращаем управление
-		if($currentUserId == -1) return parent::GetTopicsRatingByDate($sDate,$iLimit,$aExcludeBlog);
+	public function GetTopicsRatingByDate($sDate,$iLimit,$aExcludeBlog=array()) {
+		$oUserCurrent = PluginLib_ModuleUser::GetUserCurrent();
+		$sAccessWhere = $oUserCurrent->isAdministrator() ? '' : ' AND ' . PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($oUserCurrent->getId());
 		
 		$sql = 'SELECT 
 						t.topic_id
 					FROM 
-						'.Config::Get('db.table.topic').' as t
+						'. Config::Get('db.table.topic') .' as t
 					WHERE
 						t.topic_publish = 1
 						AND
 						t.topic_date_add >= ?
 						AND
 						t.topic_rating >= 0
-						AND
-						'.PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($currentUserId).'
+						'. $sAccessWhere .'
 						{ AND t.blog_id NOT IN(?a) }
 					ORDER by t.topic_rating desc, t.topic_id desc
 					LIMIT 0, ?d ';
@@ -53,9 +52,9 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 		return $aTopics;
 	}
 	
-	public function GetTopicsByArrayId($aArrayId, $currentUserId = -1) {
-		//≈сли метод вызывалс€ в стандартном режим, то возвращаем управление
-		if($currentUserId == -1) return parent::GetTopicsByArrayId($aArrayId);
+	public function GetTopicsByArrayId($aArrayId) {
+		$oUserCurrent = PluginLib_ModuleUser::GetUserCurrent();
+		$sAccessWhere = $oUserCurrent->isAdministrator() ? '' : ' AND ' . PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($oUserCurrent->getId());
 		
 		if(!is_array($aArrayId) or count($aArrayId)==0) {
 			return array();
@@ -65,12 +64,11 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 					t.*,
 					tc.*
 				FROM 
-					'.Config::Get('db.table.topic').' as t	
-					JOIN  '.Config::Get('db.table.topic_content').' AS tc ON t.topic_id=tc.topic_id
+					'. Config::Get('db.table.topic') .' as t	
+					JOIN  '. Config::Get('db.table.topic_content') .' as tc ON t.topic_id=tc.topic_id
 				WHERE 
 					t.topic_id IN(?a)
-					AND
-					'.PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($currentUserId).'
+					'. $sAccessWhere .'
 				ORDER BY FIELD(t.topic_id,?a) ';
 		$aTopics=array();
 		if ($aRows=$this->oDb->select($sql,$aArrayId,$aArrayId)) {
@@ -81,9 +79,10 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 		return $aTopics;
 	}
 	
-	public function GetTopics($aFilter,&$iCount,$iCurrPage,$iPerPage,$currentUserId = -1) {
-		//≈сли метод вызывалс€ в стандартном режим, то возвращаем управление
-		if($currentUserId == -1) return parent::GetTopics($aFilter,&$iCount,$iCurrPage,$iPerPage);
+	public function GetTopics($aFilter,&$iCount,$iCurrPage,$iPerPage) {
+		$oUserCurrent = PluginLib_ModuleUser::GetUserCurrent();
+		$sAccessWhere = $oUserCurrent->isAdministrator() ? '' : ' AND ' . PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($oUserCurrent->getId());
+		
 		$sWhere=$this->buildFilter($aFilter);
 		
 		if(isset($aFilter['order']) and !is_array($aFilter['order'])) {
@@ -95,15 +94,14 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 		$sql = 'SELECT 
 						t.topic_id
 					FROM 
-						'.Config::Get('db.table.topic').' as t,
-						'.Config::Get('db.table.blog').' as b
+						'. Config::Get('db.table.topic') .' as t,
+						'. Config::Get('db.table.blog') .' as b
 					WHERE 
 						1=1
-						'.$sWhere.'
+						'. $sWhere .'
 						AND
 						t.blog_id=b.blog_id
-						AND
-						'.PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($currentUserId).'
+						'. $sAccessWhere .'
 					ORDER BY '.
 						implode(', ', $aFilter['order'])
 				.'
@@ -117,21 +115,20 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 		return $aTopics;
 	}
 	
-	public function GetCountTopics($aFilter, $currentUserId = -1) {
-		//≈сли метод вызывалс€ в стандартном режим, то возвращаем управление
-		if($currentUserId == -1) return parent::GetCountTopics($aFilter);
+	public function GetCountTopics($aFilter) {
+		$oUserCurrent = PluginLib_ModuleUser::GetUserCurrent();
+		$sAccessWhere = $oUserCurrent->isAdministrator() ? '' : ' AND ' . PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($oUserCurrent->getId());
 		
 		$sWhere=$this->buildFilter($aFilter);
 		$sql = 'SELECT 
 					count(t.topic_id) as count
 				FROM 
-					'.Config::Get('db.table.topic').' as t,
-					'.Config::Get('db.table.blog').' as b
+					'. Config::Get('db.table.topic') .' as t,
+					'. Config::Get('db.table.blog') .' as b
 				WHERE 
 					1=1
-					'.$sWhere.'
-					AND
-					'.PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($currentUserId).'
+					'. $sWhere .'
+					'. $sAccessWhere.'
 					AND
 					t.blog_id=b.blog_id;';
 		if ($aRow=$this->oDb->selectRow($sql)) {
@@ -140,22 +137,21 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 		return false;
 	}
 	
-	public function GetAllTopics($aFilter, $currentUserId = -1) {
-		//≈сли метод вызывалс€ в стандартном режим, то возвращаем управление
-		if($currentUserId == -1) return parent::GetAllTopics($aFilter);
+	public function GetAllTopics($aFilter) {
+		$oUserCurrent = PluginLib_ModuleUser::GetUserCurrent();
+		$sAccessWhere = $oUserCurrent->isAdministrator() ? '' : ' AND ' . PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($oUserCurrent->getId());
 		
 		$sWhere=$this->buildFilter($aFilter);
 		
 		$sql = 'SELECT 
 						t.topic_id
 					FROM 
-						'.Config::Get('db.table.topic').' as t,
-						'.Config::Get('db.table.blog').' as b
+						'. Config::Get('db.table.topic') .' as t,
+						'. Config::Get('db.table.blog') .' as b
 					WHERE 
 						1=1
-						'.$sWhere.'
-						AND
-						'.PluginAccesstotopic_ModuleAccess::GetAccessWhereStatment($currentUserId).'
+						'. $sWhere .'
+						'. $sAccessWhere .'
 						AND
 						t.blog_id=b.blog_id
 					ORDER by t.topic_id desc';
@@ -170,61 +166,34 @@ class PluginAccesstotopic_ModuleTopic_MapperTopic extends PluginAccesstotopic_In
 	}
 
 	public function AddTopic(ModuleTopic_EntityTopic $oTopic) {
-		$sql = 'INSERT INTO '.Config::Get('db.table.topic').' 
-			(blog_id,
-			user_id,
-			topic_type,
-			topic_title,
-			topic_tags,
-			topic_date_add,
-			topic_user_ip,
-			topic_publish,
-			topic_publish_draft,
-			topic_publish_index,
-			topic_cut_text,
-			topic_forbid_comment,
-			topic_text_hash,
-			access_level
-			)
-			VALUES(?d,  ?d,	?,	?,	?,  ?, ?, ?d, ?d, ?d, ?, ?, ?, ?d)
-		';
-		if ($iId=$this->oDb->query($sql,$oTopic->getBlogId(),$oTopic->getUserId(),$oTopic->getType(),$oTopic->getTitle(),
-			$oTopic->getTags(),$oTopic->getDateAdd(),$oTopic->getUserIp(),$oTopic->getPublish(),$oTopic->getPublishDraft(),$oTopic->getPublishIndex(),$oTopic->getCutText(),$oTopic->getForbidComment(),$oTopic->getTextHash(), $oTopic->getAccessLevel())) 
-		{
-			$oTopic->setId($iId);
-			$this->AddTopicContent($oTopic);
-			return $iId;
+		if($sId = parent::AddTopic($oTopic)) {
+			if($this->updateAccessLevel($oTopic)) {
+				return $sId;
+			}
 		}
 		return false;
 	}
-	
+
 	public function UpdateTopic(ModuleTopic_EntityTopic $oTopic) {
-		$sql = "UPDATE ".Config::Get('db.table.topic')." 
+		if($this->updateAccessLevel($oTopic)) {
+			return parent::UpdateTopic($oTopic);
+		}
+		
+		return false; 
+	}
+	
+	protected function updateAccessLevel(ModuleTopic_EntityTopic $oTopic) {
+		$sql = 'UPDATE '.Config::Get('db.table.topic').' 
 			SET 
-				blog_id= ?d,
-				topic_title= ?,
-				topic_tags= ?,
-				topic_date_add = ?,
-				topic_date_edit = ?,
-				topic_user_ip= ?,
-				topic_publish= ?d ,
-				topic_publish_draft= ?d ,
-				topic_publish_index= ?d,
-				topic_rating= ?f,
-				topic_count_vote= ?d,
-				topic_count_read= ?d,
-				topic_count_comment= ?d, 
-				topic_cut_text = ? ,
-				topic_forbid_comment = ? ,
-				topic_text_hash = ? ,
 				access_level = ?d
 			WHERE
 				topic_id = ?d
-		";
-		if ($this->oDb->query($sql,$oTopic->getBlogId(),$oTopic->getTitle(),$oTopic->getTags(),$oTopic->getDateAdd(),$oTopic->getDateEdit(),$oTopic->getUserIp(),$oTopic->getPublish(),$oTopic->getPublishDraft(),$oTopic->getPublishIndex(),$oTopic->getRating(),$oTopic->getCountVote(),$oTopic->getCountRead(),$oTopic->getCountComment(),$oTopic->getCutText(),$oTopic->getForbidComment(),$oTopic->getTextHash(),$oTopic->getAccessLevel(), $oTopic->getId())) {
-			$this->UpdateTopicContent($oTopic);
+		';
+
+		if($this->oDb->query($sql,$oTopic->getAccessLevel(), $oTopic->getId()) !== null) {
 			return true;
-		}		
+		}
+
 		return false;
 	}
 }

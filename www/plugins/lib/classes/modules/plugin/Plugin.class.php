@@ -35,6 +35,28 @@ class PluginLib_ModulePlugin extends Module {
 		
 		return $bPluginAvailable;
 	}
+	
+	/**
+	* Проверяем существование таблицы или поля
+	* 
+	* @param	string		имя таблицы
+	* @param	string		имя поля
+	* @return	bool
+	*/
+	static function IsDBObjectExist($sTable, $sField = null) {
+		$oEngine = Engine::getInstance();
+		$bAlreadyInstall = false;
+		if($sTable && $sField) {
+			$bAlreadyInstall = $oEngine->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+			WHERE COLUMN_NAME="'. $sField .'" AND TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
+			AND TABLE_NAME = "'. $sTable .'";');
+		} elseif($sTable) {
+			$bAlreadyInstall = $oEngine->Database_GetConnect()->query('SELECT * FROM INFORMATION_SCHEMA.TABLES 
+			WHERE TABLE_SCHEMA="'.Config::Get('db.params.dbname').'"
+			AND TABLE_NAME = "'. $sTable .'";');
+		}
+		return $bAlreadyInstall;
+	}
 }
 
 ?>

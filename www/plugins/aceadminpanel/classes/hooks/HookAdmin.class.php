@@ -83,7 +83,6 @@ class PluginAceadminpanel_HookAdmin extends Hook {
         if (defined('ADMIN_SITE_CLOSED') && ADMIN_SITE_CLOSED && !$oUser->IsAdministrator()) {
             $this->SiteClosed();
         }
-
         if ($oUser->IsBannedByLogin() || ($oUser->IsBannedByIp() && !$oUser->IsAdministrator())) {
             return $this->UserBanned($oUser);
         }

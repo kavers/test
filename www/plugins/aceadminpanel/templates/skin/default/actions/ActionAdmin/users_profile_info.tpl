@@ -54,6 +54,8 @@ function AdminEditSubmit() {
     params['profile_site']=$('profile_site').value;
     params['profile_site_name']=$('profile_site_name').value;
     params['profile_email']=$('profile_email').value;
+    params['profile_user_cat']=$('profile_user_cat').value;
+    params['profile_blog_cat']=$('profile_blog_cat').value;
 
     JsHttpRequest.query(
         sWebPluginPath+'/include/ajax/admin_setprofile.php'+'?security_ls_key='+LIVESTREET_SECURITY_KEY,
@@ -174,7 +176,8 @@ function AdminEditSubmit() {
                 </div>
             </td>
         </tr>
-
+        {hook run='html_pluginUsercats_user_form'}
+        {hook run='html_pluginUsercats_blog_form'}
         <tr>
             <td>
             </td>

@@ -25,18 +25,13 @@ class PluginAccesstotopic_ModuleTopic_EntityTopic extends PluginAccesstotopic_In
 	}
 	
 	public function getAccessLevelName() {
-		foreach(Config::Get('plugin.accesstotopic.personalBlog.accessLevels') as $levelName => $levelValue) {
-			if($levelValue == $this->getAccessLevel()) {
-				return $levelName;
-			}
+		$sLevelName = array_search($this->getAccessLevel(), PluginAccesstotopic_ModuleAccess::GetPersonalTopicAccessLevels());
+		if($sLevelName !== false) {
+			return $sLevelName;
 		}
 		
-		foreach(Config::Get('plugin.accesstotopic.collectiveBlog.accessLevels') as $levelName => $levelValue) {
-			if($levelValue == $this->getAccessLevel()) {
-				return $levelName;
-			}
-		}
-		return '';
+		$sLevelName = array_search($this->getAccessLevel(), PluginAccesstotopic_ModuleAccess::GetCollectiveTopicAccessLevels());
+		return $sLevelName !== false ? $sLevelName : '';
 	}
 }
 ?>
