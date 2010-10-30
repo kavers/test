@@ -3,7 +3,7 @@
 {assign var="oSession" value=$oUserProfile->getSession()}
 {assign var="oVote" value=$oUserProfile->getVote()}
 
- <li id="blog_list" class="block2 green">
+ <li id="blog_list" class="block2 orange">
     <div class="title"><a href="#" class="link"><h1>Профиль</h1></a></div>
     <div class="block_content">
        <ul class="line_list">
@@ -21,7 +21,7 @@
 
 
 				{if $oUserProfile->getProfileSex()!='other' || $oUserProfile->getProfileBirthday() || ($oUserProfile->getProfileCountry() || $oUserProfile->getProfileRegion() || $oUserProfile->getProfileCity()) || $oUserProfile->getProfileAbout() || $oUserProfile->getProfileSite()}
- <li id="blog_list" class="block2 green">
+ <li id="blog_list" class="block2 orange">
     <div class="title"><a href="#" class="link"><h1>{$aLang.profile_privat}</h1></a></div>
     <div class="block_content">
        <ul class="line_list">
@@ -97,7 +97,7 @@
 				{/if}
 				<br />
                 
- <li id="blog_list" class="block2 green">
+ <li id="blog_list" class="block2 orange">
     <div class="title"><a href="#" class="link"><h1>{$aLang.profile_activity}</h1></a></div>
     <div class="block_content">
        <ul class="line_list">

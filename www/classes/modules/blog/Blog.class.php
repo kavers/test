@@ -437,7 +437,7 @@ class ModuleBlog extends Module {
 		/**
 		 * Достаем дополнительные данные, для этого формируем список блогов и делаем мульти-запрос
 		 */
-		$aBlogId=array();		
+		$aBlogId=array();
 		if ($data) {
 			foreach ($data as $oBlogUser) {
 				$aBlogId[]=$oBlogUser->getBlogId();
@@ -460,7 +460,7 @@ class ModuleBlog extends Module {
 					} else {
 						$oBlogUser->setBlog(null);
 					}
-				}				
+				}
 			}
 		}
 		return ($bReturnIdOnly) ? $aBlogId : $data;

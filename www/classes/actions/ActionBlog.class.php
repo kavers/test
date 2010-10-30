@@ -131,7 +131,7 @@ class ActionBlog extends Action {
 				
 		$this->AddEventPreg('/^[\w\-\_]+$/i','/^(page(\d+))?$/i','EventShowBlog');
 		$this->AddEventPreg('/^[\w\-\_]+$/i','/^bad$/i','/^(page(\d+))?$/i','EventShowBlog');
-		$this->AddEventPreg('/^[\w\-\_]+$/i','/^new$/i','/^(page(\d+))?$/i','EventShowBlog');			
+		$this->AddEventPreg('/^[\w\-\_]+$/i','/^new$/i','/^(page(\d+))?$/i','EventShowBlog');
 	}
 		
 	
@@ -516,7 +516,7 @@ class ActionBlog extends Action {
 		}
 		/**
 		 * Преобразуем ограничение по рейтингу в число 
-		 */				
+		 */
 		if (!func_check(getRequest('blog_limit_rating_topic'),'float')) {
 			$this->Message_AddError($this->Lang_Get('blog_create_rating_error'),$this->Lang_Get('error'));
 			$bOk=false;
@@ -566,7 +566,7 @@ class ActionBlog extends Action {
 		 * Устанавливаем шаблон вывода
 		 */
 		$this->SetTemplateAction('index');
-	}	
+	}
 	/**
 	 * Показ топика
 	 *
@@ -675,7 +675,7 @@ class ActionBlog extends Action {
 		/**
 		 * Вызов хуков
 		 */
-		$this->Hook_Run('topic_show',array("oTopic"=>$oTopic));		
+		$this->Hook_Run('topic_show',array("oTopic"=>$oTopic));
 		/**
 		 * Выставляем SEO данные
 		 */
@@ -726,7 +726,7 @@ class ActionBlog extends Action {
 		 * Меню
 		 */
 		$this->sMenuSubItemSelect=$sShowType;
-		$this->sMenuSubBlogUrl=$oBlog->getUrlFull();		
+		$this->sMenuSubBlogUrl=$oBlog->getUrlFull();
 		/**
 		 * Передан ли номер страницы
 		 */

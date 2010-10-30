@@ -1,0 +1,379 @@
+body{
+	margin:0;
+	color:#000;
+	font:12px Arial, Helvetica, sans-serif;
+	background:#b5b5b5 url(../images/bg-page.gif) no-repeat 50% 0;
+}
+img{border-style:none;}
+a{
+	text-decoration:none;
+	color:#67162c;
+}
+a:hover{text-decoration:underline;}
+input,
+textarea,
+select{
+	font:100% Arial, Helvetica, sans-serif;
+	vertical-align:middle;
+	color:#000;
+}
+form,fieldset{
+	margin:0;
+	padding:0;
+	border-style:none;
+}
+.alignright {
+	float:right;
+}
+#wrapper{
+	width:960px;
+	margin:34px auto 0;
+	background:url(../images/bg-wrapper.png) repeat-y;
+	padding:0 4px;
+}
+#header{
+	height:225px;
+	position:relative;
+}
+.header-holder {
+	overflow:hidden;
+	height:150px;
+	background:url(../images/bg-header.gif) no-repeat; 
+}
+.logo{
+	background:url(../images/logo.gif) no-repeat;
+	height:39px;
+	width:149px;
+	margin:54px 0 0 124px;
+	text-indent:-9999px;
+	overflow:hidden;
+}
+.logo a{
+	display:block;
+	height:100%;
+}
+.sub-nav{
+	margin:0;
+	padding:0;
+	list-style:none;
+	position:absolute;
+	right:7px;
+	top:12px;
+	font-size:9px;
+}
+.sub-nav li{
+	display:inline;
+	padding:0 0 0 13px;
+}
+.sub-nav a{
+	color:#6c6c6c;
+	letter-spacing:3px;
+}
+.sub-nav .active,
+.sub-nav a:hover{
+	color:#d23d2e;
+	text-decoration:none;
+}
+#nav{
+	width:100%;
+	overflow:hidden;
+}
+#header h2{
+	background:url(../images/text-willkommen.gif) no-repeat;
+	width:296px;
+	height:76px;
+	overflow:hidden;
+	text-indent:-9999px;
+	float:left;
+	margin:0;
+}
+#nav ul{
+	margin:0;
+	padding:35px 0 31px 0;
+	list-style:none;
+	background:url(../images/bg-nav.gif) no-repeat #efefee;
+	float:left;
+	width:664px;
+}
+#nav ul li{
+	float:left;
+	padding:0 25px 0 29px;
+}
+#nav ul a{
+	display:block;
+	overflow:hidden;
+	text-indent:-9999px;
+	height:10px;
+}
+#nav ul a.grundsatze{
+	background:url(../images/text-grundsatze.gif) no-repeat;
+	width:97px;
+}
+#nav ul a.grundsatze:hover{
+	background-position:0 -10px;
+}
+#nav .active a.grundsatze:hover{
+	background-position:0 -20px;
+}
+#nav .active a.grundsatze{
+	background-position:0 -20px;
+}
+#nav ul a.unser-ansatz{
+	background:url(../images/text-unser.gif) no-repeat;
+	width:112px;
+}
+#nav ul a.unser-ansatz:hover{
+	background-position:0 -9px;
+}
+#nav ul a.dienstleistungen{
+	background:url(../images/text-dienstyle.gif) no-repeat;
+	width:145px;
+}
+#nav ul a.dienstleistungen:hover{
+	background-position:0 -9px;
+}
+#nav ul a.uber-uns{
+	background:url(../images/text-uber.gif) no-repeat;
+	width:73px;
+}
+#nav ul a.uber-uns:hover{
+	background-position:0 -10px;
+}
+#content {
+	position:relative;
+}
+.block{
+	overflow:hidden;
+	width:100%;
+}
+.sub-block{
+	margin:0 0 207px;
+}
+.long {
+	line-height:25px;
+	color:#3d3d3d;
+}
+.block-wrapper{
+	float:left;
+	padding-right:48px;
+	background:url(../images/bg-block-wrapper.gif) no-repeat 100% 0;
+}
+.block .holder{
+	display:table;
+	width:100%;
+}
+.block .gallery{
+	padding:0;
+	margin:0;
+	list-style:none;
+	float:left;
+}
+.block .frame{
+	background:#fff;
+	padding:70px 35px 24px;
+	color:#3d3d3d;
+	font-size:13px;
+	line-height:25px;
+	overflow:hidden;
+	height:1%;
+}
+* +html .block .sub-frame-main{
+	padding:70px 47px 24px;
+	}
+.long .frame{
+	width:547px;
+	font-size:13px;
+	line-height:28px;
+	color:#000;
+	float:left;
+	padding:41px 60px 28px 41px;
+	margin:0 0 69px;
+}
+.long .paragraf{
+	margin:0;
+}
+.long .frame p{
+	color:#3d3d3d;
+	font-size:13px;
+	line-height:25px;
+}
+.block .sub-frame {
+	padding:49px 40px 59px;
+	width:431px;
+	float:left;
+}
+.block .grey{
+	background:#efefef;
+	margin:0 0 0 149px;
+	float:left;
+	display:inline;
+	padding:42px 40px 37px;
+	width:431px;
+}
+.block p {
+	margin:0 0 23px;
+}
+.block ul {
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+.block ul li{
+	background:url(../images/bullet2.gif) no-repeat 0 11px;
+	padding:0 0 0 23px;
+	margin:0 0 6px;
+}
+.long ul li{
+	background:url(../images/bullet2.gif) no-repeat 0 16px;
+	margin:0 0 19px;
+	line-height:31px;
+}
+.block .gallery li {
+	background:none;
+	padding:0;
+	margin:0;
+}
+.block img{
+	float:left;
+}
+.block .gallery img{
+	float:none;
+	display:block;
+}
+.contact-block{
+	overflow:hidden;
+	width:100%;
+}
+.contact-info{
+	float:left;
+	background:#fff;
+	width:189px;
+}
+.address-title{
+	overflow:hidden;
+	height:1%;
+	padding:39px 45px 35px 31px;
+}
+.contact-info img.address{
+	display:block;
+}
+.address-info {
+	padding:26px 30px 26px;
+	background:#f8f8f8;
+}
+.address-info .e-mail{
+	position:relative;
+}
+strong.hofstrasse{
+	width:95px;
+	height:15px;
+	overflow:hidden;
+	text-indent:-9999px;
+	float:left;
+	background:url(../images/text-hofstrasse.gif) no-repeat;
+	margin:0 0 12px;
+}
+strong.ch{
+	width:97px;
+	height:17px;
+	overflow:hidden;
+	text-indent:-9999px;
+	float:left;
+	background:url(../images/text-ch.gif) no-repeat;
+}
+.contact-info dl{
+	margin:0;
+	color:#3d3d3d;
+	font-size:13px;
+	overflow:hidden;
+	height:1%;
+}
+.contact-info dl dt {
+	float:left;
+	width:28px;
+}
+.contact-info dl dd {
+	margin:0 0 10px;
+	float:left;
+}
+.map{
+	float:left;
+}
+.map img {
+	display:block;
+}
+.form-block{
+	background:#fff;
+	width:241px;
+	float:left;
+	padding:38px 28px 8px 31px;
+}
+.form-block img{
+	margin:0 0 11px;
+}
+.search-form fieldset{
+	float:left;
+}
+.search-form input{
+	width:224px;
+	color:#949494;
+	font-size:13px;
+	background:none;
+	border:1px solid #cfcac0;
+	display:block;
+	height:15px;
+	margin:0 0 4px;
+	padding:5px 8px 7px;
+	line-height:15px;
+}
+.search-form textarea{
+	width:232px;
+	max-width:232px;
+	color:#949494;
+	font-size:13px;
+	background:none;
+	border:1px solid #cfcac0;
+	display:block;
+	height:289px;
+	margin:3px 0 7px;
+	padding:3px 0 0 8px;
+	line-height:15px;
+}	
+input.btn-search{
+	background:url(../images/btn-send.gif) no-repeat;
+	float:left;
+	height:32px;
+	border:none;
+	width:106px;
+	font-size:0;
+	color:#000;
+	padding:0;
+	margin:0 0 0 -2px;
+	line-height:0;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+strong.kontaktformular{
+	width:114px;
+	height:15px;
+	overflow:hidden;
+	text-indent:-9999px;
+	margin:0 0 12px;
+	background:url(../images/text-kontaktformular.gif) no-repeat;
+	float:left;
+}
+#footer{
+	width:906px;
+	background:url(../images/bg-footer.png) repeat;
+	height:27px;
+	padding:39px 23px 12px 40px;
+	margin:0 auto;
+}
+#footer strong.copyright{
+	width:115px;
+	height:7px;
+	overflow:hidden;
+	text-indent:-9999px;
+	float:left;
+	background:url(../images/text-copy.gif) no-repeat;
+}

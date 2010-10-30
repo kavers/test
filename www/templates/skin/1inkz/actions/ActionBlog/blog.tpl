@@ -65,7 +65,7 @@ function toggleBlogDeleteForm(id,link) {
 										{if $aBlogs} 
 											<option disabled="disabled">-------------</option>
 											{foreach from=$aBlogs item=oBlogDelete}
-												<option value="{$oBlogDelete->getId()}">{$oBlogDelete->getTitle()}</option>											
+												<option value="{$oBlogDelete->getId()}">{$oBlogDelete->getTitle()}</option>
 											{/foreach}
 										{/if}
 									</select>

@@ -1,4 +1,4 @@
-<li class="block green">
+<li class="block orange">
     <div class="title"><a class="link" href="#"><h1>{$aLang.talk_blacklist_title}</h1></a></div><div class="simply_block">
 					
 				{literal}

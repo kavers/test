@@ -74,8 +74,16 @@
  			    </ul>
              </li>
              <li><div class="favorite {if $oUserCurrent}{if $oTopic->getIsFavourite()}active{/if}{else}fav-guest{/if}"><a href="" onclick="lsFavourite.toggle({$oTopic->getId()},this,'topic'); return false;"><img src="{cfg name='path.static.skin'}/img/icon3.gif" width="44" height="44" alt="В избранное" title="В избранное"/>В закладки</a></div></li>
-             <li>{hook run='html_pluginSendtofriend'}
-             </li>
+             {* <li><a href="" class="more_menu2 close"><img src="{cfg name='path.static.skin'}/img/icon4.png" width="44" height="44" alt="Отправить другу" title="Отправить другу"/>Отправить другу</a>
+                <ul class="all_menu message">
+	               <li><strong>Электронная почта</strong></li>
+                   <li><input type="text" name="email" /></li>
+	               <li><strong>Сообщение</strong></li>
+                   <li><textarea name="message"></textarea></li>
+                   <li><input type="submit" class="submit" value="" /></li>
+ 			    </ul>
+             </li> *}
+			 {hook run='html_pluginSendtofriend'}
            </ul>
         <div class="block_bottom2"></div>
         </div>

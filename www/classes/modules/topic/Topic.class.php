@@ -709,23 +709,23 @@ class ModuleTopic extends Module {
 			'blog_type' => array(
 				'open',
 			),
-			'topic_publish' => 1,			
-		);		
+			'topic_publish' => 1,
+		);
 		switch ($sShowType) {
 			case 'good':
 				$aFilter['topic_rating']=array(
 					'value' => Config::Get('module.blog.collective_good'),
 					'type'  => 'top',
-				);			
-				break;	
+				);
+				break;
 			case 'bad':
 				$aFilter['topic_rating']=array(
 					'value' => Config::Get('module.blog.collective_good'),
 					'type'  => 'down',
-				);			
-				break;	
+				);
+				break;
 			case 'new':
-				$aFilter['topic_new']=date("Y-m-d H:00:00",time()-Config::Get('module.topic.new_time'));							
+				$aFilter['topic_new']=date("Y-m-d H:00:00",time()-Config::Get('module.topic.new_time'));
 				break;
 			default:
 				break;

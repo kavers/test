@@ -16,12 +16,19 @@
                 {include file=`$aBlock.name` params=`$aBlock.params`}
             {/if}	
         {/foreach}
-    {/if}		
+    {/if}
+    {if $sAction=="people"}
+        {hook run='html_pluginUsercats_catalog'}
+    {/if}
+    {if $sAction=="blogs"}
+        {hook run='html_pluginCommunitycats_catalog'}
+    {/if}
   </ul>
   
   <div>
   {*include file=header_nav.tpl*}
   </div>
-  <p class="cl"></p> 
+  <p class="cl"></p>
+
 		<!-- /Sidebar -->
 

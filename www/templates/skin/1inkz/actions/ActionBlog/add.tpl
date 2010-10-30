@@ -30,6 +30,8 @@
 			<input type="text" id="blog_url" name="blog_url" value="{$_aRequest.blog_url}" class="line" {if $_aRequest.blog_id}disabled{/if} /><br />
 			<strong>{$aLang.blog_create_url_notice}</strong></p>
 			
+			{hook run='html_pluginCommunitycats_form'}
+			
 			<p>{$aLang.blog_create_type}:<br />
 			<select name="blog_type" id="blog_type" onChange="">
 				<option value="open" {if $_aRequest.blog_type=='open'}selected{/if}>{$aLang.blog_create_type_open}</option>

@@ -56,7 +56,7 @@ class ActionMy extends Action {
 		/**
 		 * Получаем логин из УРЛа
 		 */
-		$sUserLogin=$this->sCurrentEvent;					
+		$sUserLogin=$this->sCurrentEvent;
 		/**
 		 * Проверяем есть ли такой юзер
 		 */		
@@ -66,14 +66,14 @@ class ActionMy extends Action {
 		/**
 		 * Передан ли номер страницы
 		 */			
-		if ($this->GetParamEventMatch(0,0)=='blog') {			
+		if ($this->GetParamEventMatch(0,0)=='blog') {
 			$iPage=$this->GetParamEventMatch(1,2) ? $this->GetParamEventMatch(1,2) : 1;	
 		} else {
 			$iPage=$this->GetParamEventMatch(0,2) ? $this->GetParamEventMatch(0,2) : 1;	
 		}		
 		/**
 		 * Получаем список топиков
-		 */					
+		 */
 		$aResult=$this->Topic_GetTopicsPersonalByUser($this->oUserProfile->getId(),1,$iPage,Config::Get('module.topic.per_page'));	
 		$aTopics=$aResult['collection'];
 		/**
@@ -93,7 +93,7 @@ class ActionMy extends Action {
 		/**
 		 * Устанавливаем шаблон вывода
 		 */
-		$this->SetTemplateAction('blog');		
+		$this->SetTemplateAction('blog');
 	}
 	
 	/**

@@ -11,6 +11,7 @@
 *}  
   <div id="head_banner">
 	 <div id="head_insidesm_banner">
+		{literal}
 		<script type='text/javascript'>
 		<!--//<![CDATA[
 		var m3_u = (location.protocol=='https:'?'https://adv.kaznetmedia.kz/www/delivery/ajs.php':'http://adv.kaznetmedia.kz/www/delivery/ajs.php');
@@ -28,7 +29,12 @@
 		document.write ("'><\/scr"+"ipt>");
 		//]]>-->
 		</script>
-		<noscript><a href='http://adv.kaznetmedia.kz/www/delivery/ck.php?n=a372d3e3&amp;cb=<?php echo rand(); ?>' target='_blank'><img src='http://adv.kaznetmedia.kz/www/delivery/avw.php?zoneid=53&amp;charset=UTF-8&amp;cb=<?php echo rand(); ?>&amp;n=a372d3e3' border='0' alt='' /></a></noscript>
+		{/literal}
+		{php}
+			$this->assign('rand1', rand());
+			$this->assign('rand2', rand());
+		{/php}
+		<noscript><a href='http://adv.kaznetmedia.kz/www/delivery/ck.php?n=a372d3e3&amp;cb={$rand1}' target='_blank'><img src='http://adv.kaznetmedia.kz/www/delivery/avw.php?zoneid=53&amp;charset=UTF-8&amp;cb={$rand2}&amp;n=a372d3e3' border='0' alt='' /></a></noscript>
 	 </div>
   </div>
   <div id="headsm">

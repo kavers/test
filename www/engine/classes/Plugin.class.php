@@ -76,7 +76,7 @@ abstract class Plugin extends Object {
 		
 		$aInherits=$this->GetInherits();
 		foreach ($aInherits as $sObjectName=>$aParams) {
-			foreach ($aParams as $sFrom=>$sTo) {				
+			foreach ($aParams as $sFrom=>$sTo) {
 				$this->Plugin_Inherit($sFrom,$sTo,get_class($this));
 			}
 		}

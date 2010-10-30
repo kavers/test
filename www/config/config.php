@@ -43,7 +43,7 @@ $config['block']['blogs']['row']  = 10;  // сколько записей выв
  * например, для директории первой вложенности www.site.ru/livestreet/ поставить значение равное 1 
  */
 $config['path']['root']['web']        = 'http://'.$_SERVER['HTTP_HOST'];     // полный WEB адрес сайта
-$domain = split('\.', $_SERVER['HTTP_HOST']);
+$domain = preg_split('/\./', $_SERVER['HTTP_HOST']);
 if (count($domain) > 2)
 {
     array_shift($domain);

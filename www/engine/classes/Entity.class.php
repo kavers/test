@@ -60,10 +60,10 @@ abstract class Entity extends Object {
 	 */
 	public function __call($sName,$aArgs) {
 		$sType=strtolower(substr($sName,0,3));
-		if (!strpos($sName,'_') and in_array($sType,array('get','set'))) {			
+		if (!strpos($sName,'_') and in_array($sType,array('get','set'))) {
 			$sKey=strtolower(preg_replace('/([^A-Z])([A-Z])/',"$1_$2",substr($sName,3)));
 			if ($sType=='get') {
-				if (isset($this->_aData[$sKey])) {					
+				if (isset($this->_aData[$sKey])) {
 					return $this->_aData[$sKey];
 				}
 				return null;

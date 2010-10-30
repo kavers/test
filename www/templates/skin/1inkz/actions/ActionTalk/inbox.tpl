@@ -1,5 +1,5 @@
 {include file='header.tpl' menu='talk' noShowSystemMessage=false}
-<li id="video_player" class="block2 green">
+<li id="video_player" class="block2 orange">
     <div class="title"><a href="#" class="link"><h1>{$aLang.talk_inbox}</h1></a></div>
     <div class="block_content">
 

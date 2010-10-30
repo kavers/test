@@ -60,10 +60,10 @@ class ActionSettings extends Action {
 		$this->Viewer_AddHtmlTitle($this->Lang_Get('settings_menu'));
 	}
 	
-	protected function RegisterEvent() {		
-		$this->AddEvent('profile','EventProfile');		
-		$this->AddEvent('invite','EventInvite');	
-		$this->AddEvent('tuning','EventTuning');			
+	protected function RegisterEvent() {
+		$this->AddEvent('profile','EventProfile');
+		$this->AddEvent('invite','EventInvite');
+		$this->AddEvent('tuning','EventTuning');
 	}
 		
 	
@@ -143,8 +143,8 @@ class ActionSettings extends Action {
 		 */
 		if (isPost('submit_profile_edit')) {
 			$this->Security_ValidateSendForm();
-						
-			$bError=false;			
+			
+			$bError=false;
 			/**
 		 	* Заполняем профиль из полей формы
 		 	*/

@@ -63,7 +63,10 @@
            <li class="descr1">
               <h2>Описание и теги</h2>
               {*<p>{$oBlog->getDescription()}</p>*}
-              <p class="lt">Язык записи <strong>Русский</strong>&nbsp;&nbsp; Место
+              <p class="lt">Язык записи <strong>Русский</strong>
+			  {hook run='html_pluginTopicadditionalfields_show'}
+			  
+			  &nbsp;&nbsp; Место
                 {if $oUserOwner->getProfileCountry()}
                     <a style="display:inline;font-size:1em" href="{router page='people'}country/{$oUserOwner->getProfileCountry()|escape:'html'}/">{$oUserOwner->getProfileCountry()|escape:'html'}</a>{if $oUserOwner->getProfileCity()},{/if}
                 {/if}						
@@ -80,8 +83,8 @@
 					{/foreach}
               </ul>
            </li>
-           {*
-           <li class="descr1">
+		   {hook run='html_pluginTopicstat'}
+           {*<li class="descr1">
               <h2>Статистика</h2>
               <div class="rating_title">Рейтинг</div><div class="cur_rating red"><a href="javascript:void(0);" id="cur_name">баян</a></div>
               <div id="rating_picker">
@@ -105,8 +108,7 @@
               <div id="circle"></div>
               <p>Просмотров <strong>56778</strong>&nbsp;Оценок <strong>1048</strong><br />
               Обсуждают <strong>48</strong></p>
-           </li>
-           *}
+           </li>*}
         </ul>
         <div class="block_bottom"></div>
         </div>

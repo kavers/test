@@ -51,7 +51,7 @@ $(document).ready(function(){
         {/if}
         <div class="block_content">
            <ul class="line_list">
-
+{hook run='html_pluginTopicfix_show'}
 {if count($aTopics)>0}	
 	{foreach from=$aTopics item=oTopic}   
 			{assign var="oBlog" value=$oTopic->getBlog()} 

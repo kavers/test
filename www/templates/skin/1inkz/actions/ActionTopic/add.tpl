@@ -108,8 +108,10 @@ $(document).ready(function(){
 						&mdash; {$aLang.topic_create_publish_index}<br />
 						<strong>{$aLang.topic_create_publish_index_notice}</strong></p>
 					{/if}
-					
-					{hook run='form_add_topic_topic_end'}					
+					{hook run='html_pluginTopicfix_form'}
+					{hook run='html_pluginTopicadditionalfields_form'}
+					{hook run='html_pluginAccesstotopic'}
+					{hook run='form_add_topic_topic_end'}
 					<p class="buttons">
 					<input type="submit" name="submit_topic_publish" value="{$aLang.topic_create_submit_publish}" class="right" />
 					<input type="submit" name="submit_preview" value="{$aLang.topic_create_submit_preview}" onclick="$('text_preview').getParent('div').setStyle('display','block'); ajaxTextPreview('topic_text',false); return false;" />&nbsp;

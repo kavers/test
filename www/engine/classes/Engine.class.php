@@ -251,7 +251,7 @@ class Engine extends Object {
 	 *
 	 */
 	protected function LoadPlugins() {
-		if($aPluginList = @file(Config::Get('path.root.server').'/plugins/plugins.dat')) {				
+		if($aPluginList = @file(Config::Get('path.root.server').'/plugins/plugins.dat')) {
 			$aPluginList=array_map('trim',$aPluginList);
 
 			foreach ($aPluginList as $sPluginName) {
@@ -259,7 +259,7 @@ class Engine extends Object {
 				$sPluginNameClass='Plugin'.ucfirst($sPluginName);
 				$sFile="{$sDirPlugins}{$sPluginName}/{$sPluginNameClass}.class.php";
 				if(is_file($sFile)) {
-					require_once($sFile);					
+					require_once($sFile);
 					$sClassName="{$sPluginNameClass}";
 					$oPlugin=new $sClassName;
 					$oPlugin->Delegate();
@@ -274,7 +274,7 @@ class Engine extends Object {
 	 *
 	 */
 	protected function InitPlugins() {
-		foreach ($this->aPlugins as $oPlugin) {			
+		foreach ($this->aPlugins as $key => $oPlugin) {
 			$oPlugin->Init();
 		}
 	}
@@ -373,7 +373,6 @@ class Engine extends Object {
 			$sName="{$aMatch[1]}_{$aMatch[2]}";
 		}
 		$aName=explode("_",$sName);
-		
 		if(count($aName)==2) {
 			$sModuleName=$aName[0];
 			$sModuleClass='Module'.$aName[0];
@@ -512,7 +511,6 @@ class Engine extends Object {
 		 * Делегирование указывается только в полной форме!
 		 */
 		$sClass=self::getInstance()->Plugin_GetDelegate('entity',$sClass);		
-		
 		$oEntity=new $sClass($aParams);
 		return $oEntity;
 	}
@@ -529,7 +527,6 @@ function __autoload($sClassName) {
 	 */
 	if (preg_match("/^Module(\w+)\_Entity(\w+)$/i",$sClassName,$aMatch)) {			
 		$tm1=microtime(true);	
-		
 		$sFileClass=Config::get('path.root.server').'/classes/modules/'.strtolower($aMatch[1]).'/entity/'.$aMatch[2].'.entity.class.php';
 			
 		if (file_exists($sFileClass)) {
@@ -544,7 +541,6 @@ function __autoload($sClassName) {
 	 */
 	if (preg_match("/^Plugin(\w+)\_Module(\w+)\_Entity(\w+)$/i",$sClassName,$aMatch)) {			
 		$tm1=microtime(true);
-		
 		$sFileClass= Config::get('path.root.server').'/plugins/'.strtolower($aMatch[1]).'/classes/modules/'.strtolower($aMatch[2]).'/entity/'.$aMatch[3].'.entity.class.php';
 		
 		if (file_exists($sFileClass)) {
