@@ -1,0 +1,3 @@
+ALTER TABLE `prefix_user` ADD (
+ user_cat VARCHAR(200) NOT NULL DEFAULT 'WITHOUT'
+);

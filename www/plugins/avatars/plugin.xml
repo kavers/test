@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+	<name>
+		<lang name="default">Livestreet Avatars System</lang>
+	</name>
+	<author>
+		<lang name="default">Alexander Bezroukov for 1in.kz</lang>
+	</author>
+	<homepage>http://1in.kz/</homepage>
+	<version>0.0.1</version>
+	<requires>
+		<livestreet>0.4.2</livestreet>
+		<plugins>
+
+		</plugins>
+	</requires>
+	<description>
+		<lang name="default">Additional avatars for user.</lang>
+		<lang name="russian">Дополнительные аватары для пользователей и система управления ими.</lang>
+	</description>
+</plugin>
